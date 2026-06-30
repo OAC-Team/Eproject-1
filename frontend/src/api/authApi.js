@@ -23,4 +23,18 @@ async function register(username, password_hash, email, role, comfirmPassword) {
     }
 };
 
-export default { login, register };
+async function googleLogin(token) {
+    try {
+        const response = await axios.post('http://localhost:5000/api/auth/google-login', { token });
+        const accessToken = response.data.accessToken;
+        const role = response.data.role;
+        const username = response.data.username;
+
+        return { token: accessToken, role, username  };
+    } catch (error) {
+        console.error('Error system', error);
+        throw error;
+    }
+}
+
+export default { login, register, googleLogin };
