@@ -3,6 +3,7 @@ import authApi from "../api/authApi";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import GoogleAuth from '../components/GoogleAuth';
 
 export default function SignUpPage({ setUser }) {
     const [username, setUsername] = useState('');
@@ -79,6 +80,7 @@ export default function SignUpPage({ setUser }) {
                 value={email}
                 onChange={(e) => { setEmail(e.target.value) }} />
             <button onClick={handleRegister}>Sign Up</button>
+            <GoogleAuth setUser={setUser}/>
         </>
     )
 };
