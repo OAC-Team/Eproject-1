@@ -24,7 +24,7 @@ async function register(username, password_hash, email, role, comfirmPassword) {
 };
 
 async function googleLogin(token) {
-    try {
+    try {        
         const response = await axios.post('http://localhost:5000/api/auth/google-login', { token });
         const accessToken = response.data.accessToken;
         const role = response.data.role;

@@ -9,28 +9,28 @@ import ContactPage from './pages/ContactPage';
 import { useState, useEffect } from 'react';
 import './App.css';
 
+function GalleryLayout() {
+  return (
+    <div className="root">
+      <div className="wrapper">
+        <aside>
+          <a href="/">
+            <img className="logo" src="https://i.postimg.cc/cLxRDMHf/image-1(1).png" alt="" />
+          </a>
+        </aside>
+        <div>
+          <Outlet />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function App() {
   const [user, setUser] = useState(null);
 
   return (
     <>
-      <div>
-
-
-        {user
-          ? (
-            <div>
-              <span>Hi {user.username}</span>
-              <Link to="/profile">Your Profile</Link>
-              <LogOut setUser={setUser} />
-            </div>
-          ) : (
-            <div>
-              <Link to="/login">Login </Link>
-              <Link to="/register">Sign Up</Link>
-            </div>
-          )}
-      </div>
       <Routes>
         <Route path='/login' element={<LoginPage setUser={setUser} />} />
         <Route path='/register' element={<SignUpPage setUser={setUser} />} />

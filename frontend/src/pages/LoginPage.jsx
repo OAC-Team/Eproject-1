@@ -166,7 +166,7 @@ export default function LoginPage({ setUser }) {
                 <div className="Quick-link">
                     <h2>Link</h2>
                     <a href="/contact">Contact</a>
-                    <a href="/about">About</a>
+                    <a href="/about.html">About</a>
                     <a href="/">Gallery</a>
                 </div>
             </footer>
