@@ -5,6 +5,7 @@ import BoardManager from './components/BoardManager';
 import { BrowserRouter, Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import Home from './pages/Home';
 import GalleryView from './pages/GalleryView';
+import ContactPage from './pages/ContactPage';
 import { useState, useEffect } from 'react';
 import './App.css';
 
@@ -33,6 +34,7 @@ function App() {
       <Routes>
         <Route path='/login' element={<LoginPage setUser={setUser} />} />
         <Route path='/register' element={<SignUpPage setUser={setUser} />} />
+        <Route path='/contact' element={<ContactPage />} />
         <Route element={<GalleryLayout />}>
 
           <Route path='/' element={<Home />} />

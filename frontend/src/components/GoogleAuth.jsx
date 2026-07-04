@@ -48,6 +48,15 @@ export default function GoogleAuth({setUser}) {
     return (
         <GoogleLogin
             onSuccess={handleGoogleLoginSuccess}
-            onError={handleGoogleLoginError} />
+            onError={handleGoogleLoginError}
+            theme="filled"
+            size="large"
+            width="330"
+            text="continue_with"
+            logo_alignment="center"
+            locale="en"
+            ux_mode="popup"
+            shape="pill"
+            useOneTap="true"/>
     )
 }
