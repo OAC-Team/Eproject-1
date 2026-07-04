@@ -1,5 +1,4 @@
 // userService talks to database with the request from userController
-
 const User = require('../models/user');
 
 async function getUser(criteria) {

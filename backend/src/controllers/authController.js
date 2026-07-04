@@ -85,7 +85,8 @@ async function googleLogin(req, res, next) {
             audience: process.env.VITE_GOOGLE_CLIENT_ID
         });
         const payload = ticket.getPayload();
-        const { email, name } = payload;
+        console.log(payload)
+        const { email, name, picture } = payload;
         let user = await User.findOne({ email });
 
         if (!user) {
@@ -94,7 +95,8 @@ async function googleLogin(req, res, next) {
                 username: tempUsername,
                 email: email,
                 password_hash: 'google-oauth-dummy-password',
-                role: 'member'
+                role: 'member',
+                profile_picture: picture
             });
 
             await user.save();
