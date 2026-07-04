@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     role: {type: String, required: true, default: 'member'},
     profile_picture: {type: String, required: true, default: "https://upload.wikimedia.org/wikipedia/commons/0/03/Twitter_default_profile_400x400.png?_=20240121032759"},
     favorites: [{type: mongoose.Schema.Types.ObjectId}],
+    uploaded_paintings: [{type: mongoose.Schema.Types.ObjectId}],
     collections: [{
         name: {type: String, required: true},
         paintings: [{type: mongoose.Schema.Types.ObjectId}]
