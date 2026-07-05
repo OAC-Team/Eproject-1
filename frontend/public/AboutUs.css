@@ -1,0 +1,579 @@
+@import url('https://fonts.googleapis.com/css2?family=Itim&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    color: #1a1a2e;
+    background: #f0f4ff;
+    overflow-x: hidden;
+}
+
+.about-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #a5a5a54d;
+    background: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.about-logo {
+    width: 240px;
+    height: 35px;
+    margin: 0 30px;
+}
+
+.about-nav {
+    display: flex;
+    gap: 15px;
+}
+
+.about-nav a {
+    font-family: 'Itim', cursive;
+    display: inline-block;
+    padding: 10px 40px;
+    text-decoration: none;
+    color: #1a1a2e;
+    border-radius: 20px;
+    background-color: #d9d9d966;
+    font-size: 20px;
+    transition: 0.3s;
+}
+
+.about-nav a:hover,
+.about-nav a.active {
+    background-color: #309bf8;
+    color: #ffffff;
+    box-shadow: 5px 5px 10px #3E9EF3;
+}
+
+.section-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+.section-title {
+    font-family: 'Itim', cursive;
+    font-size: 40px;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #309bf8, #6ec6ff);
+    margin: 12px auto 0;
+    border-radius: 2px;
+}
+
+.hero {
+    position: relative;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #0d47a1 0%, #309bf8 50%, #6ec6ff 100%);
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: url('/SignUpbg.png') center / cover no-repeat;
+    opacity: 0.08;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 750px;
+    padding: 60px 30px;
+    color: #ffffff;
+}
+
+.hero-tag {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 10px;
+}
+
+.hero h1 {
+    font-family: 'Itim', cursive;
+    font-size: 64px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.hero-quote {
+    font-family: 'Itim', cursive;
+    font-size: 22px;
+    font-style: italic;
+    opacity: 0.9;
+    margin-bottom: 25px;
+}
+
+.hero-desc {
+    font-size: 17px;
+    line-height: 1.7;
+    opacity: 0.85;
+}
+
+.story {
+    padding: 80px 0;
+    background: #ffffff;
+}
+
+.story-content {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.story-icon {
+    font-size: 60px;
+    flex-shrink: 0;
+    margin-top: 5px;
+}
+
+.story-text p {
+    font-size: 17px;
+    line-height: 1.8;
+    margin-bottom: 18px;
+    color: #333;
+}
+
+.story-text blockquote {
+    border-left: 4px solid #309bf8;
+    padding: 15px 25px;
+    margin: 20px 0;
+    background: #f0f8ff;
+    border-radius: 0 12px 12px 0;
+    font-family: 'Itim', cursive;
+    font-size: 20px;
+    color: #0d47a1;
+    line-height: 1.6;
+}
+
+.why-us {
+    padding: 80px 0;
+    background: linear-gradient(180deg, #f0f8ff 0%, #e3f0ff 100%);
+}
+
+.why-us-subtitle {
+    text-align: center;
+    font-size: 17px;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto 45px;
+    line-height: 1.6;
+}
+
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.advantage-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 35px 30px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e0e8f5;
+}
+
+.advantage-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(48, 155, 248, 0.15);
+}
+
+.advantage-icon {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.advantage-card h3 {
+    font-family: 'Itim', cursive;
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    color: #0d47a1;
+}
+
+.advantage-card p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #555;
+}
+
+.team {
+    padding: 80px 0;
+    background: #ffffff;
+}
+
+.team-subtitle {
+    text-align: center;
+    font-size: 17px;
+    color: #555;
+    max-width: 650px;
+    margin: 0 auto 45px;
+    line-height: 1.6;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.team-card {
+    background: linear-gradient(160deg, #f8fbff 0%, #eaf3ff 100%);
+    border-radius: 24px;
+    padding: 35px 20px 25px;
+    text-align: center;
+    border: 1px solid #dce8f5;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(48, 155, 248, 0.18);
+}
+
+.team-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 15px;
+    display: block;
+    border: 3px solid #309bf8;
+    box-shadow: 0 4px 12px rgba(48, 155, 248, 0.25);
+}
+
+.team-card h3 {
+    font-family: 'Itim', cursive;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    color: #1a1a2e;
+}
+
+.team-role {
+    display: inline-block;
+    font-size: 13px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #309bf8, #0d47a1);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+}
+
+.team-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 18px;
+}
+
+.github-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: #1a1a2e;
+    font-family: 'Itim', cursive;
+    font-size: 15px;
+    padding: 6px 16px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    transition: 0.3s;
+}
+
+.github-link:hover {
+    background: #1a1a2e;
+    color: #ffffff;
+    border-color: #1a1a2e;
+}
+
+.github-link:hover .github-icon {
+    filter: brightness(0) invert(1);
+}
+
+.github-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.team-github {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.team-github-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: 'Itim', cursive;
+    font-size: 22px;
+    color: #ffffff;
+    background: #1a1a2e;
+    padding: 14px 35px;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.team-github-link:hover {
+    background: #309bf8;
+    box-shadow: 0 8px 25px rgba(48, 155, 248, 0.3);
+    transform: scale(1.05);
+}
+
+.team-github-link .github-icon {
+    width: 26px;
+    height: 26px;
+    filter: invert(1);
+}
+
+/* ========== DONATE ========== */
+.donate {
+    padding: 70px 0;
+    background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 50%, #ffcc80 100%);
+}
+
+.donate-box {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 30px;
+    padding: 50px 40px;
+    box-shadow: 0 10px 40px rgba(255, 152, 0, 0.12);
+}
+
+.donate-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.donate-box h2 {
+    font-family: 'Itim', cursive;
+    font-size: 36px;
+    font-weight: 400;
+    color: #e65100;
+    margin-bottom: 15px;
+}
+
+.donate-box p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.donate-btn {
+    display: inline-block;
+    font-family: 'Itim', cursive;
+    font-size: 20px;
+    text-decoration: none;
+    color: #ffffff;
+    background: linear-gradient(135deg, #ff9800, #e65100);
+    padding: 14px 40px;
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.donate-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 25px rgba(230, 81, 0, 0.35);
+}
+
+.donate-btn:active {
+    transform: scale(0.96);
+}
+
+/* ========== CTA ========== */
+.cta {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #0d47a1 0%, #309bf8 100%);
+    text-align: center;
+    color: #ffffff;
+}
+
+.cta h2 {
+    font-family: 'Itim', cursive;
+    font-size: 42px;
+    font-weight: 400;
+    margin-bottom: 20px;
+}
+
+.cta p {
+    font-size: 18px;
+    line-height: 1.7;
+    max-width: 650px;
+    margin: 0 auto 35px;
+    opacity: 0.9;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cta-btn {
+    display: inline-block;
+    font-family: 'Itim', cursive;
+    font-size: 20px;
+    text-decoration: none;
+    padding: 14px 40px;
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cta-primary {
+    background: #ffffff;
+    color: #0d47a1;
+}
+
+.cta-primary:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+}
+
+.cta-secondary {
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+}
+
+.cta-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.08);
+}
+
+.cta-btn:active {
+    transform: scale(0.96);
+}
+
+/* ========== FOOTER ========== */
+.about-footer {
+    background-color: #000000;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 15%;
+}
+
+.about-footer img {
+    height: 30px;
+}
+
+.about-footer p {
+    color: #606060;
+    margin-top: 5%;
+    font-family: 'Itim', cursive;
+}
+
+.footer-links {
+    display: grid;
+    gap: 6px;
+}
+
+.footer-links h3 {
+    color: #ffffff;
+    font-family: 'Itim', cursive;
+    font-weight: 100;
+}
+
+.footer-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Itim', cursive;
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 900px) {
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .advantages-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .story-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero h1 {
+        font-size: 44px;
+    }
+}
+
+@media (max-width: 600px) {
+    .about-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .about-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .about-nav a {
+        padding: 8px 20px;
+        font-size: 16px;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        text-align: center;
+    }
+}
