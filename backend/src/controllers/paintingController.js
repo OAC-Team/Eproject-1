@@ -2,6 +2,7 @@ const Painting = require('../models/painting');
 const User = require('../models/user');
 const { Vibrant } = require('node-vibrant/node');
 const namer = require('color-namer');
+const userService = require('../services/userService');
 
 function hexToWord(hexCode) {
     try {
@@ -88,7 +89,8 @@ async function getPainting(req, res) {
     try {
         const painting_id = req.params.painting_id;
         const painting = await Painting.findOne({ _id: painting_id });
-        res.status(200).json({ painting: painting });
+        const uploader = await userService.getUserBasicData(painting.user_id);
+        res.status(200).json({ painting: painting, uploader: uploader });
         return;
     } catch (error) {
         res.status(500).json({ message: 'Error fetching painting', error: error.message });

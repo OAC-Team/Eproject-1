@@ -11,7 +11,6 @@ export default function Home() {
     const [userData, setUserData] = useState({})
     const [isOpen, setIsOpen] = useState(false);
     const [paintings, setPaintings] = useState([]);
-    const [userPaintings, setUserPaintings] = useState([]);
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -27,7 +26,6 @@ export default function Home() {
             //     setUserPaintings(responseData.userPaintings);
             // } else {
             //     setUserData({ username: 'Guest User', role: 'guest' });
-            //     setUserPaintings([]);
             // }
 
             const fetchedPaintings = await paintingApi.getAllPaintings()

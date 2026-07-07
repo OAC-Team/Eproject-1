@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     uploaded_paintings: [{type: mongoose.Schema.Types.ObjectId}],
     collections: [{
         name: {type: String, required: true},
-        paintings: [{type: mongoose.Schema.Types.ObjectId}]
+        paintings: [{type: mongoose.Schema.Types.ObjectId, ref:'Painting'}]
     }],
     created_at: {type: Date, default: Date.now}
 })

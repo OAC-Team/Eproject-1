@@ -74,11 +74,6 @@ export default function Profile() {
                 setUserData({ username: 'Guest User', role: 'guest' });
                 setUserPaintings([]);
             }
-
-            const fetchedPaintings = await paintingApi.getAllPaintings()
-            if (fetchedPaintings) {
-                setPaintings(fetchedPaintings.paintings)
-            }
         })()
     }, [])
 

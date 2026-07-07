@@ -1,19 +1,23 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import paintingApi from '../api/paintingApi'
+import userApi from '../api/userApi'
 
 export default function PaintingView() {
     const BASE_URL = 'http://localhost:5000'
+    const navigate = useNavigate()
     const { painting_id } = useParams();
-    const [viewPainting, setViewPainting] = useState({});
     const [activeHexPills, setActiveHexPills] = useState({});
+    const [viewPainting, setViewPainting] = useState({});
+    const [uploader, setUploader] = useState('');
 
     async function fetchPainting(paintingId) {
         const fetchedPainting = await paintingApi.getPainting(paintingId);
         setViewPainting(fetchedPainting.painting)
-        console.log(fetchedPainting);
-        console.log(fetchedPainting.painting.image_url);
-        console.log(viewPainting)
+        setUploader(fetchedPainting.uploader)
+        // console.log(fetchedPainting);
+        // console.log(fetchedPainting.painting.image_url);
+        // console.log(viewPainting)
     }
 
     useEffect(() => {
@@ -21,13 +25,18 @@ export default function PaintingView() {
     }, [painting_id])
 
     return (
+
         <div>
+            <div className="painting-info-back-btn">
+                <button onClick={() => navigate(-1)}>{`< Back`}</button>
+            </div>
             <div className="painting-info-container">
                 <div className="painting-img-wrapper">
                     <img className="painting-img" src={`${BASE_URL}${viewPainting?.image_url}`} alt={viewPainting?.title} />
                 </div>
 
                 <div className="painting-details-sidebar">
+                    <p>Uploaded by {uploader?.username}</p>
                     <h1 className="painting-title">{viewPainting?.title || "Untitled Masterpiece"}</h1>
                     <p className="painting-description">{viewPainting?.description || "No description provided yet."}</p>
 

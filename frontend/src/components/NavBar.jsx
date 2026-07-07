@@ -17,7 +17,7 @@ export default function NavBar() {
 
         (async () => {
             const responseData = await userApi.fetchUser(token);
-            if (responseData.userData) {
+            if (responseData && responseData.userData) {
                 setUserData(responseData.userData);
             } else {
                 setUserData({ username: 'Guest User', role: 'guest' });

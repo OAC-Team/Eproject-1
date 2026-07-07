@@ -27,7 +27,7 @@ export default function GalleryView({ paintings }) {
                     {/* Image Frame Wrapper */}
                     <div className="gallery-image-frame">
                         <img
-                            src={`${painting.image_url}`}
+                            src={`${BASE_URL}${painting.image_url}`}
                             alt={painting.title}
                             className="gallery-display-img"
                         />
