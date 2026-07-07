@@ -11,6 +11,10 @@ const paintingSchema = new mongoose.Schema({
     surface_type: { type: String },
     color_medium: { type: String },
     artistic_style: { type: String },
+    colors: [{
+        hex: {type: String, required: true},
+        name: {type: String, required: true}
+    }],
 
     favorites_count: { type: Number, default: 0 },
     tags: [{ type: String }],

@@ -15,6 +15,21 @@ async function fetchUser(token) {
     }
 }
 
+async function fetchUploader(user_id) {
+    try {
+        const response = await axios.get('http://localhost:5000/api/user/profile', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        // console.log("Backend response data: ", response.data);
+        return response.data;
+    } catch (error) {
+        console.log("Failed to fetch user data from database. " + error.message);
+    }
+}
+
 // Function for request a specific data from a user, currently unused
 
 // async function fetchData(requested_data) {
