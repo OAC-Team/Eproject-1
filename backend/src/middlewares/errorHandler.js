@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 async function errorHandler(err, req, res, next) {
     console.error('[Error]: ', err.message || err);
 
@@ -10,4 +11,31 @@ async function errorHandler(err, req, res, next) {
     });
 }
 
+=======
+async function errorHandler(err, req, res, next) {
+    console.error('[Error]: ', err.message || err);
+
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Internal Server Error';
+
+    res.status(statusCode).json({
+        success: false,
+        message: message
+    });
+}
+
+module.exports = { errorHandler };
+async function errorHandler(err, req, res, next) {
+    console.error('[Error]: ', err.message || err);
+
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Internal Server Error';
+
+    res.status(statusCode).json({
+        success: false,
+        message: message
+    });
+}
+
+>>>>>>> origin/main
 module.exports = { errorHandler };

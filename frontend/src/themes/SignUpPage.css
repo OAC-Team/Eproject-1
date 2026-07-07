@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+
+.auth-page-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px #a5a5a54d solid;
+    padding: 15px 0px;
+
+    .auth-page-logo {
+        margin: 20px 30px;
+        width: 240px;
+        height: 35px;
+    }
+
+    .auth-page-nav {
+        display: flex;
+        gap: 15px;
+
+        a {
+            font-family: 'Itim';
+            display: inline-block;
+            padding: 10px 40px;
+            text-decoration: none;
+            color: black;
+            border-radius: 20px;
+            background-color: #d9d9d966;
+            font-size: 22px;
+            transition: 0.3s;
+
+            &:hover {
+                background-color: #309bf8;
+                color: white;
+                box-shadow: 5px 5px 10px #3E9EF3;
+            }
+
+            &:is(.active) {
+                background-color: #309bf8;
+                color: white;
+                box-shadow: 5px 5px 10px #3E9EF3;
+            }
+
+        }
+
+
+
+        .auth-page-search-bar {
+            width: 720px;
+            border-radius: 20px;
+            padding: 10px 24px;
+            border: none;
+            background-color: #D9D9D9;
+            font-family: 'Itim';
+            font-size: 18px;
+            color: #606060;
+        }
+    }
+
+
+}
+
+.auth-page-main {
+    display: flex;
+    justify-content: center;
+    padding: 100px 0px;
+    background-image: url('/SignUpbg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .auth-page-form {
+        border-radius: 20px;
+        background-color: #ffffff;
+        width: 90%;
+        max-width: 500px;
+        min-height: 550px;
+        padding: 30px 10px;
+        align-content: center;
+        display: grid;
+        justify-content: center;
+        justify-items: center;
+        box-sizing: border-box;
+
+        img{
+            max-width: 80%;
+            height: auto;
+        }
+
+
+        input:not([type="checkbox"]) {
+            width: 100%;
+            max-width: 330px;
+            height: 53px;
+            border-radius: 20px;
+            padding: 0px 24px;
+            border: 1px #00000045 solid;
+            font-family: 'Itim';
+            font-size: 16px;
+            transition: box-shadow 0.35s ease, border-color 0.35s ease;
+            box-sizing: border-box;
+        }
+
+        input:focus:not([type="checkbox"]) {
+            box-shadow: 5px 5px 10px #3E9EF3;
+            outline: 1px #3E9EF3 solid;
+        }
+
+        p {
+            font-family: 'Itim';
+            font-size: 20px;
+        }
+
+        .auth-page-sign-up-btn {
+            width: 180px;
+            height: 45px;
+            border-radius: 10px;
+            border: none;
+            background-color: #0088ffc1;
+            color: #ffffff;
+            font-family: 'Itim';
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.35s ease,
+                box-shadow 0.35s ease;
+
+        }
+
+        .auth-page-sign-up-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .auth-page-sign-up-btn:active {
+            opacity: 0.9;
+            transform: scale(0.8);
+        }
+
+        .auth-page-check-box {
+            width: 18px;
+            height: 18px;
+            border: 1px #606060 solid;
+            border-radius: 5px;
+        }
+
+    }
+
+}
+
+footer {
+    background-color: #000000;
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 15%;
+
+    p {
+        color: #606060;
+        margin-top: 5%;
+    }
+
+    .Quick-link {
+        display: grid;
+
+        h2 {
+            color: #ffffff;
+            font-family: 'Itim';
+            font-weight: 100;
+        }
+
+        a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .auth-page-header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .auth-page-header .auth-page-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .auth-page-header .auth-page-nav .auth-page-search-bar {
+        width: 90%;
+        max-width: 450px;
+        order: -1;
+    }
+}
+
+@media (max-width: 600px) {
+    .auth-page-header .auth-page-logo {
+        width: 180px;
+        height: auto;
+    }
+
+    .auth-page-header .auth-page-nav a {
+        padding: 8px 16px;
+        font-size: 16px;
+    }
+
+    .auth-page-main {
+        padding: 40px 0;
+    }
+
+    footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+
+    footer p {
+        margin-top: 10px;
+    }
+}
