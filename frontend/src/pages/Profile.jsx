@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import userApi from '../api/userApi';
 import uploadApi from '../api/uploadApi'
 import Collections from "../components/Collections";
+import UserUploads from "../components/UserUploads";
+import paintingApi from '../api/paintingApi'
 
 export default function Profile() {
     const [userData, setUserData] = useState({});
@@ -11,15 +13,13 @@ export default function Profile() {
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState('');
     const [message, setMessage] = useState('');
-
+    const [userPaintings, setUserPaintings] = useState([]);
 
     const handleFileChange = (e) => {
 
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
             setSelectedFile(file);
-
-
             setPreview(URL.createObjectURL(file));
         }
     };
@@ -31,10 +31,7 @@ export default function Profile() {
         if (selectedFile) {
             try {
                 console.log(selectedFile);
-
                 const imagePath = await uploadApi.uploadImage(selectedFile);
-
-
                 setMessage(imagePath.url);
 
                 Swal.fire({
@@ -69,22 +66,27 @@ export default function Profile() {
         const token = Cookies.get('token');
 
         (async () => {
-            const newUserData = await userApi.fetchUser(token);
-            // console.log(newUserData);
-            // console.log(newUserData.collections);
-            if (newUserData) {
-                setUserData(newUserData);
-                setIsGuest(false);
+            const responseData = await userApi.fetchUser(token);
+            if (responseData.userData) {
+                setUserData(responseData.userData);
+                setUserPaintings(responseData.userPaintings);
             } else {
                 setUserData({ username: 'Guest User', role: 'guest' });
-                setIsGuest(true);
+                setUserPaintings([]);
             }
         })()
     }, [])
 
     return (
         <div>
-            <h4>{userData.username} ({userData.role})</h4>
+            <div className="profile-user">
+                <img src={userData.profile_picture} alt="" />
+                <div className="profile-user-info">
+                    <h1>{userData.username}</h1>
+                    <p>{String(userData.role).charAt(0).toUpperCase() + String(userData.role).slice(1)}</p>
+                </div>
+            </div>
+            <UserUploads paintings={userPaintings}></UserUploads>
             {isGuest === false ? (
                 <Collections collectionData={userData.collections} />
             ) : (

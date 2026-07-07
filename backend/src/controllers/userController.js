@@ -6,17 +6,20 @@ async function getUserProfile(req, res) {
         const userId = req.user.user_id;
         const userData = await userService.getUser({ _id: userId })
 
-        console.log("Server returned with " + userData)
+        // console.log("Server returned with " + userData)
 
         if (!userData) {
             return res.status(404).json({ message: "User not found." });
         }
 
-        return res.status(200).json(userData)
+        const userPaintings = await userService.getUserPainting(userId);
+
+        return res.status(200).json({userData, userPaintings})
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
 }
+
 
 async function addUserCollection(req, res) {
     // console.log("Received body: " + req.body.stringify());
