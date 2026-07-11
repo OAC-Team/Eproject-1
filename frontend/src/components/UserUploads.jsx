@@ -4,24 +4,36 @@ import { useNavigate } from "react-router-dom"
 export default function UserUploads({ paintings }) {
     const navigate = useNavigate();
 
-    const scrollRef = useRef(null);
+    const scrollContainerRef = useRef(null);
 
-    const handleScroll = (e) => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollLeft += e.deltaY * 2;
-        }
-    };
+    useEffect(() => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+
+        const handleWheelScroll = (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault(); 
+                
+                container.scrollLeft += e.deltaY * 1.2;
+            }
+        };
+
+        container.addEventListener('wheel', handleWheelScroll, { passive: false });
+
+        return () => {
+            container.removeEventListener('wheel', handleWheelScroll);
+        };
+    }, [paintings]);
     
     return (
         <div className="user-uploads-wrapper">
             <h2>Your Paintings</h2>
             <div className="user-uploads-img-bar">
                 {paintings?.length > 0 ?
-                    <div ref={scrollRef} onWheel={handleScroll}>
+                    <div ref={scrollContainerRef}>
                         {paintings?.map(painting => (
                             <div key={painting._id}>
-                                <img onClick={(
-                                ) => navigate(`/gallery/${painting._id}`)} src={`http://localhost:5000${painting.image_url}`} alt="" />
+                                <img onClick={() => navigate(`/gallery/${painting._id}`)} src={`http://localhost:5000${painting.image_url}`} alt="" />
                             </div>
                         ))}
                     </div>

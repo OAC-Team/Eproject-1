@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import paintingApi from '../api/paintingApi'
 import userApi from '../api/userApi'
+import '../themes/PaintingView.css'
 
 export default function PaintingView() {
     const BASE_URL = 'http://localhost:5000'
@@ -10,14 +11,20 @@ export default function PaintingView() {
     const [activeHexPills, setActiveHexPills] = useState({});
     const [viewPainting, setViewPainting] = useState({});
     const [uploader, setUploader] = useState('');
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     async function fetchPainting(paintingId) {
         const fetchedPainting = await paintingApi.getPainting(paintingId);
         setViewPainting(fetchedPainting.painting)
         setUploader(fetchedPainting.uploader)
-        // console.log(fetchedPainting);
-        // console.log(fetchedPainting.painting.image_url);
-        // console.log(viewPainting)
+    }
+
+    async function handleFavorite() {
+        console.log("Saved to user's favorite")
+    }
+
+    async function handleSaveToCollection() {
+        console.log("Saved to collection")
     }
 
     useEffect(() => {
@@ -25,19 +32,44 @@ export default function PaintingView() {
     }, [painting_id])
 
     return (
-
         <div>
-            <div className="painting-info-back-btn">
-                <button onClick={() => navigate(-1)}>{`< Back`}</button>
-            </div>
             <div className="painting-info-container">
-                <div className="painting-img-wrapper">
-                    <img className="painting-img" src={`${BASE_URL}${viewPainting?.image_url}`} alt={viewPainting?.title} />
+                <div className='painting-info-side-bar'>
+                    <div className="painting-info-back-btn">
+                        <button onClick={() => navigate(-1)}>
+                            <img src="/back-arrow.svg" alt="" />
+                        </button>
+                    </div>
+                    <div className='painting-info-buttons'>
+                        <div className="painting-info-favorite-btn">
+                            <button onClick={() => handleFavorite()}>
+                                <img src="/favorite.svg" alt="" />
+                            </button>
+                        </div>
+                        <div className="painting-info-collection-save-btn">
+                            <button onClick={() => handleSaveToCollection()}>
+                                <img src="/collection.svg" alt="" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    className="painting-img-wrapper"
+                    onClick={() => setIsFullscreen(true)}
+                    style={{ cursor: 'pointer' }}
+                    title="Click to view full screen"
+                >
+                    <img
+                        className="painting-img"
+                        src={`${BASE_URL}${viewPainting?.image_url}`}
+                        alt={viewPainting?.title}
+                    />
                 </div>
 
                 <div className="painting-details-sidebar">
                     <p>Uploaded by {uploader?.username}</p>
-                    <h1 className="painting-title">{viewPainting?.title || "Untitled Masterpiece"}</h1>
+                    <h1 className="painting-title">{viewPainting?.title || "Untitled Artwork"}</h1>
+                    <p className="painting-artist">{viewPainting?.artist || "Unknown Artist"}</p>
                     <p className="painting-description">{viewPainting?.description || "No description provided yet."}</p>
 
                     <div className="colors-section">
@@ -46,7 +78,8 @@ export default function PaintingView() {
                             {viewPainting?.colors?.map((color, index) => {
                                 const isHexActive = !!activeHexPills[index];
 
-                                const handlePillClick = () => {
+                                const handlePillClick = (e) => {
+                                    e.stopPropagation(); // Stops color pill clicks from triggering the image modal!
                                     setActiveHexPills(prev => ({
                                         ...prev,
                                         [index]: !prev[index]
@@ -79,6 +112,17 @@ export default function PaintingView() {
                     </div>
                 </div>
             </div>
+
+            {isFullscreen && (
+                <div className="lightbox-overlay" onClick={() => setIsFullscreen(false)}>
+                    <button className="lightbox-close" onClick={() => setIsFullscreen(false)}>✕</button>
+
+                    <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+                        <img src={`${BASE_URL}${viewPainting?.image_url}`} alt={viewPainting?.title} />
+                        <p className="lightbox-caption">{viewPainting?.title || "Untitled Masterpiece"}</p>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

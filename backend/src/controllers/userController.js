@@ -14,7 +14,7 @@ async function getUserProfile(req, res) {
 
         const userPaintings = await userService.getUserPainting(userId);
 
-        return res.status(200).json({userData, userPaintings})
+        return res.status(200).json({ userData, userPaintings })
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
@@ -70,4 +70,29 @@ async function getUserProfilePicture(req, res) {
     }
 }
 
-module.exports = { getUserProfile, addUserCollection, getUserProfilePicture }
+async function getUserCollection(req, res) {
+    try {
+        const collectionId = req.params.collection_id;
+        const userId = req.user.user_id;
+        const userData = await userService.getUser({ _id: userId })
+
+        if (!userData) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        const userCollection = userData.collections.find(
+            (col) => col._id.toString() === collectionId
+        );
+
+        return res.status(200).json({ userCollection })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
+
+module.exports = {
+    getUserProfile,
+    addUserCollection,
+    getUserProfilePicture,
+    getUserCollection
+}

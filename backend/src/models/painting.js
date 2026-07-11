@@ -8,16 +8,17 @@ const paintingSchema = new mongoose.Schema({
     image_url: { type: String, required: true },
     description: { type: String },
 
-    surface_type: { type: String },
-    color_medium: { type: String },
-    artistic_style: { type: String },
+    surface_type: { type: String, index: true },
+    color_medium: { type: String, index: true },
+    artistic_style: { type: String, index: true },
+    
     colors: [{
         hex: {type: String, required: true},
         name: {type: String, required: true}
     }],
 
     favorites_count: { type: Number, default: 0 },
-    tags: [{ type: String }],
+    tags: [{ type: String, trim: true }],
 
     created_at: { type: Date, default: Date.now }
 });

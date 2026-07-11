@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import Cookies from 'js-cookie'
 import userApi from "../api/userApi"
 
 export default function Collections({ collectionData }) {
     const BASE_URL = 'http://localhost:5000'
+    const navigate = useNavigate();
     const [isAdding, setIsAdding] = useState(false);
     const [collections, setCollections] = useState([]);
     const [newCollectionName, setNewCollectionName] = useState('');
@@ -79,7 +81,7 @@ export default function Collections({ collectionData }) {
                 ) : (
                     <div className="collections-horizontal-scroll">
                         {collections.map((collection, index) => (
-                            <div className="collection-display-card" key={index}>
+                            <div className="collection-display-card" onClick={() => navigate(`/collections/${collection._id}`)} key={collection._id}>
                                 <div className="collection-folder-preview">
                                     {collection?.paintings && collection.paintings.length > 0 ? (
                                         <div className="collection-preview-grid">

@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import GalleryView from './pages/GalleryView';
 import NavBar from './components/NavBar';
 import ContactPage from './pages/ContactPage';
+import CollectionPage from './pages/CollectionPage';
 import { useState, useEffect } from 'react';
 import './App.css';
 
@@ -26,6 +27,7 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/boards' element={<BoardManager />} />
           <Route path='/gallery/:painting_id' element={<PaintingView />} />
+          <Route path='/collections/:collection_id' element={<CollectionPage />}/>
 
         </Route>
       </Routes>

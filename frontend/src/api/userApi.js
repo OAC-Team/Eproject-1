@@ -15,39 +15,22 @@ async function fetchUser(token) {
     }
 }
 
-async function fetchUploader(user_id) {
+async function fetchUserCollection(token, collection_id) {
     try {
-        const response = await axios.get('http://localhost:5000/api/user/profile', {
+        const response = await axios.get(`http://localhost:5000/api/user/collections/${collection_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         })
-        // console.log("Backend response data: ", response.data);
-        return response.data;
+        
+        return response.data
     } catch (error) {
-        console.log("Failed to fetch user data from database. " + error.message);
+        console.error(error.message)
     }
 }
 
-// Function for request a specific data from a user, currently unused
-
-// async function fetchData(requested_data) {
-//     try {
-//         const response = await axios.get(`http://localhost:5000/api/user/profile`, {
-//             headers: {
-//                 'Authorization': `Bearer ${token}`,
-//                 'Content-Type': 'application/json'
-//             }
-//         })
-//         // console.log("Backend response data: ", response.data);
-//         return response.data;
-//     } catch (error) {
-//         console.error("Failed to fetch user data from database. " + error.message);
-//     }
-// }
-
-async function updateUser(token, updateData) {
+async function updateUser(token, route, updateData) {
     try {
         const response = await axios.post('http://localhost:5000/api/user/collections',
             updateData,
@@ -66,4 +49,4 @@ async function updateUser(token, updateData) {
     }
 }
 
-export default { fetchUser, updateUser }
+export default { fetchUser, updateUser, fetchUserCollection }

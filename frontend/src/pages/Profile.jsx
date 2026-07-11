@@ -6,6 +6,7 @@ import uploadApi from '../api/uploadApi'
 import Collections from "../components/Collections";
 import UserUploads from "../components/UserUploads";
 import paintingApi from '../api/paintingApi'
+import '../themes/Profile.css'
 
 export default function Profile() {
     const [userData, setUserData] = useState({});

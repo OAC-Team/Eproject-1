@@ -3,10 +3,14 @@ import Cookies from 'js-cookie'
 import userApi from '../api/userApi'
 import { Link } from 'react-router-dom'
 import LogOut from '../components/LogOut'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 export default function NavBar() {
     const [userData, setUserData] = useState({})
     const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [searchQuery, setSearchQuery] = useState('')
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -25,9 +29,28 @@ export default function NavBar() {
         })()
     }, [])
 
+    function handleSearchKeyDown(e) {
+        if (e.key === 'Enter') {
+            const query = searchQuery.trim();
+            navigate(`${location.pathname}?search=${encodeURIComponent(query)}`);
+        }
+    }
+
     return (
         <div className="access-bar">
-            <input className="search-bar" type="text" placeholder="Search..." />
+            <input
+                className="search-bar"
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
+                onFocus={(e) => {
+                    if (e.target.value !== "") {
+                        e.target.value = ""
+                    }
+                }}
+            />
 
             <div className="profile-root">
                 <div className="profile-frame" onClick={toggleDropdown}>

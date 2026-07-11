@@ -1,0 +1,301 @@
+
+.painting-info-container {
+  display: flex;
+  gap: 40px;
+  max-width: 100vw;
+  margin: 10px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.painting-img-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 20px;
+  margin-left: -20px;
+}
+
+.painting-img {
+  padding: 4px;
+  max-width: 100%;
+  max-height: 550px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
+}
+
+.painting-img:hover {
+  transform: scale(1.02);
+}
+
+.painting-details-sidebar {
+  flex: 0.8;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.painting-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 2px;
+}
+
+.painting-artist {
+  font-size: 1rem;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+}
+
+.painting-description {
+  font-size: 1rem;
+  color: #666666;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.colors-section {
+  border-top: 2px solid #f0f0f0;
+  padding-top: 20px;
+}
+
+.colors-heading {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.colors-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.color-pill-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f1f3f5;
+  padding: 6px 14px 6px 6px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.3);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.color-swatch-box {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.color-name-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #495057;
+}
+
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(10, 10, 12, 0.94);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+
+  animation: lightboxFadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 85%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  animation: lightboxPopUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.lightbox-content img {
+  max-width: 90vw;
+  max-height: 75vh;
+  object-fit: contain;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lightbox-caption {
+  color: #fff;
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 25px;
+  right: 35px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 36px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  opacity: 0;
+  animation: lightboxFadeIn 0.02s ease forwards;
+}
+
+.lightbox-close:hover {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+@media (max-width: 900px) {
+  .painting-info-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .painting-img {
+    max-height: 450px;
+  }
+}
+
+@keyframes lightboxFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lightboxPopUp {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.painting-info-back-btn {
+  margin-bottom: 24px;
+}
+
+.painting-info-back-btn button {
+  width: 45px;
+  height: 45px;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+  border: none;
+  margin-top: 10px;
+  box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.3);
+  background-color: #f8f9fa;
+  transition: all 0.2s ease;
+}
+
+.painting-info-back-btn img {
+  width: 16px;
+  height: 16px;
+  transform: translateX(-2px) translateY(2px);
+  transition: transform 0.2s ease;
+}
+
+.painting-info-back-btn button:hover {
+  outline: 1px solid rgb(124, 124, 255);
+  box-shadow: 0px 0px 6px 0px rgb(0, 0, 255);
+}
+
+.painting-info-back-btn button:hover img{
+  animation: arrowLoop 0.4s ease-in-out infinite alternate
+}
+
+.painting-info-favorite-btn button {
+  width: 45px;
+  height: 45px;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+  margin-top: 10px;
+  border: none;
+  box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.3);
+  background-color: #f8f9fa;
+  transition: all 0.4s ease;
+}
+
+.painting-info-favorite-btn img {
+  width: 45px;
+  height: 45px;
+  transform: scale(0.65);
+  transition: all 0.4s ease;
+}
+
+.painting-info-favorite-btn button:hover {
+  outline: 1px solid rgb(124, 124, 255);
+  box-shadow: 0px 0px 6px 0px rgb(0, 0, 255);
+}
+
+.painting-info-favorite-btn button:hover img{
+  transform: scale(0.8);
+}
+
+.painting-info-collection-save-btn button {
+  width: 45px;
+  height: 45px;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+  margin-top: 10px;
+  border: none;
+  box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.3);
+  background-color: #f8f9fa;
+  transition: all 0.4s ease;
+}
+
+.painting-info-collection-save-btn img {
+  width: 45px;
+  height: 45px;
+  transform: scale(0.65);
+  transition: all 0.4s ease;
+}
+
+.painting-info-collection-save-btn button:hover {
+  outline: 1px solid rgb(124, 124, 255);
+  box-shadow: 0px 0px 6px 0px rgb(0, 0, 255);
+}
+
+.painting-info-collection-save-btn button:hover img{
+  transform: scale(0.8);
+}
+
+@keyframes arrowLoop {
+  from {
+    transform: translateX(-2px) translateY(2px);
+  }
+  to {
+    transform: translateX(-6px) translateY(2px);
+  }
+}

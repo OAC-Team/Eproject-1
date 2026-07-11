@@ -33,6 +33,37 @@ async function addPaintingToUser(user_id, painting_id) {
     );
 }
 
+const addPaintingTags = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { tagsString } = req.body;
+
+        if (!tagsString || tagsString.trim() === "") {
+            return res.status(400).json({ message: "Please provide tags to this painting." });
+        }
+
+        const painting = await Painting.findById(id);
+        if (!painting) {
+            return res.status(404).json({ message: "Painting not found." });
+        }
+
+        const rawTagsArray = tagsString.split(',');
+
+        rawTagsArray.forEach(tag => {
+            const cleanTag = tag.replace(/#/g, '').replace(/\s+/g, '').toLowerCase();
+            
+            if (cleanTag && !painting.tags.includes(cleanTag)) {
+                painting.tags.push(cleanTag);
+            }
+        });
+
+        await painting.save();
+        res.status(200).json({ message: "Tags saved to painting.", tags: painting.tags });
+    } catch (error) {
+        res.status(500).json({ message: "Server errored processing tags", error: error.message });
+    }
+};
+
 async function createPainting(req, res) {
     try {
         if (!req.file) {
@@ -78,7 +109,21 @@ async function createPainting(req, res) {
 
 async function getAllPaintings(req, res) {
     try {
-        const paintings = await Painting.find().sort({ created_at: -1 });
+        const {search} = req.query;
+
+        let queryCondition = {};
+
+        if (search && search.trim() !== '') {
+            queryCondition = {
+                $or: [
+                    {title: { $regex: search, $options: 'i'}},
+                    {tags: { $regex: search, $options: 'i'}},
+                    {artist: { $regex: search, $options: 'i'}},
+                ]
+            }
+        }
+
+        const paintings = await Painting.find(queryCondition).sort({ created_at: -1 });
         return res.status(200).json({ paintings: paintings })
     } catch (error) {
         return res.status(500).json({ message: 'Error fetching paintings', error: error.message });
