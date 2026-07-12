@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import '../themes/GalleryView.css'
 import paintingApi from '../api/paintingApi';
+import InteractionBar from '../components/InteractionBar';
 
 export default function GalleryView() {
     const navigate = useNavigate();
     const BASE_URL = "http://localhost:5000";
     const [searchParams] = useSearchParams();
     const [paintings, setPaintings] = useState([]);
+    
 
     const searchKeyword = searchParams.get('search') || '';
 
@@ -49,7 +51,7 @@ export default function GalleryView() {
                     {/* Image Frame Wrapper */}
                     <div className="gallery-image-frame">
                         <img
-                            src={`${BASE_URL}${painting.image_url}`}
+                            src={`${painting.image_url}`}
                             alt={painting.title}
                             className="gallery-display-img"
                         />
@@ -69,6 +71,12 @@ export default function GalleryView() {
                         {painting.artistic_style && (
                             <span className="gallery-style-badge">{painting.artistic_style}</span>
                         )}
+                        <InteractionBar
+                            painting_id={painting._id}
+                            initialLikeCount={painting.favorites_count}
+                            initialIsLiked={user?.favorites?.includes(painting._id)}
+                            token={token}
+                            userCollections={user?.collections || []} />
                     </div>
                 </div>
             ))}

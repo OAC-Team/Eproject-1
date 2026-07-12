@@ -88,7 +88,7 @@ export default function Collections({ collectionData }) {
                                             {collection.paintings.slice(0, 4).map((painting, idx) => (
                                                 <img
                                                     key={painting._id || idx}
-                                                    src={BASE_URL + painting.image_url}
+                                                    src={painting.image_url}
                                                     alt="Preview"
                                                     className="grid-preview-thumb"
                                                 />

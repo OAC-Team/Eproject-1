@@ -49,4 +49,41 @@ async function updateUser(token, route, updateData) {
     }
 }
 
-export default { fetchUser, updateUser, fetchUserCollection }
+async function likePicture(painting_id, token) {
+    try {
+        const response = await axios.post(`http://localhost:5000/api/user/like/${painting_id}`,
+            {},
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
+
+        return response.data
+    } catch (error) {
+        console.error("Frontend API like error: " + error.message)
+        throw error;
+    }
+}
+
+async function saveToCollection(collectionName, painting_id, token) {
+    try {
+        const response = await axios.post(`http://localhost:5000/api/user/collections/add`,
+            { collectionName, painting_id },
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
+
+        return response.data
+    } catch (error) {
+        console.error("Frontend API save error: " + error.message)
+        throw error;
+    }
+}
+export default { fetchUser, updateUser, likePicture, saveToCollection }
