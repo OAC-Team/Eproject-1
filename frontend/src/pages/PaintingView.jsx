@@ -32,7 +32,7 @@ export default function PaintingView() {
             </div>
             <div className="painting-info-container">
                 <div className="painting-img-wrapper">
-                    <img className="painting-img" src={`${BASE_URL}${viewPainting?.image_url}`} alt={viewPainting?.title} />
+                    <img className="painting-img" src={`${viewPainting?.image_url}`} alt={viewPainting?.title} />
                 </div>
 
                 <div className="painting-details-sidebar">

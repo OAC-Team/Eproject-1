@@ -19,6 +19,8 @@ const paintingSchema = new mongoose.Schema({
     favorites_count: { type: Number, default: 0 },
     tags: [{ type: String }],
 
+    status: {type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending'},
+
     created_at: { type: Date, default: Date.now }
 });
 

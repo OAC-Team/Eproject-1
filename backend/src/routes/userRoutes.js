@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const { getUserProfile, addUserCollection, getUserProfilePicture } = require('../controllers/userController');
+const { getUserProfile, addUserCollection, getUserProfilePicture, likePicture, savePaintingToCollection } = require('../controllers/userController');
 const { getAllPaintings, getPainting } = require('../controllers/paintingController')
 const { auth } = require('../middlewares/auth')
 const uploadRoutes = require('../routes/uploadRoutes');
@@ -15,6 +15,8 @@ routes.get('/gallery/:painting_id', getPainting)
 
 // Post
 routes.post('/collections', auth, addUserCollection)
+routes.post('/like/:painting_id', auth, likePicture)
+routes.post('/collections/add', auth, savePaintingToCollection)
 
 // Use
 routes.use('/upload', auth, uploadRoutes);

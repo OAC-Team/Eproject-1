@@ -9,7 +9,10 @@ import GalleryView from './pages/GalleryView';
 import NavBar from './components/NavBar';
 import ContactPage from './pages/ContactPage';
 import { useState, useEffect } from 'react';
+import AdminLoginPage from './pages/AdminLoginPage'
+import PendingListPage from './pages/PendingListPage';
 import './App.css';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -17,6 +20,9 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path='/admin/login' element={<AdminLoginPage setUser={setUser} />} />
+        <Route path='/admin/dashboard/pendingList' element={<PendingListPage />} />
+        <Route path='/admin/dashboard' element={<AdminDashboardPage/>} />
         <Route path='/login' element={<LoginPage setUser={setUser} />} />
         <Route path='/register' element={<SignUpPage setUser={setUser} />} />
         <Route path='/contact' element={<ContactPage />} />
