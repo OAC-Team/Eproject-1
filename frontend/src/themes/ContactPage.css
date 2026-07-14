@@ -1,100 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 .contact-page {
-    background: #A6D5FF;
-    min-height: 100vh;
-    display: grid;
-    justify-content: center;
-    padding: 60px 0;
-
-    .contact-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 30px;
-        align-items: start;
-    }
-
-    .return-btn {
-        display: inline-block;
-        background-color: #ffffffd7;
-        width: 150px;
-        height: 60px;
-        padding: 16px 38px;
-        text-decoration: none;
-        border-radius: 20px;
-        color: black;
-        font-family: 'Itim', cursive;
-        font-size: 17px;
-        border: none;
-        transition: transform .25s ease;
-        
-
-        &:hover {
-            background-color: #309bf8;
-            color: #ffffff;
-            box-shadow: 5px 5px 10px #3E9EF3;
-            transform: scale(1.06);
-        }
-    
-        &:active {
-            transform: scale(.96);
-        }
-    }
-
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #f8f9fa;
+  padding: 40px 20px;
+  color: #333333;
 }
 
-
-.card {
-    height: auto;
-    min-height: 220px;
-    width: 100%;
-    max-width: 350px;
-    border-radius: 30px;
-    background: white;
-    text-align: center;
-    font-family: 'Itim';
-    font-size: 24px;
-    padding: 24px 15px;
-    box-sizing: border-box;
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-
-    &:hover {
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
-        transform: translateY(-10px);
-    }
-
-    p,
-    a {
-        margin-top: 15px;
-        font-family: 'Itim';
-        font-size: 22px;
-    }
-
-    a {
-        color: black;
-        transition: 0.3s;
-
-        &:hover {
-            color: blue;
-        }
-    }
+/* --- Container tổng (Chia 2 cột bằng Flexbox) --- */
+.contact-container {
+  display: flex;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 20px;
+  /* Bo góc lớn giống card của ảnh 3 */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  /* Đổ bóng nhẹ hiện đại */
+  overflow: hidden;
 }
 
-@media (max-width: 1200px) {
-    .contact-page .contact-grid {
-        grid-template-columns: repeat(2, 1fr);
-        justify-items: center;
-        padding: 0 20px;
-    }
+/* --- Cột trái: Thông tin --- */
+.contact-info {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
 }
 
+.contact-info h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #1a1a1a;
+}
+
+/* Đồng bộ class .text */
+.contact-info .text {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* Đồng bộ class .info-list & .info-item */
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  color: #333;
+}
+
+.info-item i {
+  color: #38b6ff; /* Giữ màu xanh nguyên bản của nút gửi làm màu icon */
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+.info-item span {
+  font-size: 15px;
+  color: #1a1a1a;
+}
+
+/* Đồng bộ class .social-media & .social-icons */
+.social-media {
+  margin-top: 24px;
+}
+
+.social-media p {
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #f1f5f9;
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+.social-icons a:hover {
+  background-color: #38b6ff;
+  color: #ffffff;
+}
+
+/* --- Cột phải: Form (Style đồng bộ Ảnh 3) --- */
+.contact-form-wrapper {
+  flex: 1;
+  padding: 40px;
+  background-color: #ffffff;
+  border-left: 1px solid #edf2f7;
+  /* Vạch ngăn cách nhẹ giữa 2 bên */
+}
+
+.contact-form-wrapper h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: #1a1a1a;
+}
+
+/* Thay thế .form-group thành .input-group và đảo thứ tự hiển thị bằng flex-direction */
+.input-group {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #2d3748;
+}
+
+/* Style chung cho Input, Select, Textarea giống ảnh 3 */
+.input-group input,
+.input-group select,
+.input-group textarea {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  /* Viền xám mảnh */
+  border-radius: 16px;
+  /* Bo góc bầu bĩnh giống ảnh 3 */
+  background-color: #ffffff;
+  color: #333;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.2s ease;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.input-group select {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Hiệu ứng khi click vào ô nhập liệu */
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+  border-color: #3b82f6;
+  /* Đổi sang xanh khi focus */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Placeholder chữ xám nhạt mờ */
+.input-group input::placeholder,
+.input-group textarea::placeholder,
+.input-group select::placeholder {
+  color: #a0aec0;
+}
+
+/* Khống chế kéo kéo của textarea */
+.input-group textarea {
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* --- Nút gửi đi (Màu xanh dương giống nút Sign Up ảnh 3) --- */
+.submit-btn {
+  width: 100%;
+  background-color: #38b6ff;
+  /* Màu xanh thiên thanh của nút Sign Up */
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 12px;
+  /* Bo góc nút */
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #1da1f2;
+  /* Đậm hơn một chút khi di chuột */
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+  /* Hiệu ứng lún nút nhẹ khi bấm */
+}
+
+/* --- Responsive cho màn hình điện thoại --- */
 @media (max-width: 768px) {
-    .contact-page .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .contact-page-main iframe {
-        height: 800px; 
-    }
+  .contact-container {
+    flex-direction: column;
+    margin: 10px;
+  }
+
+  .contact-form-wrapper {
+    border-left: none;
+    border-top: 1px solid #edf2f7;
+    padding: 30px 20px;
+  }
+
+  .contact-info {
+    padding: 30px 20px;
+  }
 }
