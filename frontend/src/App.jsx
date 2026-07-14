@@ -26,7 +26,6 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/boards' element={<BoardManager />} />
           <Route path='/gallery/:painting_id' element={<PaintingView />} />
-
         </Route>
       </Routes>
     </>
@@ -51,6 +50,8 @@ function GalleryLayout() {
             <a href="/">
               <img className="add-icon" src="/add.svg" alt="" />
             </a>
+            <a href="/aboutonlyartcollection.html">Giới thiệu</a>
+
           </div>
         </aside>
         <main>
