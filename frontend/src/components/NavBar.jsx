@@ -32,7 +32,11 @@ export default function NavBar() {
     function handleSearchKeyDown(e) {
         if (e.key === 'Enter') {
             const query = searchQuery.trim();
-            navigate(`${location.pathname}?search=${encodeURIComponent(query)}`);
+            if (query.includes("/collections")) {
+                navigate(`${location.pathname}?search=${encodeURIComponent(query)}`);
+            } else {
+                navigate(`/?search=${encodeURIComponent(query)}`);
+            }
         }
     }
 

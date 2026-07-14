@@ -1,17 +1,27 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import Cookies from 'js-cookie'
 import paintingApi from '../api/paintingApi'
 import userApi from '../api/userApi'
 import '../themes/PaintingView.css'
+import AddCollectionModal from '../components/AddCollectionModal'
+import Swal from 'sweetalert2'
 
 export default function PaintingView() {
     const BASE_URL = 'http://localhost:5000'
-    const navigate = useNavigate()
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const passedUserData = location.state?.userData || null;
+
     const { painting_id } = useParams();
     const [activeHexPills, setActiveHexPills] = useState({});
     const [viewPainting, setViewPainting] = useState({});
     const [uploader, setUploader] = useState('');
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [isCollectionModalOpen, setIsCollectionModalOpen] = useState(false);
+    const [userData, setUserData] = useState(passedUserData);
 
     async function fetchPainting(paintingId) {
         const fetchedPainting = await paintingApi.getPainting(paintingId);
@@ -23,13 +33,62 @@ export default function PaintingView() {
         console.log("Saved to user's favorite")
     }
 
-    async function handleSaveToCollection() {
-        console.log("Saved to collection")
+    const token = Cookies.get('token');
+    async function handleSave(collectionName) {
+        try {
+            const response = await userApi.saveToCollection(collectionName, painting_id, token)
+
+            console.log(response)
+            if (response) {
+                Swal.fire({
+                    title: 'Save successfully',
+                    text: `Saved to collection: ${collectionName}`,
+                    icon: 'success',
+                    confirmButtonText: 'Done'
+                })
+
+                setUserData(prevUser => ({
+                    ...prevUser,
+                    collections: response.userCollections
+                }));
+
+                setIsCollectionModalOpen(false)
+            }
+            console.log(response)
+        } catch (error) {
+            console.error('Error to save!', error)
+            const errorMessage = error.response ? error.response.data : 'Something went wrong';
+            Swal.fire({
+                title: 'Failed to save',
+                text: errorMessage,
+                icon: 'error',
+                confirmButtonText: 'Done'
+            })
+        }
     }
 
     useEffect(() => {
         fetchPainting(painting_id)
     }, [painting_id])
+
+    useEffect(() => {
+        async function fallbackFetch() {
+            if (!userData) {
+                console.log("Data empty");
+                const token = Cookies.get('token')
+                if (!token) return;
+
+                try {
+                    const response = await userApi.fetchUser(token)
+                    setUserData(response)
+                } catch (error) {
+                    console.error(error.message)
+                }
+            }
+        }
+
+        fallbackFetch()
+    }, [])
 
     return (
         <div>
@@ -47,7 +106,7 @@ export default function PaintingView() {
                             </button>
                         </div>
                         <div className="painting-info-collection-save-btn">
-                            <button onClick={() => handleSaveToCollection()}>
+                            <button onClick={() => setIsCollectionModalOpen(true)}>
                                 <img src="/collection.svg" alt="" />
                             </button>
                         </div>
@@ -112,6 +171,13 @@ export default function PaintingView() {
                     </div>
                 </div>
             </div>
+
+            <AddCollectionModal
+                isOpen={isCollectionModalOpen}
+                onClose={() => setIsCollectionModalOpen(false)}
+                collections={userData?.collections}
+                onSelectCollection={handleSave}
+            />
 
             {isFullscreen && (
                 <div className="lightbox-overlay" onClick={() => setIsFullscreen(false)}>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 
-export default function UserUploads({ paintings }) {
+export default function UserUploads({ paintings, user }) {
     const navigate = useNavigate();
 
     const scrollContainerRef = useRef(null);
@@ -12,8 +12,8 @@ export default function UserUploads({ paintings }) {
 
         const handleWheelScroll = (e) => {
             if (e.deltaY !== 0) {
-                e.preventDefault(); 
-                
+                e.preventDefault();
+
                 container.scrollLeft += e.deltaY * 1.2;
             }
         };
@@ -24,7 +24,16 @@ export default function UserUploads({ paintings }) {
             container.removeEventListener('wheel', handleWheelScroll);
         };
     }, [paintings]);
-    
+
+    function handleViewPainting(painting_id) {
+        // console.log(`Navigating to ${painting_id}`)
+        navigate(`/gallery/${painting_id}`, {
+            state: {
+                userData: user
+            }
+        })
+    }
+
     return (
         <div className="user-uploads-wrapper">
             <h2>Your Paintings</h2>
@@ -33,7 +42,7 @@ export default function UserUploads({ paintings }) {
                     <div ref={scrollContainerRef}>
                         {paintings?.map(painting => (
                             <div key={painting._id}>
-                                <img onClick={() => navigate(`/gallery/${painting._id}`)} src={`http://localhost:5000${painting.image_url}`} alt="" />
+                                <img onClick={() => handleViewPainting(painting._id)} src={`http://localhost:5000${painting.image_url}`} alt="" />
                             </div>
                         ))}
                     </div>

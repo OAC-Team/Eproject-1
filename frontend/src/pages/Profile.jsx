@@ -87,7 +87,7 @@ export default function Profile() {
                     <p>{String(userData.role).charAt(0).toUpperCase() + String(userData.role).slice(1)}</p>
                 </div>
             </div>
-            <UserUploads paintings={userPaintings}></UserUploads>
+            <UserUploads paintings={userPaintings} user={userData}></UserUploads>
             {isGuest === false ? (
                 <Collections collectionData={userData.collections} />
             ) : (

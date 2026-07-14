@@ -35,9 +35,8 @@ export default function Collections({ collectionData }) {
 
             if (result && result.collections) {
                 setCollections(result.collections);
+                console.log("Successfully saved new collections to database.");
             }
-
-            // console.log("Successfully saved new collections to database.");
         } catch (error) {
             console.error("Database save failed: ", error.message);
         }
@@ -88,7 +87,7 @@ export default function Collections({ collectionData }) {
                                             {collection.paintings.slice(0, 4).map((painting, idx) => (
                                                 <img
                                                     key={painting._id || idx}
-                                                    src={painting.image_url}
+                                                    src={BASE_URL + painting.image_url}
                                                     alt="Preview"
                                                     className="grid-preview-thumb"
                                                 />

@@ -23,14 +23,14 @@ async function fetchUserCollection(token, collection_id) {
                 'Content-Type': 'application/json'
             }
         })
-        
+
         return response.data
     } catch (error) {
         console.error(error.message)
     }
 }
 
-async function updateUser(token, route, updateData) {
+async function updateUser(token, updateData) {
     try {
         const response = await axios.post('http://localhost:5000/api/user/collections',
             updateData,
@@ -86,4 +86,4 @@ async function saveToCollection(collectionName, painting_id, token) {
         throw error;
     }
 }
-export default { fetchUser, updateUser, likePicture, saveToCollection }
+export default { fetchUser, updateUser, likePicture, saveToCollection, fetchUserCollection }

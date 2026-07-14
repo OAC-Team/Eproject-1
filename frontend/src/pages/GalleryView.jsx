@@ -4,18 +4,21 @@ import '../themes/GalleryView.css'
 import paintingApi from '../api/paintingApi';
 import InteractionBar from '../components/InteractionBar';
 
-export default function GalleryView() {
+export default function GalleryView({ user, token }) {
     const navigate = useNavigate();
     const BASE_URL = "http://localhost:5000";
     const [searchParams] = useSearchParams();
     const [paintings, setPaintings] = useState([]);
-    
 
     const searchKeyword = searchParams.get('search') || '';
 
     function handleViewPainting(painting_id) {
         // console.log(`Navigating to ${painting_id}`)
-        navigate(`/gallery/${painting_id}`)
+        navigate(`/gallery/${painting_id}`, {
+            state: {
+                userData: user
+            }
+        })
     }
 
     // Search function
@@ -51,7 +54,7 @@ export default function GalleryView() {
                     {/* Image Frame Wrapper */}
                     <div className="gallery-image-frame">
                         <img
-                            src={`${painting.image_url}`}
+                            src={`${BASE_URL}${painting.image_url}`}
                             alt={painting.title}
                             className="gallery-display-img"
                         />

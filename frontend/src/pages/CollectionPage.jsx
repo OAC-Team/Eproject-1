@@ -43,6 +43,7 @@ export default function CollectionPage() {
                     } else {
                         const lowerKeyword = searchKeyword.toLowerCase();
                         const filtered = masterList.filter(painting => {
+                            
                             const matchesTitle = painting.title?.toLowerCase().includes(lowerKeyword);
                             const matchesArtist = painting.artist?.toLowerCase().includes(lowerKeyword);
 
@@ -57,7 +58,7 @@ export default function CollectionPage() {
                     }
                 }
             } catch (error) {
-                console.error("Error during data pipeline:", error);
+                console.error("Error during data retrieval:", error);
             }
         };
 
