@@ -14,7 +14,7 @@ async function getUser(criteria) {
 }
 
 async function getUserBasicData(user_id) {
-    return await User.findOne(user_id).select('username profile_picture -_id');
+    return await User.findOne(user_id).select('username profile_picture _id');
 }
 
 async function getUserPainting(user_id) {
@@ -31,16 +31,52 @@ async function updateUser(userId, updateData) {
             { new: true, runValidators: true }
         )
 
-        if (!updateUser) {
+        if (!updatedUser) {
             console.warn(`User with ID ${userId} not found.`);
             return null;
         }
 
-        return updateUser;
+        return updatedUser;
     } catch (error) {
         console.error("User Service error: " + error.message)
         throw error
     }
 }
 
-module.exports = { getUser, updateUser, getUserPainting, getUserBasicData }
+async function updateCollection(userId, collectionId, updateData) {
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new Error("User not found.");
+    }
+
+    const collection = user.collections.id(collectionId);
+    if (!collection) {
+        throw new Error("Collection not found.");
+    }
+
+    if (updateData.name !== undefined) collection.name = updateData.name;
+    if (updateData.description !== undefined) collection.description = updateData.description;
+
+    await user.save();
+    return collection;
+};
+
+const deleteUserCollection = async (userId, collectionId) => {
+    const User = require('../models/User'); // Adjust path to your User model if needed
+
+    const result = await User.updateOne(
+        { _id: userId },
+        { $pull: { collections: { _id: collectionId } } }
+    );
+
+    if (result.modifiedCount === 0) {
+        throw new Error("Collection not found or already deleted.");
+    }
+
+    return true;
+};
+
+module.exports = {
+    getUser, updateUser, getUserPainting, getUserBasicData, updateCollection,
+    deleteUserCollection
+}

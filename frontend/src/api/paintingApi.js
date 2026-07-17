@@ -7,14 +7,24 @@ async function getAllPaintings(searchKeyword) {
     return response.data;
 };
 
-async function getAllCollectionPaintings() {
-    const response = await axios.get(`${BASE_URL}/gallery?search=${encodeURIComponent(searchKeyword)}`);
-    return response.data;
-}
-
 async function getPainting(painting_id) {
     const response = await axios.get(`${BASE_URL}/gallery/${painting_id}`);
     return response.data;
 }
 
-export default { getPainting, getAllPaintings };
+async function deletePainting(painting_id, token) {
+    try {
+        const response = await axios.delete(`${BASE_URL}/gallery/${painting_id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+
+        return response.data;
+    } catch (error) {
+        console.error("Delete Error:", error);
+        throw error;
+    }
+}
+
+export default { getPainting, getAllPaintings, deletePainting };

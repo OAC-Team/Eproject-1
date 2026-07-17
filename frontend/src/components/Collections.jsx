@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import Cookies from 'js-cookie'
 import userApi from "../api/userApi"
 
-export default function Collections({ collectionData }) {
+export default function Collections({ collectionData, onCollectionAdded }) {
     const BASE_URL = 'http://localhost:5000'
     const navigate = useNavigate();
     const [isAdding, setIsAdding] = useState(false);
@@ -18,33 +18,39 @@ export default function Collections({ collectionData }) {
         }
     }, [collectionData])
 
-    async function handleSaveCollection() {
-        if (!newCollectionName.trim()) return;
+async function handleSaveCollection() {
+    const trimmedName = newCollectionName.trim();
+    if (!trimmedName) return;
 
-        // console.log("Saving new collection: " + newCollectionName);
+    const newCollectionPayload = { name: trimmedName, paintings: [] };
+    const token = Cookies.get('token');
 
-        const newCollectionPayload = { name: newCollectionName.trim(), paintings: [] };
+    try {
+        const result = await userApi.addUserCollection(token, newCollectionPayload);
 
-        const updatedCollectionsList = [...collections, newCollectionPayload];
-        setCollections(updatedCollectionsList);
+        if (result) {
+            const addedCollection = result.userCollection || 
+                (Array.isArray(result.collections) ? result.collections[result.collections.length - 1] : null);
 
-        const token = Cookies.get('token');
-
-        try {
-            const result = await userApi.updateUser(token, { name: newCollectionName.trim() });
-
-            if (result && result.collections) {
-                setCollections(result.collections);
-                console.log("Successfully saved new collections to database.");
+            if (addedCollection) {
+                setCollections(prev => [...prev, addedCollection]);
+            } else {
+                setCollections(prev => [...prev, { ...newCollectionPayload, _id: Date.now().toString() }]);
             }
-        } catch (error) {
-            console.error("Database save failed: ", error.message);
-        }
 
-        console.log(collections)
-        setNewCollectionName('');
-        setIsAdding(false);
+            if (typeof onCollectionAdded === 'function') {
+                onCollectionAdded();
+            }
+
+            // console.log("Successfully saved new collection.");
+        }
+    } catch (error) {
+        console.error("Database save failed: ", error.message);
     }
+
+    setNewCollectionName('');
+    setIsAdding(false);
+}
 
     return (
         <div className="user-uploads-wrapper">

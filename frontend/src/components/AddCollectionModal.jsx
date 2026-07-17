@@ -14,7 +14,7 @@ export default function AddCollectionModal({ isOpen, onClose, collections, onSel
                 </div>
 
                 <div className="modal-body">
-                    {collections.length > 0 ? (
+                    {collections?.length > 0 ? (
                         <div className="collections-list">
                             {collections.map((col) => (
                                 <button 

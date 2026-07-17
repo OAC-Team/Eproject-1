@@ -22,7 +22,6 @@ async function getUserProfile(req, res) {
     }
 }
 
-
 async function addUserCollection(req, res) {
     // console.log("Received body: " + req.body.stringify());
     try {
@@ -146,23 +145,82 @@ async function savePaintingToCollection(req, res, next) {
                     'collections.$.paintings': painting_id
                 }
             },
-            { 
+            {
                 new: true,
                 runValidators: true
-             }
+            }
         )
 
         // console.log(saveToCollection.collections)
 
-        res.status(200).json({ 
-            message: 'Save successfully', 
-            userCollections: saveToCollection.collections 
+        res.status(200).json({
+            message: 'Save successfully',
+            userCollections: saveToCollection.collections
         })
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
-
 }
+
+async function updateUser(req, res) {
+    try {
+        const userId = req.user.user_id;
+        const { username, bio, profile_picture } = req.body
+        const updateData = { username, bio, profile_picture };
+
+        const updatedUser = await userService.updateUser(userId, updateData);
+
+        if (!updatedUser) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found."
+            })
+        }
+
+        return res.status(200).json({ message: "User profile updated successfully.", updatedUser })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
+
+async function updateUserCollection(req, res) {
+    try {
+        const { collection_id } = req.params;
+        const userId = req.user?.user_id || req.user?._id || req.user?.id;
+        
+        const updatedCollection = await userService.updateCollection(
+            userId, 
+            collection_id, 
+            req.body
+        );
+
+        res.json({ 
+            message: "Collection updated successfully.", 
+            collection: updatedCollection 
+        });
+    } catch (err) {
+        console.error("Update Collection Error:", err);
+        res.status(err.message.includes("not found") ? 404 : 500).json({ 
+            error: err.message || "Failed to update collection." 
+        });
+    }
+};
+
+async function deleteUserCollection(req, res) {
+    try {
+        const { collection_id } = req.params;
+        const userId = req.user?.user_id || req.user?._id || req.user?.id;
+
+        await userService.deleteCollection(userId, collection_id);
+
+        res.json({ message: "Collection deleted successfully." });
+    } catch (err) {
+        console.error("Delete Collection Error:", err);
+        res.status(err.message.includes("not found") ? 404 : 500).json({ 
+            error: err.message || "Failed to delete collection." 
+        });
+    }
+};
 
 module.exports = {
     getUserProfile,
@@ -170,5 +228,8 @@ module.exports = {
     getUserProfilePicture,
     likePicture,
     getUserCollection,
-    savePaintingToCollection
+    savePaintingToCollection,
+    updateUser,
+    updateUserCollection,
+    deleteUserCollection
 }

@@ -30,9 +30,33 @@ async function fetchUserCollection(token, collection_id) {
     }
 }
 
+async function updateUserCollection(token, collectionId, updateData) {
+    if (!collectionId) {
+        console.error("Cannot update: collectionId is undefined.");
+        return;
+    }
+
+    try {
+        const response = await axios.put(
+            `http://localhost:5000/api/user/collections/${collectionId}`,
+            updateData,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Frontend API update error:", error.response?.data || error.message);
+        throw error;
+    }
+}
+
 async function updateUser(token, updateData) {
     try {
-        const response = await axios.post('http://localhost:5000/api/user/collections',
+        const response = await axios.post('http://localhost:5000/api/user/profile/',
             updateData,
             {
                 headers: {
@@ -44,8 +68,7 @@ async function updateUser(token, updateData) {
 
         return response.data
     } catch (error) {
-        console.error("Frontend API update error: " + error.message)
-        return null;
+        console.error(error.message)
     }
 }
 
@@ -86,4 +109,44 @@ async function saveToCollection(collectionName, painting_id, token) {
         throw error;
     }
 }
-export default { fetchUser, updateUser, likePicture, saveToCollection, fetchUserCollection }
+
+async function addUserCollection(token, collectionData) {
+    try {
+        const response = await axios.post(`http://localhost:5000/api/user/collections`,
+            collectionData,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Frontend API add collection error: " + error.message);
+        throw error;
+    }
+}
+
+async function deleteUserCollection(token, collectionId) {
+    try {
+        const response = await axios.delete(
+            `http://localhost:5000/api/user/collections/${collectionId}`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Frontend API delete collection error:", error.response?.data || error.message);
+        throw error;
+    }
+}
+
+export default {
+    fetchUser, updateUserCollection, updateUser, likePicture,
+    saveToCollection, fetchUserCollection, addUserCollection, deleteUserCollection
+}

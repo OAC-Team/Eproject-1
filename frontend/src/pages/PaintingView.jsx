@@ -18,7 +18,7 @@ export default function PaintingView() {
     const { painting_id } = useParams();
     const [activeHexPills, setActiveHexPills] = useState({});
     const [viewPainting, setViewPainting] = useState({});
-    const [uploader, setUploader] = useState('');
+    const [uploader, setUploader] = useState({});
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [isCollectionModalOpen, setIsCollectionModalOpen] = useState(false);
     const [userData, setUserData] = useState(passedUserData);
@@ -38,7 +38,6 @@ export default function PaintingView() {
         try {
             const response = await userApi.saveToCollection(collectionName, painting_id, token)
 
-            console.log(response)
             if (response) {
                 Swal.fire({
                     title: 'Save successfully',
@@ -54,7 +53,6 @@ export default function PaintingView() {
 
                 setIsCollectionModalOpen(false)
             }
-            console.log(response)
         } catch (error) {
             console.error('Error to save!', error)
             const errorMessage = error.response ? error.response.data : 'Something went wrong';
@@ -67,28 +65,76 @@ export default function PaintingView() {
         }
     }
 
+    async function handleDeletePainting() {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "This will permanently remove the painting from your uploads, favorites, and collections!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Delete'
+        });
+
+        if (!result.isConfirmed) return;
+
+        try {
+            const response = await paintingApi.deletePainting(painting_id, token);
+
+            await Swal.fire({
+                title: 'Deleted!',
+                text: response.message || 'Painting has been deleted.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
+            navigate(-1);
+
+        } catch (error) {
+            console.error('Failed to delete painting:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: error.message || 'Failed to delete painting.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    }
+
     useEffect(() => {
         fetchPainting(painting_id)
     }, [painting_id])
 
     useEffect(() => {
-        async function fallbackFetch() {
-            if (!userData) {
-                console.log("Data empty");
-                const token = Cookies.get('token')
-                if (!token) return;
+        async function syncCollections() {
+            const token = Cookies.get('token');
+            if (!token) return;
 
-                try {
-                    const response = await userApi.fetchUser(token)
-                    setUserData(response)
-                } catch (error) {
-                    console.error(error.message)
+            try {
+                const response = await userApi.fetchUser(token);
+
+                if (response && Array.isArray(response.collections)) {
+                    setUserData(prev => ({
+                        ...prev,
+                        ...response,
+                        collections: response.collections
+                    }));
                 }
+            } catch (error) {
+                console.error("Failed to sync collections:", error.message);
             }
         }
 
-        fallbackFetch()
-    }, [])
+        if (isCollectionModalOpen) {
+            syncCollections();
+        }
+    }, [isCollectionModalOpen]);
+
+    const isOwner = Boolean(
+        userData?._id &&
+        uploader?._id &&
+        String(userData._id) === String(uploader._id) || userData.role === "admin"
+    );
 
     return (
         <div>
@@ -110,6 +156,13 @@ export default function PaintingView() {
                                 <img src="/collection.svg" alt="" />
                             </button>
                         </div>
+                        {isOwner ? (
+                            <div className="painting-info-delete-btn">
+                                <button onClick={() => handleDeletePainting()}>
+                                    <img src="/delete.svg" alt="Delete" />
+                                </button>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
                 <div
@@ -169,6 +222,15 @@ export default function PaintingView() {
                             })}
                         </div>
                     </div>
+                    {viewPainting?.tags?.length > 0 && <div className="painting-tags-container">
+                        <p>Tags</p>
+
+                        <div className="painting-tags-scrollbox">
+                            {viewPainting?.tags?.map((tag, index) => (
+                                <span key={index} className="painting-tag">{tag}</span>
+                            ))}
+                        </div>
+                    </div>}
                 </div>
             </div>
 

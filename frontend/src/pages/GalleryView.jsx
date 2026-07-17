@@ -28,7 +28,7 @@ export default function GalleryView({ user, token }) {
             try {
                 const data = await paintingApi.getAllPaintings(searchKeyword)
                 setPaintings(data.paintings)
-                console.log(data.paintings)
+                // console.log(data.paintings)
             } catch (error) {
                 console.error(error.message)
             }

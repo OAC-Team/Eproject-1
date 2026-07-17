@@ -59,7 +59,7 @@ export default function NavBar() {
             <div className="profile-root">
                 <div className="profile-frame" onClick={toggleDropdown}>
                     <img className="profile-picture" src={userData?.profile_picture} alt="" />
-                    <p className="profile-name">{userData?.username}</p>
+                    <p className="mb-0 profile-name">{userData?.username}</p>
 
                     <button className={`expand-btn ${isOpen ? 'active' : ''}`}>
                         <img className="expand-btn-arrow" src="/arrow.png" alt="" />
@@ -68,7 +68,7 @@ export default function NavBar() {
                 {userData?.username !== 'Guest User' ?
                     <div className={`dropdown-menu ${isOpen ? 'show' : ''}`}>
                         <Link to="/profile">My Profile</Link>
-                        <a href="#">Settings</a>
+                        <Link to="/profile/settings">Settings</Link>
                         <a href="#">Something</a>
                         <hr />
                         <LogOut setUser={setUserData} />

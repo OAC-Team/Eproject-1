@@ -35,7 +35,7 @@
   letter-spacing: -0.8px;
 }
 
-.profile-user-info p {
+.profile-user-role {
   align-self: flex-start;
   font-size: 0.85rem;
   font-weight: 700;
@@ -47,6 +47,17 @@
   letter-spacing: 0.8px;
   margin: 0;
   border: 1px solid rgba(47, 92, 168, 0.15);
+}
+
+.profile-user-bio {
+  align-self: flex-start;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #707070;
+  padding: 6px 16px 6px 0px;
+  letter-spacing: 0.8px;
+  margin: 0;
+  font-style: italic;
 }
 
 .user-uploads-wrapper {
@@ -78,8 +89,8 @@
   gap: 20px;
   overflow-x: auto;
   padding-bottom: 10px;
-  scroll-behavior: smooth; 
-  touch-action: pan-x; 
+  scroll-behavior: smooth;
+  touch-action: pan-x;
 }
 
 .user-uploads-img-bar > div:first-child::-webkit-scrollbar {
@@ -104,9 +115,13 @@
   border-radius: 14px;
   cursor: pointer;
   background-color: #f8f9fa;
-  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
   user-select: none;
   margin: 2px;
+}
+
+.user-uploads-img-bar img:hover {
+  transform: scale(0.95);
 }
 
 .user-uploads-img-bar p {

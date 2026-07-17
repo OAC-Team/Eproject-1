@@ -25,7 +25,6 @@ export default function Profile() {
         }
     };
 
-
     const uploadFileHandle = async (e) => {
         e.preventDefault();
 
@@ -63,8 +62,8 @@ export default function Profile() {
         }
     };
 
+    const token = Cookies.get('token');
     useEffect(() => {
-        const token = Cookies.get('token');
 
         (async () => {
             const responseData = await userApi.fetchUser(token);
@@ -78,18 +77,24 @@ export default function Profile() {
         })()
     }, [])
 
+    const handleRefreshData = async () => {
+        const updatedUser = await userApi.fetchUser(token);
+        setUserData(updatedUser);
+    };
+
     return (
         <div>
             <div className="profile-user">
                 <img src={userData.profile_picture} alt="" />
                 <div className="profile-user-info">
                     <h1>{userData.username}</h1>
-                    <p>{String(userData.role).charAt(0).toUpperCase() + String(userData.role).slice(1)}</p>
+                    <p className="profile-user-role">{String(userData.role).charAt(0).toUpperCase() + String(userData.role).slice(1)}</p>
+                    {userData?.bio?.length > 0 && <p className="profile-user-bio">"{String(userData.bio)}"</p>}
                 </div>
             </div>
             <UserUploads paintings={userPaintings} user={userData}></UserUploads>
             {isGuest === false ? (
-                <Collections collectionData={userData.collections} />
+                <Collections collectionData={userData.collections} onCollectionAdded={handleRefreshData} />
             ) : (
                 <div>
                     <p>Cannot manage collections with current user.</p>
