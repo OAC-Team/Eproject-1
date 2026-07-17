@@ -6,20 +6,21 @@ const paintingSchema = new mongoose.Schema({
     title: { type: String, required: true },
     artist: { type: String, required: true },
     image_url: { type: String, required: true },
+    cloudinary_id: { type: String, required: true },
     description: { type: String },
 
     surface_type: { type: String },
     color_medium: { type: String },
     artistic_style: { type: String },
     colors: [{
-        hex: {type: String, required: true},
-        name: {type: String, required: true}
+        hex: { type: String, required: true },
+        name: { type: String, required: true }
     }],
 
     favorites_count: { type: Number, default: 0 },
     tags: [{ type: String }],
 
-    status: {type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending'},
+    status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
 
     created_at: { type: Date, default: Date.now }
 });

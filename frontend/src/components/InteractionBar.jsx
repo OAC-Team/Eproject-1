@@ -7,11 +7,16 @@ export default function InteractionBar({ painting_id, initialLikeCount, initialI
     const [likeCount, setLikeCount] = useState(initialLikeCount);
     const [showSaveModal, setShowSaveModal] = useState(false);
 
+    useEffect(() => {
+        setIsLiked(initialIsLiked);
+        setLikeCount(initialLikeCount);
+    }, [initialIsLiked, initialLikeCount]);
+
     async function handleLike() {
         try {
             const response = await userApi.likePicture(painting_id, token)
             if (response) {
-                setIsLiked(response.liked)
+                setIsLiked(response.like)
                 setLikeCount(response.favorites_count)
             }
         } catch (error) {
@@ -76,29 +81,40 @@ export default function InteractionBar({ painting_id, initialLikeCount, initialI
     }
 
     return (
-        <div>
-            <button onClick={handleLike}>
-                {isLiked ? '❤️' : '🤍'} <span>{likeCount}</span>
+        <div className="interaction-bar">
+            <button className={`like-btn ${isLiked ? 'liked' : ''}`} onClick={handleLike}>
+                {isLiked ? <i className="bi bi-heart-fill"></i> : <i className="bi bi-heart"></i>}
+                <span>{likeCount}</span>
             </button>
-            <button onClick={handleShare}>
-                🔗
+            
+            <button className="share-btn" onClick={handleShare} title="Share Link">
+                <i className="bi bi-share"></i>
             </button>
-            <button onClick={() => setShowSaveModal(true)}>
-                Save
+            
+            <button className="save-btn" onClick={() => setShowSaveModal(true)} title="Save to Collection">
+                <i className="bi bi-folder-plus"></i> Save
             </button>
-            {showSaveModal &&
-                <div>
-                    <div>
+
+            {showSaveModal && (
+                <div className="save-modal-overlay">
+                    <div className="save-modal-content">
                         <h4>Save to collection</h4>
-                        {userCollections?.map((collection) => (
-                            <div key={collection._id}>
-                                {collection.name}
-                                <button onClick={() => handleSave(collection.name)}>Save</button>
-                            </div>
-                        ))}
-                        <button onClick={() => setShowSaveModal(false)}>Close</button>
+                        <div className="collection-list">
+                            {userCollections?.map((collection) => (
+                                <div key={collection._id} className="collection-item">
+                                    <span>{collection.name}</span>
+                                    <button className="modal-save-btn" onClick={() => handleSave(collection.name)}>
+                                        <i className="bi bi-bookmark-plus"></i> Save
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                        <button className="modal-close-btn" onClick={() => setShowSaveModal(false)}>
+                            Close
+                        </button>
                     </div>
-                </div>}
+                </div>
+            )}
         </div>
     )
 }
