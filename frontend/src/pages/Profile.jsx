@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import userApi from '../api/userApi';
 import uploadApi from '../api/uploadApi'
 import Collections from "../components/Collections";
+import Recommendations from "../components/Recommendations";
 import UserUploads from "../components/UserUploads";
 import paintingApi from '../api/paintingApi'
 import '../themes/Profile.css'
@@ -15,6 +16,11 @@ export default function Profile() {
     const [preview, setPreview] = useState('');
     const [message, setMessage] = useState('');
     const [userPaintings, setUserPaintings] = useState([]);
+    const [recTrigger, setRecTrigger] = useState(0);
+
+    const refreshRecommendationsOnly = () => {
+        setRecTrigger(prev => prev + 1);
+    };
 
     const handleFileChange = (e) => {
 
@@ -100,7 +106,7 @@ export default function Profile() {
                     <p>Cannot manage collections with current user.</p>
                 </div>
             )}
-
+            <Recommendations refreshTrigger={recTrigger}></Recommendations>
         </div>
     )
 }

@@ -175,6 +175,59 @@ async function getAllPaintings(req, res) {
     }
 }
 
+async function getRecommendedPaintings(req, res) {
+    try {
+        const userId = req.user?.user_id || req.user?._id;
+
+        const user = userId 
+            ? await User.findById(userId).populate('favorites').lean() 
+            : null;
+
+        const getRecentPaintings = async () => {
+            return await Painting.find({ status: 'approved' })
+                .sort({ created_at: -1 })
+                .limit(6)
+                .lean();
+        };
+
+        if (!user?.favorites?.length) {
+            const recent = await getRecentPaintings();
+            return res.status(200).json({ paintings: recent, basis: 'recent' });
+        }
+
+        const styles = [...new Set(user.favorites.map(p => p.artistic_style).filter(Boolean))];
+        const tags = [...new Set(user.favorites.flatMap(p => p.tags || []))];
+        const favoriteIds = user.favorites.map(p => p._id);
+
+        if (styles.length === 0 && tags.length === 0) {
+            const recent = await getRecentPaintings();
+            return res.status(200).json({ paintings: recent, basis: 'recent' });
+        }
+
+        const recommended = await Painting.find({
+            _id: { $nin: favoriteIds },
+            status: 'approved',
+            $or: [
+                { artistic_style: { $in: styles } },
+                { tags: { $in: tags } }
+            ]
+        })
+        .limit(5)
+        .lean();
+
+        // If no matching recommendations found in DB, fallback to recent!
+        if (!recommended.length) {
+            const recent = await getRecentPaintings();
+            return res.status(200).json({ paintings: recent, basis: 'recent' });
+        }
+
+        return res.status(200).json({ paintings: recommended, basis: 'favorites' });
+    } catch (error) {
+        console.error("Recommendations error:", error);
+        return res.status(500).json({ message: 'Error fetching recommendations', error: error.message });
+    }
+}
+
 async function getPainting(req, res) {
     try {
         const painting_id = req.params.painting_id;
@@ -319,4 +372,4 @@ async function savePainting(req, res) {
     }
 }
 
-module.exports = {uploadProfilePicture, createPainting, getAllPaintings, getPainting, savePainting, deletePainting, analyzeImage }
+module.exports = {getRecommendedPaintings, uploadProfilePicture, createPainting, getAllPaintings, getPainting, savePainting, deletePainting, analyzeImage }

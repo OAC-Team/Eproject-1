@@ -11,7 +11,7 @@ const {
     updateUserCollection,
     deleteUserCollection
 } = require('../controllers/userController');
-const { getAllPaintings, getPainting, savePainting, deletePainting } = require('../controllers/paintingController')
+const {getRecommendedPaintings, getAllPaintings, getPainting, savePainting, deletePainting } = require('../controllers/paintingController')
 const { auth } = require('../middlewares/auth')
 const uploadRoutes = require('../routes/uploadRoutes');
 
@@ -21,6 +21,7 @@ const routes = express.Router()
 routes.get('/profile', auth, getUserProfile)
 routes.get('/profile_picture', auth, getUserProfilePicture)
 routes.get('/gallery', getAllPaintings)
+routes.get('/gallery/recommended', auth, getRecommendedPaintings);
 routes.get('/gallery/:painting_id', getPainting)
 routes.get('/collections/:collection_id', auth, getUserCollection)
 

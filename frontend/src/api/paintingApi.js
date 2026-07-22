@@ -37,12 +37,18 @@ async function deletePainting(painting_id, token) {
     }
 }
 
-// async function analyzeImage(token) {
-//     try {
-//         const response = await axios.post(`${BASE_URL}/api/analyze`)
-//     } catch (error) {
-        
-//     }
-// }
+async function getRecommendedPaintings(token) {
+    try {
+        const response = await axios.get(`${BASE_URL}/gallery/recommended`, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
 
-export default { getPainting, getAllPaintings, deletePainting };
+        return response.data
+    } catch (error) {
+        console.error("Get painting recommendation error:", error);
+        throw error;
+    }
+
+}
+
+export default {getRecommendedPaintings, getPainting, getAllPaintings, deletePainting };
