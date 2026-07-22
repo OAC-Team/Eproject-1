@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import paintingApi from '../api/paintingApi'
-import userApi from '../api/userApi'
 
 export default function PaintingView() {
     const BASE_URL = 'http://localhost:5000'

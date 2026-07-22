@@ -17,6 +17,7 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import CreatePaintingPage from './pages/CreatePaintingPage';
 import RejectedListPage from './pages/RejectedListPage';
+import ViewUser from './components/ViewUser';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -30,6 +31,7 @@ function App() {
           <Route path='/admin/dashboard/rejectList' element={<RejectedListPage />}/>
         </Route>
 
+        <Route path='/viewUserProfile/:user_id' element={<ViewUser />} />
         <Route path='/login' element={<LoginPage setUser={setUser} />} />
         <Route path='/register' element={<SignUpPage setUser={setUser} />} />
         <Route path='/contact' element={<ContactPage />} />

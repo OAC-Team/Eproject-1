@@ -7,12 +7,13 @@ import adminApi from '../api/adminApi'
 import LogOut from '../components/LogOut'
 import RejectedListPage from './RejectedListPage'
 import ApproveListPage from './ApproveListPage'
+import UserManagerListPage from './UserManagerListPage'
 
 export default function AdminDashboardPage({ setUser }) {
     const [adminData, setAdminData] = useState({});
     const [isOpen, setIsOpen] = useState(false)
     const [activeTab, setActiveTab] = useState('overview')
-    const [stats, setStats] = useState({ pendingCount: 0, approveCount: 0, rejectCount:0, allCount: 0 })
+    const [stats, setStats] = useState({ pendingCount: 0, approveCount: 0, rejectCount:0, allCount: 0, userCount: 0 })
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     const hoverDown = () => {
@@ -38,11 +39,15 @@ export default function AdminDashboardPage({ setUser }) {
                 const approveData = await adminApi.getApprovePaintings(token);
                 const rejectData = await adminApi.getRejectPaintings(token);
                 const allData = await adminApi.getAllPaintings(token);
+
+                const userData = await adminApi.getAllUser(token)
                 setStats({
                     pendingCount: pendingData ? pendingData.length : 0,
                     approveCount: approveData ? approveData.length : 0,
                     rejectCount: rejectData ? rejectData.length : 0,
-                    allCount: allData && allData.paintings ? allData.paintings.length : 0
+                    allCount: allData && allData.paintings ? allData.paintings.length : 0,
+
+                    userCount:  userData && userData.users ? userData.users.length : 0,
                 });
             } catch (error) {
                 console.error("Error fetching stats:", error);
@@ -90,8 +95,8 @@ export default function AdminDashboardPage({ setUser }) {
                         <span className="nav-icon"><i className="bi bi-x-circle"></i></span> {isSidebarOpen && "Rejected Painting Manager"}
                     </button>
                     <button
-                        className={activeTab === 'all' ? 'active' : ''}
-                        onClick={() => setActiveTab('all')}
+                        className={activeTab === 'userManager' ? 'active' : ''}
+                        onClick={() => setActiveTab('userManager')}
                         title="User Manager">
                         <span className="nav-icon"><i className="bi bi-people"></i></span> {isSidebarOpen && "User Manager"}
                     </button>
@@ -169,14 +174,26 @@ export default function AdminDashboardPage({ setUser }) {
                                     </div>
                                     <div className="card-watermark-reject"><i className="bi bi-x-circle"></i></div>
                                 </div>
-                                {/* Card 4: User Manager */}
+                                {/* Card 4: All Painting */}
+                                <div className="stat-card-all">
+                                    <div className="card-header">
+                                        <div className="icon-box-all"><i className="bi bi-images"></i></div>
+                                        <span>All Painting</span>
+                                    </div>
+                                    <div className="card-body">
+                                        <h2>{stats.allCount}</h2>
+                                        <p>Total Painting</p>
+                                    </div>
+                                    <div className="card-watermark-all"><i className="bi bi-images"></i></div>
+                                </div>
+                                {/* Card 5: User Manager */}
                                 <div className="stat-card-usermanager">
                                     <div className="card-header">
                                         <div className="icon-box-usermanager"><i className="bi bi-person-lines-fill"></i></div>
                                         <span>Number of users</span>
                                     </div>
                                     <div className="card-body">
-                                        <h2>{stats.allCount}</h2>
+                                        <h2>{stats.userCount}</h2>
                                         <p>Total registered users</p>
                                     </div>
                                     <div className="card-watermark-usermanager"><i className="bi bi-person-lines-fill"></i></div>
@@ -187,11 +204,7 @@ export default function AdminDashboardPage({ setUser }) {
                     {activeTab === 'pending' && <PendingListPage />}
                     {activeTab === 'reject' && <RejectedListPage />}
                     {activeTab === 'approve' && <ApproveListPage />}
-                    {activeTab === 'all' && (
-                        <div className="placeholder-tab">
-                            <h2>User Manager (Sẽ phát triển sau)</h2>
-                        </div>
-                    )}
+                    {activeTab === 'userManager' && <UserManagerListPage/>}
 
                 </main>
             </div>

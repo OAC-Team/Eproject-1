@@ -9,6 +9,7 @@ export default function CreatePaintingPage() {
     const navigate = useNavigate();
 
     const [title, setTitle] = useState('');
+    const [artist, setArtist] = useState('');
     const [desc, setDesc] = useState('');
     const [surfaceType, setSurfaceType] = useState('Canvas');
     const [colorMedium, setColorMedium] = useState('Oil');
@@ -36,6 +37,7 @@ export default function CreatePaintingPage() {
     const handleCreateNew = () => {
         setTitle('');
         setDesc('');
+        setArtist('');
         setSurfaceType('Canvas');
         setColorMedium('Oil');
         setArtisticStyle('Realism');
@@ -70,6 +72,7 @@ export default function CreatePaintingPage() {
 
     const handleSelectDraft = (selectedDraft) => {
         setTitle(selectedDraft.title || '');
+        setArtist(selectedDraft.artist || '')
         setDesc(selectedDraft.description || '');
         setSurfaceType(selectedDraft.surface_type || 'Canvas');
         setColorMedium(selectedDraft.color_medium || 'Oil');
@@ -138,6 +141,7 @@ export default function CreatePaintingPage() {
                         return {
                             ...draft,
                             title,
+                            artist,
                             description: desc,
                             surface_type: surfaceType,
                             color_medium: colorMedium,
@@ -154,6 +158,7 @@ export default function CreatePaintingPage() {
                 const newDraft = {
                     id: newId,
                     title,
+                    artist,
                     description: desc,
                     surface_type: surfaceType,
                     color_medium: colorMedium,
@@ -173,7 +178,7 @@ export default function CreatePaintingPage() {
         }, 1000);
 
         return () => clearTimeout(delayDebounceFn);
-    }, [title, desc, surfaceType, colorMedium, artisticStyle, tags, file, preview, activeDrafts]);
+    }, [title, artist, desc, surfaceType, colorMedium, artisticStyle, tags, file, preview, activeDrafts]);
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -222,6 +227,7 @@ export default function CreatePaintingPage() {
             const formData = new FormData();
             formData.append('image', file);
             formData.append('title', title);
+            formData.append('artist', artist);
             formData.append('description', desc);
             formData.append('surface_type', surfaceType);
             formData.append('color_medium', colorMedium);
@@ -353,6 +359,17 @@ export default function CreatePaintingPage() {
                                 onChange={(e) => setTitle(e.target.value)}
                                 required
                                 placeholder="Enter painting title"
+                            />
+                        </div>
+                        
+                        <div className="form-field">
+                            <label>Artist</label>
+                            <input
+                                type="text"
+                                value={artist}
+                                onChange={(e) => setArtist(e.target.value)}
+                                required
+                                placeholder="Enter painting artist"
                             />
                         </div>
 

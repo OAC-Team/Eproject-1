@@ -16,6 +16,7 @@ routes.get('/gallery/:painting_id', getPainting)
 // Post
 routes.post('/collections', auth, addUserCollection)
 routes.post('/like/:painting_id', auth, likePicture)
+routes.post('/collections/add', auth, savePaintingToCollection)
 routes.post('/add', auth, savePainting)
 
 // Use

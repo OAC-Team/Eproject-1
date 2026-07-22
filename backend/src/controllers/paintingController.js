@@ -3,7 +3,8 @@ const User = require('../models/user');
 const { Vibrant } = require('node-vibrant/node');
 const namer = require('color-namer');
 const userService = require('../services/userService');
-const cloudinary = require('cloudinary')
+const { v2: cloudinary } = require('cloudinary')
+const UserLog = require('../models/userLog');
 
 function hexToWord(hexCode) {
     try {
@@ -54,7 +55,7 @@ async function createPainting(req, res) {
         const newPainting = new Painting({
             user_id: req.user.user_id,
             title: req.body.title || 'Untitled',
-            artist: req.user.username || 'Unknown Artist',
+            artist: req.body.artist || req.user.username || 'Unknown Artist',
             image_url: fileUrl,
             cloudinary_id: cloudinaryId,
             description: req.body.description || '',
@@ -143,6 +144,13 @@ async function savePainting(req, res) {
         const savedPainting = await newPainting.save();
 
         await addPaintingToUser(userId, savedPainting._id);
+
+        await UserLog.create({
+            userId: userId,
+            category: 'PAINTING',
+            action: 'upload_painting',
+            description: `Uploaded new painting ${title}`
+        });
 
         return res.status(201).json({
             message: 'Saved work successfully!',

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import userApi from "../api/userApi";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { createPortal } from 'react-dom'
 
 export default function InteractionBar({ painting_id, initialLikeCount, initialIsLiked, token, userCollections }) {
     const [isLiked, setIsLiked] = useState(initialIsLiked);
@@ -95,7 +96,7 @@ export default function InteractionBar({ painting_id, initialLikeCount, initialI
                 <i className="bi bi-folder-plus"></i> Save
             </button>
 
-            {showSaveModal && (
+            {showSaveModal && createPortal(
                 <div className="save-modal-overlay">
                     <div className="save-modal-content">
                         <h4>Save to collection</h4>
@@ -113,7 +114,8 @@ export default function InteractionBar({ painting_id, initialLikeCount, initialI
                             Close
                         </button>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     )
