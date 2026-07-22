@@ -18,6 +18,7 @@ export default function CreatePaintingPage() {
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
 
     const [drafts, setDrafts] = useState([]);
     const [activeDrafts, setActiveDraftsId] = useState(null);
@@ -46,6 +47,7 @@ export default function CreatePaintingPage() {
         setPreview(null);
         setActiveDraftsId(null);
     };
+
 
     const fileToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -121,8 +123,7 @@ export default function CreatePaintingPage() {
         const isFormEmpty = !title.trim() && !desc.trim() && !tags.trim() && !preview;
         if (isFormEmpty) return;
 
-        const delayDebounceFn = setTimeout(async() => {
-            
+        const delayDebounceFn = setTimeout(async () => {
 
             let base64String = null;
             if (file) {
@@ -180,11 +181,53 @@ export default function CreatePaintingPage() {
         return () => clearTimeout(delayDebounceFn);
     }, [title, artist, desc, surfaceType, colorMedium, artisticStyle, tags, file, preview, activeDrafts]);
 
+    const analyzeImage = async () => {
+        if (!file) {
+            Swal.fire('Error', 'Please select an image first!', 'error');
+            return;
+        }
+
+        setIsAnalyzing(true);
+        try {
+            const token = Cookies.get('token');
+            const formData = new FormData();
+            formData.append('image', file);
+
+            const response = await axios.post(
+                'http://localhost:5000/api/upload/analyze',
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
+
+            const data = response.data;
+            console.log(data)
+            if (data.title) setTitle(data.title);
+            if (data.description) setDesc(data.description);
+            if (data.tags) setTags(data.tags);
+            if (data.surface_type) setSurfaceType(data.surface_type);
+            if (data.color_medium) setColorMedium(data.color_medium);
+            if (data.artistic_style) setArtisticStyle(data.artistic_style);
+
+            Swal.fire('Done!', 'Image details generated successfully!', 'success');
+        } catch (error) {
+            console.error(error);
+            Swal.fire('Error', 'Could not analyze image.', 'error');
+        } finally {
+            setIsAnalyzing(false);
+        }
+    };
+
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
         if (selectedFile) {
             setFile(selectedFile);
             setPreview(URL.createObjectURL(selectedFile));
+            console.log(URL.createObjectURL(selectedFile))
         }
     };
 
@@ -321,8 +364,10 @@ export default function CreatePaintingPage() {
                                 style={{ display: 'none' }}
                             />
                             {preview ? (
-                                <div className="preview-item">
-                                    <img src={preview} alt="Preview" />
+                                <>
+                                    <div className="preview-item">
+                                        <img src={preview} alt="Preview" />
+                                    </div>
                                     <button
                                         type="button"
                                         className="btn-remove-preview"
@@ -330,7 +375,7 @@ export default function CreatePaintingPage() {
                                     >
                                         ✕ Remove Image
                                     </button>
-                                </div>
+                                </>
                             ) : (
                                 <div className="upload-area-wrapper" >
 
@@ -390,8 +435,16 @@ export default function CreatePaintingPage() {
                                     <option value="Paper">Paper</option>
                                     <option value="Wood">Wood</option>
                                     <option value="Digital">Digital</option>
+                                    <option value="Glass">Glass</option>
+                                    <option value="Fabric">Fabric / Textile</option>
+                                    <option value="Metal">Metal</option>
+                                    <option value="Ceramic">Ceramic / Clay</option>
+                                    <option value="Stone">Stone / Rock</option>
+                                    <option value="Wall">Wall / Mural</option>
+                                    <option value="Leather">Leather</option>
                                 </select>
                             </div>
+
                             <div className="form-field">
                                 <label>Color Medium</label>
                                 <select value={colorMedium} onChange={(e) => setColorMedium(e.target.value)}>
@@ -399,8 +452,16 @@ export default function CreatePaintingPage() {
                                     <option value="Watercolor">Watercolor</option>
                                     <option value="Acrylic">Acrylic</option>
                                     <option value="Pixels">Pixels</option>
+                                    <option value="Inks">Inks</option>
+                                    <option value="Charcoal">Charcoal / Graphite</option>
+                                    <option value="Pastel">Pastel</option>
+                                    <option value="Spray Paint">Spray Paint</option>
+                                    <option value="Encaustic">Encaustic</option>
+                                    <option value="Pencils">Colored Pencils / Crayon</option>
+                                    <option value="Mixed Media">Mixed Media</option>
                                 </select>
                             </div>
+
                             <div className="form-field">
                                 <label>Artistic Style</label>
                                 <select value={artisticStyle} onChange={(e) => setArtisticStyle(e.target.value)}>
@@ -408,6 +469,14 @@ export default function CreatePaintingPage() {
                                     <option value="Abstract">Abstract</option>
                                     <option value="Impressionism">Impressionism</option>
                                     <option value="Modern">Modern</option>
+                                    <option value="Surrealism">Surrealism</option>
+                                    <option value="Anime / Manga">Anime / Manga</option>
+                                    <option value="Pixel Art">Pixel Art</option>
+                                    <option value="Concept Art">Concept Art</option>
+                                    <option value="Expressionism">Expressionism</option>
+                                    <option value="Art Nouveau">Art Nouveau / Art Deco</option>
+                                    <option value="Folk Art">Traditional / Folk Art</option>
+                                    <option value="Dark Art">Gothic / Dark Art</option>
                                 </select>
                             </div>
                         </div>
@@ -422,7 +491,19 @@ export default function CreatePaintingPage() {
                             />
                         </div>
 
-                        <button type="submit" disabled={loading} className="btn-submit-pinterest">
+                        <div className="form-field">
+                            <label>Generate Image Details</label>
+                            <button
+                                className="btn-generate-details"
+                                type="button"
+                                onClick={analyzeImage}
+                                disabled={isAnalyzing || !file}
+                            >
+                                {isAnalyzing ? 'Analyzing...' : 'Generate Details'}
+                            </button>
+                        </div>
+
+                        <button type="submit" disabled={loading} className="btn-submit-pinterest" disabled={isAnalyzing || !file}>
                             {loading ? 'Uploading Masterpiece...' : 'Submit Painting'}
                         </button>
                     </div>

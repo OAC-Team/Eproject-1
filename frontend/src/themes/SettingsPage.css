@@ -1,0 +1,142 @@
+.settings-wrapper {
+  display: flex !important;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  padding: 0px !important;
+}
+
+.settings-sidebar {
+  min-width: 300px;
+  height: 93vh;
+  flex-shrink: 0;
+  text-align: left;
+  margin: 32px;
+  border-radius: 18px;
+  gap: 10px;
+}
+
+.settings-content {
+  flex-grow: 1;
+  width: 100%;
+  min-width: 0;
+}
+
+/* ── SIDEBAR TABS ── */
+.settings-sidebar .settings-option-btn {
+  max-width: 80%;
+  transition: all 0.4s ease !important;
+}
+
+.settings-sidebar .settings-option-btn:hover:not(.active-tab) {
+  outline: 2px solid #2563eb !important;
+}
+
+.settings-sidebar .settings-option-btn.active-tab {
+  background: rgba(59, 131, 246, 0.856) !important;
+  color: #e6edf3 !important;
+  border-radius: 8px;
+  max-width: 80%;
+}
+
+/* ── INPUTS ── */
+.pintl-input-container {
+  background: #1c2333;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 12px 21px;
+  display: flex;
+  flex-direction: column;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
+  width: 100%;
+}
+
+.pintl-input-container + .pintl-input-container {
+  margin-top: 20px;
+}
+
+.pintl-input-container:hover {
+  background: #212840;
+}
+
+.pintl-input-container:focus-within {
+  border-color: #3b82f6;
+  background: #212840;
+}
+
+.pintl-input-container:has(input:disabled) {
+  background: #161b27;
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+.pintl-input-container label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #7d8590;
+  margin-bottom: 4px;
+  pointer-events: none;
+}
+
+.pintl-input-container input,
+.pintl-input-container textarea {
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 1.25rem;
+  color: #e6edf3;
+  width: 100%;
+  font-family: inherit;
+}
+
+.pintl-input-container input:disabled {
+  color: #484f58;
+  cursor: not-allowed;
+}
+
+.pintl-input-container input::placeholder,
+.pintl-input-container textarea::placeholder {
+  color: #484f58;
+}
+
+.pintl-input-container textarea {
+  resize: none;
+}
+
+/* SAVE BUTTON */
+.settings-save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 44px;
+  border-radius: 16px;
+  border: none;
+  outline: none;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 40px;
+  transition:
+    background 0.18s ease,
+    transform 0.1s ease;
+}
+
+.settings-save-btn:hover {
+  background: #2563eb;
+}
+
+.settings-save-btn:active {
+  transform: scale(0.97);
+}
+
+.settings-save-btn:disabled {
+  background: #1c2333;
+  color: #484f58;
+  cursor: not-allowed;
+  transform: none;
+}
