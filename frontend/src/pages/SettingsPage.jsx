@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import userApi from '../api/userApi';
+import uploadApi from '../api/uploadApi.js';
 import Cookies from 'js-cookie'
 import Swal from 'sweetalert2'
 import '../themes/SettingsPage.css'
+import ComingSoon from '../components/ComingSoon.jsx'
 
 import EditProfileForm from '../components/EditProfileForm';
 
@@ -16,6 +18,32 @@ export default function SettingsPage() {
     const [promoNotifs, setPromoNotifs] = useState(false);
 
     const token = Cookies.get('token');
+
+    const handleProfilePictureChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        try {
+            const imagePath = await uploadApi.uploadImage(file);
+
+            // update userData with the new picture URL
+            setUserData({ ...userData, profile_picture: imagePath.url });
+
+            Swal.fire({
+                title: 'Success!',
+                text: 'Profile picture updated!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        } catch (error) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to upload image.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    };
 
     const handleSaveProfile = async () => {
         if (isSaving) return;
@@ -55,48 +83,36 @@ export default function SettingsPage() {
 
             case 'account':
                 return (
-                    <div className="tab-pane mt-5">
-                        <h2 className="fw-bold mb-2">Account Management</h2>
-                        <p>Manage your core account details.</p>
-                        <div className="input-group">
+                    <div className="tab-pane">
+                        <h2 className="fw-bold mb-2" style={{ color: 'var(--admin-text-primary)', fontSize: '1.8rem' }}>Account Management</h2>
+                        <p style={{ color: 'var(--admin-text-secondary)', marginBottom: '24px' }}>Manage your core account details.</p>
+
+                        <div className="pintl-input-container" style={{ marginBottom: '24px' }}>
                             <label>Registered Email</label>
                             <input type="email" value={userData?.email || "user@example.com"} disabled />
-                            <small style={{ color: '#888' }}>Email changes are locked to secure your account.</small>
+                            <small style={{ color: 'var(--admin-text-muted)', marginTop: '4px', fontSize: '0.8rem' }}>Email changes are locked to secure your account.</small>
                         </div>
-                        <button className="settings-delete-btn" style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '50px', marginTop: '20px', cursor: 'pointer' }} onClick={() => alert("Are you sure? This action is permanent! (Account deleted!)")}>
-                            Delete Account
-                        </button>
+
+                        <div style={{ padding: '16px', background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '12px', marginTop: '8px' }}>
+                            <p style={{ color: '#f87171', fontWeight: 600, marginBottom: '4px', fontSize: '0.9rem' }}>Delete Account</p>
+                            <p style={{ color: 'var(--admin-text-muted)', fontSize: '0.8rem', marginBottom: '12px' }}>Permanently remove your account and all data. This cannot be undone.</p>
+                            <em style={{ color: '#fafafa94', fontWeight: 600, marginBottom: '4px', fontSize: '0.9rem' }}>Coming Soon</em>
+                            {/* <button style={{ background: 'transparent', border: 'none', color: '#ef4444', fontWeight: 500, fontSize: '0.85rem', cursor: 'pointer', padding: '8px 16px', borderRadius: '8px', transition: 'background 0.18s ease' }}
+                                onMouseEnter={e => e.target.style.background = 'rgba(239,68,68,0.1)'}
+                                onMouseLeave={e => e.target.style.background = 'transparent'}
+                                onClick={() => alert("Are you sure? This action is permanent!")}>
+                                🗑 Delete my account
+                            </button> */}
+                        </div>
                     </div>
                 );
 
             case 'visibility':
-                return (
-                    <div className="tab-pane mt-5">
-                        <h2 className="fw-bold mb-2">Profile Visibility</h2>
-                        <p>Control who can discover your profile.</p>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '15px', cursor: 'pointer' }}>
-                            <input type="checkbox" checked={isPrivate} onChange={() => setIsPrivate(!isPrivate)} />
-                            Make my profile private
-                        </label>
-                        <p style={{ fontSize: '0.85rem', color: '#666' }}>{isPrivate ? "🔒 Your profile is currently hidden from search." : "🌐 Your profile is public to all users."}</p>
-                    </div>
-                );
+                return <ComingSoon title="Profile Visibility" description="Control who can discover your profile." />;
+
 
             case 'notifications':
-                return (
-                    <div className="tab-pane mt-5">
-                        <h2 className="fw-bold mb-2">Notification Settings</h2>
-                        <p>Choose how we contact you.</p>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '15px 0', cursor: 'pointer' }}>
-                            <input type="checkbox" checked={emailNotifs} onChange={() => setEmailNotifs(!emailNotifs)} />
-                            Email me when someone saves my art
-                        </label>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-                            <input type="checkbox" checked={promoNotifs} onChange={() => setPromoNotifs(!promoNotifs)} />
-                            Send weekly digest updates
-                        </label>
-                    </div>
-                );
+                return <ComingSoon title="Notification Settings" description="Choose how we contact you." />;
 
             case 'privacy':
                 const downloadData = () => {
@@ -108,28 +124,22 @@ export default function SettingsPage() {
                 };
 
                 return (
-                    <div className="tab-pane mt-5">
-                        <h2 className="fw-bold mb-2">Privacy and Data</h2>
-                        <p>Manage your digital footprint and data rights.</p>
+                    <div className="tab-pane">
+                        <h2 style={{ color: 'var(--admin-text-primary)', fontSize: '1.8rem', marginBottom: '4px' }}>Privacy and Data</h2>
+                        <p style={{ color: 'var(--admin-text-secondary)', marginBottom: '24px' }}>Manage your digital footprint and data rights.</p>
+                        <p style={{ color: 'var(--admin-text-muted)', fontSize: '0.85rem', marginBottom: '16px', lineHeight: 1.6 }}>Download a copy of your personal data at any time includes your profile, posts, and account settings as a JSON file.</p>
                         <button className="settings-save-btn" onClick={downloadData}>
-                            📥 Download My Personal Data (.JSON)
+                            📥 Download My Personal Data
                         </button>
                     </div>
                 );
 
             case 'security':
-                return (
-                    <div className="tab-pane mt-5">
-                        <h2 className="fw-bold mb-2">Security</h2>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10b981', fontWeight: 'bold', margin: '15px 0' }}>
-                            <span>🛡️</span> Secured with Google Authentication
-                        </div>
-                        <p style={{ fontSize: '0.85rem', color: '#666' }}>Your password and login safety are managed directly by Google.</p>
-                    </div>
-                );
+                return <ComingSoon title="Security" description="Your account protection and login settings." />;
 
             default:
-                return <EditProfileForm />;
+                return <EditProfileForm isSaving={isSaving} userData={userData} setUserData={setUserData} onProfileSave={handleSaveProfile} />;
+
         }
     };
 

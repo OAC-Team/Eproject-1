@@ -188,6 +188,39 @@ async function getPainting(req, res) {
     }
 }
 
+async function uploadProfilePicture(req, res) {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'You must choose a valid file to upload.' });
+        }
+
+        const fileUrl = req.file.path;
+        const cloudinaryId = req.file.filename;
+
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user.user_id,
+            {
+                profile_picture: fileUrl,
+                profile_picture_cloudinary_id: cloudinaryId
+            },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        return res.status(200).json({
+            message: 'Profile picture updated successfully.',
+            url: fileUrl,
+        });
+    } catch (error) {
+        console.error("uploadProfilePicture error:", error);
+        return res.status(500).json({ message: 'Error updating profile picture', error: error.message });
+    }
+}
+
+
 const deletePainting = async (req, res) => {
     try {
         const { painting_id } = req.params;
@@ -286,4 +319,4 @@ async function savePainting(req, res) {
     }
 }
 
-module.exports = { createPainting, getAllPaintings, getPainting, savePainting, deletePainting, analyzeImage }
+module.exports = {uploadProfilePicture, createPainting, getAllPaintings, getPainting, savePainting, deletePainting, analyzeImage }
