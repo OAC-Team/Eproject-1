@@ -13,7 +13,9 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "axios": "^1.18.1",
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.10.0",
     "color-namer": "^1.4.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
@@ -23,6 +25,7 @@
     "mongodb": "^7.4.0",
     "mongoose": "^9.7.3",
     "multer": "^2.2.0",
+    "multer-storage-cloudinary": "^4.0.0",
     "node-vibrant": "^4.0.4",
     "zod": "^4.4.3"
   },

@@ -39,10 +39,11 @@ export default function UserUploads({ paintings, user }) {
             <h2>Your Paintings</h2>
             <div className="user-uploads-img-bar">
                 {paintings?.length > 0 ?
-                    <div ref={scrollContainerRef}>
+                    <div ref={scrollContainerRef} className="uploads-scroll-container">
                         {paintings?.map(painting => (
                             <div key={painting._id}>
-                                <img onClick={() => handleViewPainting(painting._id)} src={`http://localhost:5000${painting.image_url}`} alt="" />
+                                <img onClick={(
+                                ) => navigate(`/gallery/${painting._id}`)} src={painting.image_url} alt="" />
                             </div>
                         ))}
                     </div>

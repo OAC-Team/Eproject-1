@@ -151,9 +151,9 @@ export default function SettingsPage() {
     }, [])
 
     return (
-        <div className="d-flex gap-5 align-items-start w-100 text-black bg-white" style={{ fontFamily: 'sans-serif' }}>
+        <div className="settings-wrapper d-flex gap-5 align-items-start w-100 text-white" style={{ fontFamily: 'sans-serif', padding: '40px 20px' }}>
 
-            <aside className="settings-sidebar d-flex pt-4 flex-column gap-4" style={{ minWidth: '220px' }}>
+            <aside className="settings-sidebar d-flex flex-column gap-4">
                 {[
                     { id: 'edit-profile', label: 'Edit profile' },
                     { id: 'account', label: 'Account management' },
@@ -165,12 +165,21 @@ export default function SettingsPage() {
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className="btn border-0 p-0 text-start fw-bold text-black position-relative"
-                        style={{ fontSize: '1.05rem', background: 'none' }}
+                        className={`settings-option-btn text-start fw-bold position-relative ${activeTab === tab.id ? 'active-tab' : ''}`}
+                        style={{
+                            fontSize: '1.1rem',
+                            background: 'none',
+                            border: 'none',
+                            padding: '8px 12px',
+                            color: activeTab === tab.id ? '#e6edf3' : '#7d8590',
+                            cursor: 'pointer',
+                            width: '100%',
+                            transition: 'color 0.2s, background 0.2s',
+                            position: 'relative',
+                            borderRadius: '8px',
+                        }}
                     >
                         {tab.label}
-
-                        <div className={`tab-indicator-line ${activeTab === tab.id ? 'active' : ''}`} />
                     </button>
                 ))}
             </aside>

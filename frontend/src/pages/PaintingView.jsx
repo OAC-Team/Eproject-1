@@ -14,6 +14,7 @@ export default function PaintingView() {
     const location = useLocation();
 
     const passedUserData = location.state?.userData || null;
+    let isOwner
 
     const { painting_id } = useParams();
     const [activeHexPills, setActiveHexPills] = useState({});
@@ -22,15 +23,33 @@ export default function PaintingView() {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [isCollectionModalOpen, setIsCollectionModalOpen] = useState(false);
     const [userData, setUserData] = useState(passedUserData);
+    const [isLiked, setIsLiked] = useState(null);
+    const [likeCount, setLikeCount] = useState(null);
 
     async function fetchPainting(paintingId) {
         const fetchedPainting = await paintingApi.getPainting(paintingId);
         setViewPainting(fetchedPainting.painting)
         setUploader(fetchedPainting.uploader)
+        // console.log(fetchedPainting)
     }
 
-    async function handleFavorite() {
-        console.log("Saved to user's favorite")
+    async function handleLike() {
+        try {
+            const response = await userApi.likePicture(painting_id, token)
+            if (response) {
+                setIsLiked(response.like)
+                setLikeCount(response.favorites_count)
+            }
+        } catch (error) {
+            console.error('Error to like!', error)
+            const errorMessage = error.response ? error.response.data : 'Something went wrong';
+            Swal.fire({
+                title: 'Failed to like',
+                text: errorMessage,
+                icon: 'error',
+                confirmButtonText: 'Done'
+            })
+        }
     }
 
     const token = Cookies.get('token');
@@ -65,6 +84,30 @@ export default function PaintingView() {
         }
     }
 
+    async function handleShare() {
+        try {
+            const link = navigator.clipboard.writeText(window.location.origin + '/gallery/' + painting_id)
+
+            if (link) {
+                Swal.fire({
+                    title: 'Copy successfully',
+                    text: 'Copy link done',
+                    icon: 'success',
+                    confirmButtonText: 'Done'
+                })
+            }
+        } catch (error) {
+            console.error('Error to share!', error)
+            const errorMessage = error.response ? error.response.data : 'Something went wrong';
+            Swal.fire({
+                title: 'Failed to share',
+                text: errorMessage,
+                icon: 'error',
+                confirmButtonText: 'Done'
+            })
+        }
+    }
+
     async function handleDeletePainting() {
         const result = await Swal.fire({
             title: 'Are you sure?',
@@ -82,7 +125,7 @@ export default function PaintingView() {
             const response = await paintingApi.deletePainting(painting_id, token);
 
             await Swal.fire({
-                title: 'Deleted!',
+                title: 'Deleted',
                 text: response.message || 'Painting has been deleted.',
                 icon: 'success',
                 confirmButtonText: 'OK'
@@ -102,8 +145,28 @@ export default function PaintingView() {
     }
 
     useEffect(() => {
-        fetchPainting(painting_id)
-    }, [painting_id])
+        setIsLiked(userData?.favorites?.includes(painting_id));
+        setLikeCount(viewPainting?.favorites_count);
+    }, [userData?.favorites, viewPainting?.favorites_count, painting_id]);
+
+    useEffect(() => {
+        fetchPainting(painting_id);
+
+        async function loadUserProfile() {
+            const token = Cookies.get('token');
+            if (!token || userData) return;
+            try {
+                const response = await userApi.fetchUser(token);
+                if (response) {
+                    setUserData(response);
+                    // console.log(isOwner)
+                }
+            } catch (err) {
+                console.error("Failed to load initial user profile:", err.message);
+            }
+        }
+        loadUserProfile();
+    }, [painting_id]);
 
     useEffect(() => {
         async function syncCollections() {
@@ -128,12 +191,12 @@ export default function PaintingView() {
         if (isCollectionModalOpen) {
             syncCollections();
         }
+
     }, [isCollectionModalOpen]);
 
-    const isOwner = Boolean(
-        userData?._id &&
-        uploader?._id &&
-        String(userData._id) === String(uploader._id) || userData.role === "admin"
+    isOwner = Boolean(
+        (userData?.userData?._id && uploader?._id && String(userData?.userData?._id) === String(uploader?._id)) ||
+        userData?.userData?.role === "admin"
     );
 
     return (
@@ -146,20 +209,29 @@ export default function PaintingView() {
                         </button>
                     </div>
                     <div className='painting-info-buttons'>
-                        <div className="painting-info-favorite-btn">
-                            <button onClick={() => handleFavorite()}>
-                                <img src="/favorite.svg" alt="" />
+                        <div className={`painting-info-favorite-btn ${isLiked ? 'liked' : ''}`} style={{ display: "block" }}>
+                            <button onClick={() => handleLike()}>
+                                {isLiked ? <i className="bi bi-heart-fill"></i> : <i className="bi bi-heart"></i>}
+                                <p>{likeCount}</p>
                             </button>
                         </div>
+
                         <div className="painting-info-collection-save-btn">
                             <button onClick={() => setIsCollectionModalOpen(true)}>
-                                <img src="/collection.svg" alt="" />
+                                <i className="bi bi-collection"></i>
                             </button>
                         </div>
+
+                        <div className="painting-info-share-btn">
+                            <button onClick={handleShare} title="Share Link">
+                                <i className="bi bi-share"></i>
+                            </button>
+                        </div>
+
                         {isOwner ? (
                             <div className="painting-info-delete-btn">
                                 <button onClick={() => handleDeletePainting()}>
-                                    <img src="/delete.svg" alt="Delete" />
+                                    <i className="bi bi-trash"></i>
                                 </button>
                             </div>
                         ) : null}
@@ -173,7 +245,7 @@ export default function PaintingView() {
                 >
                     <img
                         className="painting-img"
-                        src={`${BASE_URL}${viewPainting?.image_url}`}
+                        src={`${viewPainting?.image_url}`}
                         alt={viewPainting?.title}
                     />
                 </div>
@@ -246,7 +318,7 @@ export default function PaintingView() {
                     <button className="lightbox-close" onClick={() => setIsFullscreen(false)}>✕</button>
 
                     <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-                        <img src={`${BASE_URL}${viewPainting?.image_url}`} alt={viewPainting?.title} />
+                        <img src={`${viewPainting?.image_url}`} alt={viewPainting?.title} />
                         <p className="lightbox-caption">{viewPainting?.title || "Untitled Masterpiece"}</p>
                     </div>
                 </div>

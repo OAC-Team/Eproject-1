@@ -18,6 +18,42 @@ async function getPendingPaintings(token) {
     }
 };
 
+async function getApprovePaintings(token) {
+    try {
+        const response = await axios.get('http://localhost:5000/api/admin/paintings/approve',
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching approved paintings', error);
+        throw error;
+    }
+};
+
+async function getRejectPaintings(token) {
+    try {
+        const response = await axios.get('http://localhost:5000/api/admin/paintings/reject',
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching reject paintings', error);
+        throw error;
+    }
+};
+
 async function getAllPaintings(token) {
     try {
         const response = await axios.get('http://localhost:5000/api/admin/paintings',
@@ -55,4 +91,22 @@ async function handleStatusPainting(painting_id, status, token) {
     }
 }
 
-export default { getAllPaintings, getPendingPaintings, handleStatusPainting }
+async function deletePaintings(painting_id, token) {
+    try {
+        const response = await axios.delete(`http://localhost:5000/api/admin/paintings/${painting_id}/delete`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        
+        return response.data;
+    } catch (error) {
+        console.error('Error delete reject paintings', error);
+        throw error;
+    }
+};
+
+export default { getAllPaintings, getPendingPaintings, handleStatusPainting, getApprovePaintings, getRejectPaintings, deletePaintings }

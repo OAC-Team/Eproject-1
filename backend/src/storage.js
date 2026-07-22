@@ -1,4 +1,4 @@
-/* const Cloudinary = require('cloudinary');
+const Cloudinary = require('cloudinary');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
 
@@ -20,10 +20,4 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({storage: storage});
 
-module.exports = upload; */
-
-// ⚠️⚠️⚠️ IF YOU SEE THIS FILE DON'T CARE ABOUT IT
-
-// The code in this file was written by Ersikthy 
-// while experimenting with the Cloudinary library to create upload routes, 
-// laying the groundwork for the upload feature.
+module.exports = upload;

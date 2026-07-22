@@ -22,6 +22,7 @@ export default function Home() {
         (async () => {
             const responseData = await userApi.fetchUser(token);
             if (responseData.userData) {
+                // console.log(responseData)
                 setUserData(responseData.userData);
             } else {
                 setUserData({ username: 'Guest User', role: 'guest' });

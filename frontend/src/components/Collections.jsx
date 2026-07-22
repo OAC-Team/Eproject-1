@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import Cookies from 'js-cookie'
 import userApi from "../api/userApi"
@@ -9,6 +9,25 @@ export default function Collections({ collectionData, onCollectionAdded }) {
     const [isAdding, setIsAdding] = useState(false);
     const [collections, setCollections] = useState([]);
     const [newCollectionName, setNewCollectionName] = useState('');
+    const scrollContainerRef = useRef(null);
+
+    useEffect(() => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+
+        const handleWheelScroll = (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                container.scrollLeft += e.deltaY * 1.2;
+            }
+        };
+
+        container.addEventListener('wheel', handleWheelScroll, { passive: false });
+
+        return () => {
+            container.removeEventListener('wheel', handleWheelScroll);
+        };
+    }, [collections]);
 
     useEffect(() => {
         if (collectionData) {
@@ -18,42 +37,42 @@ export default function Collections({ collectionData, onCollectionAdded }) {
         }
     }, [collectionData])
 
-async function handleSaveCollection() {
-    const trimmedName = newCollectionName.trim();
-    if (!trimmedName) return;
+    async function handleSaveCollection() {
+        const trimmedName = newCollectionName.trim();
+        if (!trimmedName) return;
 
-    const newCollectionPayload = { name: trimmedName, paintings: [] };
-    const token = Cookies.get('token');
+        const newCollectionPayload = { name: trimmedName, paintings: [] };
+        const token = Cookies.get('token');
 
-    try {
-        const result = await userApi.addUserCollection(token, newCollectionPayload);
+        try {
+            const result = await userApi.addUserCollection(token, newCollectionPayload);
 
-        if (result) {
-            const addedCollection = result.userCollection || 
-                (Array.isArray(result.collections) ? result.collections[result.collections.length - 1] : null);
+            if (result) {
+                const addedCollection = result.userCollection ||
+                    (Array.isArray(result.collections) ? result.collections[result.collections.length - 1] : null);
 
-            if (addedCollection) {
-                setCollections(prev => [...prev, addedCollection]);
-            } else {
-                setCollections(prev => [...prev, { ...newCollectionPayload, _id: Date.now().toString() }]);
+                if (addedCollection) {
+                    setCollections(prev => [...prev, addedCollection]);
+                } else {
+                    setCollections(prev => [...prev, { ...newCollectionPayload, _id: Date.now().toString() }]);
+                }
+
+                if (typeof onCollectionAdded === 'function') {
+                    onCollectionAdded();
+                }
+
+                // console.log("Successfully saved new collection.");
             }
-
-            if (typeof onCollectionAdded === 'function') {
-                onCollectionAdded();
-            }
-
-            // console.log("Successfully saved new collection.");
+        } catch (error) {
+            console.error("Database save failed: ", error.message);
         }
-    } catch (error) {
-        console.error("Database save failed: ", error.message);
+
+        setNewCollectionName('');
+        setIsAdding(false);
     }
 
-    setNewCollectionName('');
-    setIsAdding(false);
-}
-
     return (
-        <div className="user-uploads-wrapper">
+        <div className="collections-wrapper">
             <div className="collections-header-row">
                 <h2>Collections</h2>
                 {!isAdding && (
@@ -80,11 +99,11 @@ async function handleSaveCollection() {
                 </div>
             )}
 
-            <div className="user-uploads-img-bar">
+            <div className="collections-bar">
                 {collections.length === 0 ? (
                     <p>No collections created yet.</p>
                 ) : (
-                    <div className="collections-horizontal-scroll">
+                    <div ref={scrollContainerRef} className="collections-horizontal-scroll">
                         {collections.map((collection, index) => (
                             <div className="collection-display-card" onClick={() => navigate(`/collections/${collection._id}`)} key={collection._id}>
                                 <div className="collection-folder-preview">
@@ -93,7 +112,7 @@ async function handleSaveCollection() {
                                             {collection.paintings.slice(0, 4).map((painting, idx) => (
                                                 <img
                                                     key={painting._id || idx}
-                                                    src={BASE_URL + painting.image_url}
+                                                    src={painting.image_url}
                                                     alt="Preview"
                                                     className="grid-preview-thumb"
                                                 />

@@ -4,8 +4,8 @@ const { Vibrant } = require('node-vibrant/node');
 const namer = require('color-namer');
 const userService = require('../services/userService');
 const { ImageAnalyzer, ImageInfoGenerator } = require('../services/aiService');
-const fs = require('fs');
-const path = require('path');
+const cloudinary = require('cloudinary');
+const axios = require('axios');
 
 function hexToWord(hexCode) {
     try {
@@ -67,63 +67,64 @@ const addPaintingTags = async (req, res) => {
     }
 };
 
+async function analyzeImage(req, res) {
+    try {
+        console.log("Signal Reached To Analyze Image");
+        if (!req.file) return res.status(400).json({ message: 'No image provided.' });
+
+        const fileUrl = req.file.path;
+        const imageResponse = await axios.get(fileUrl, { responseType: 'arraybuffer' });
+        const base64Image = Buffer.from(imageResponse.data, 'binary').toString('base64');
+        const mimeType = req.file.mimetype || 'image/jpeg';
+        const dataUrl = `data:${mimeType};base64,${base64Image}`;
+
+        const analyzer = new ImageAnalyzer();
+        await analyzer.analyzeImage(dataUrl);
+
+        return res.status(200).json({
+            title: analyzer.getTitle(),
+            description: analyzer.getCaption(),
+            tags: analyzer.getTags()?.join(', '),
+            surface_type: analyzer.getSurfaceType(),
+            color_medium: analyzer.getColorMedium(),
+            artistic_style: analyzer.getArtStyle(),
+        });
+    } catch (error) {
+        console.error("Analyze error:", error);
+        return res.status(500).json({ message: 'Analysis failed.', error: error.message });
+    }
+}
+
 async function createPainting(req, res) {
     try {
         if (!req.file) {
             return res.status(400).json({ message: 'You must choose a valid file to upload.' });
         }
 
-        const localFilePath = req.file.path;
-        const fileUrl = `/api/upload/${req.file.filename}`;
+        const fileUrl = req.file.path;
+        const palette = await Vibrant.from(fileUrl).getPalette();
+        const cloudinaryId = req.file ? req.file.filename : req.body.cloudinary_id;
 
-        const fileBuffer = fs.readFileSync(localFilePath);
-        const base64Image = fileBuffer.toString('base64');
-        const mimeType = req.file.mimetype || 'image/jpeg';
-        const dataUrl = `data:${mimeType};base64,${base64Image}`;
-
-        // 2. Run Vibrant color palette extraction
-        const palette = await Vibrant.from(localFilePath).getPalette();
         const hexColors = Object.values(palette).map(swatch => swatch?.hex).filter(Boolean);
+
         const colorWords = hexColors.map(hex => ({
             hex: hex,
             name: hexToWord(hex)
-        }));
+        }))
 
-        const analyzer = new ImageAnalyzer();
-        await analyzer.analyzeImage(dataUrl);
-
-        const _title = analyzer.getTitle();
-        const _caption = analyzer.getCaption();
-        const _tags = analyzer.getTags();
-        const _surface_type = analyzer.getSurfaceType();
-        const _color_medium = analyzer.getColorMedium();
-        const _art_style = analyzer.getArtStyle();
-
-        const finalTitle = req.body.title?.trim() || _title || 'Untitled';
-        const finalDescription = req.body.description?.trim() || _caption || '';
-        const finalSurfaceType = req.body.surface_type || _surface_type || 'Digital';
-        const finalColorMedium = req.body.color_medium || _color_medium || 'Pixels';
-        const finalArtStyle = req.body.artistic_style || _art_style || 'Freestyle'
-
-        let finalTags = [];
-        if (req.body.tags && req.body.tags.trim() !== '') {
-            finalTags = req.body.tags.split(',').map(tag => tag.trim());
-        } else if (Array.isArray(_tags) && _tags.length > 0) {
-            finalTags = _tags;
-        }
-
-        // const richSummary = await ImageInfoGenerator.generateArtworkSummary(finalTitle, finalTags, finalDescription);
+        console.log(fileUrl)
 
         const newPainting = new Painting({
             user_id: req.user.user_id,
-            title: finalTitle,
+            title: req.body.title || 'Untitled',
             artist: req.user.username || 'Unknown Artist',
             image_url: fileUrl,
-            description: finalDescription,
-            surface_type: finalSurfaceType,
-            color_medium: finalColorMedium,
-            artistic_style: finalArtStyle,
-            tags: finalTags,
+            cloudinary_id: cloudinaryId,
+            description: req.body.description || '',
+            surface_type: req.body.surface_type || 'Digital',
+            color_medium: req.body.color_medium || 'Pixels',
+            artistic_style: req.body.artistic_style || 'Freestyle',
+            tags: req.body.tags ? req.body.tags.split(',') : [],
             colors: colorWords
         });
 
@@ -131,34 +132,43 @@ async function createPainting(req, res) {
         await addPaintingToUser(req.user.user_id, newPainting._id);
 
         return res.status(200).json({
-            message: 'Successfully uploaded and saved to database.',
+            message: 'Successfully upload and save to database.',
             url: fileUrl,
             painting: newPainting
         });
-
     } catch (error) {
-        console.error("Upload Error:", error);
+        console.error("createPainting error:", error); // Server terminal debugf 
         return res.status(500).json({ message: 'Error saving painting', error: error.message });
     }
 }
 
 async function getAllPaintings(req, res) {
     try {
-        const { search } = req.query;
+        const { search, medium, surface, style } = req.query;
 
-        let queryCondition = {};
+        let queryCondition = { status: 'approved' };
 
-        if (search && search.trim() !== '') {
-            queryCondition = {
-                $or: [
-                    { title: { $regex: search, $options: 'i' } },
-                    { tags: { $regex: search, $options: 'i' } },
-                    { artist: { $regex: search, $options: 'i' } },
-                ]
-            }
+        if (surface && surface.trim() !== '') {
+            queryCondition.surface_type = { $regex: `^${surface.trim()}$`, $options: 'i' };
+        }
+        if (medium && medium.trim() !== '') {
+            queryCondition.color_medium = { $regex: `^${medium.trim()}$`, $options: 'i' };
+        }
+        if (style && style.trim() !== '') {
+            queryCondition.artistic_style = { $regex: `^${style.trim()}$`, $options: 'i' };
         }
 
-        const paintings = await Painting.find(queryCondition).sort({ created_at: -1 });
+        if (search && search.trim() !== '') {
+            const sanitizedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+            queryCondition.$or = [
+                { title: { $regex: sanitizedSearch, $options: 'i' } },
+                { tags: { $regex: sanitizedSearch, $options: 'i' } },
+                { artist: { $regex: sanitizedSearch, $options: 'i' } },
+            ];
+        }
+
+        const paintings = await Painting.find(queryCondition).sort({ created_at: -1 }).lean();
         return res.status(200).json({ paintings: paintings })
     } catch (error) {
         return res.status(500).json({ message: 'Error fetching paintings', error: error.message });
@@ -181,7 +191,7 @@ async function getPainting(req, res) {
 const deletePainting = async (req, res) => {
     try {
         const { painting_id } = req.params;
-        
+
         const userId = req.user?.user_id || req.user?._id || req.user?.id;
 
         const painting = await Painting.findById(painting_id);
@@ -221,4 +231,59 @@ const deletePainting = async (req, res) => {
     }
 };
 
-module.exports = { createPainting, getAllPaintings, getPainting, deletePainting }
+async function savePainting(req, res) {
+    try {
+
+        const { title, description, artist, image_url, tags, surface_type, color_medium, artistic_style } = req.body;
+
+        const userId = req.user.user_id;
+
+        if (!image_url) {
+            return res.status(400).json({ message: 'Missing image path (image_url)!' });
+        }
+
+        let colorWords = [];
+        try {
+            const palette = await Vibrant.from(image_url).getPalette();
+            const hexColors = Object.values(palette).map(swatch => swatch?.hex).filter(Boolean);
+
+            colorWords = hexColors.map(hex => ({
+                hex: hex,
+                name: hexToWord(hex)
+            }));
+        } catch (vibrantError) {
+            console.error("Error parsing color palette from URL:", vibrantError.message);
+        }
+
+        const cloudinaryId = req.file ? req.file.filename : req.body.cloudinary_id;
+
+        const newPainting = new Painting({
+            user_id: userId,
+            title: title || 'Untitled',
+            artist: artist || req.user.username || 'Unknown Artist',
+            image_url: image_url,
+            cloudinary_id: cloudinaryId,
+            description: description || '',
+            surface_type: surface_type || 'Digital',
+            color_medium: color_medium || 'Pixels',
+            artistic_style: artistic_style || 'Freestyle',
+            tags: Array.isArray(tags) ? tags : (tags ? tags.split(',') : []),
+            colors: colorWords
+        });
+
+        const savedPainting = await newPainting.save();
+
+        await addPaintingToUser(userId, savedPainting._id);
+
+        return res.status(201).json({
+            message: 'Saved work successfully!',
+            painting: savedPainting
+        });
+
+    } catch (error) {
+        console.error("Error in savePainting:", error);
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+module.exports = { createPainting, getAllPaintings, getPainting, savePainting, deletePainting, analyzeImage }

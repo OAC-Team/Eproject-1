@@ -1,11 +1,27 @@
 const Groq = require('groq-sdk');
 const dotenv = require('dotenv');
-const { image_vision_config } = require('./ai_config.js')
+const { image_vision_config, chatbot_config } = require('./ai_config.js')
 
 dotenv.config();
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
+function sanitizeAiResponse(aiResult) {
+    const validSurfaces = ["Canvas", "Paper", "Wood", "Digital", "Glass", "Fabric", "Metal", "Ceramic", "Stone", "Wall", "Leather"];
+    const validMediums = ["Oil", "Watercolor", "Acrylic", "Pixels", "Inks", "Charcoal", "Pastel", "Spray Paint", "Encaustic", "Pencils", "Mixed Media"];
+    const validStyles = ["Realism", "Abstract", "Impressionism", "Modern", "Surrealism", "Anime / Manga", "Pixel Art", "Concept Art", "Expressionism", "Art Nouveau", "Folk Art", "Dark Art"];
+
+    const surface = validSurfaces.find(s => aiResult.surface_type?.toLowerCase().includes(s.toLowerCase())) || "Canvas";
+    const medium = validMediums.find(m => aiResult.color_medium?.toLowerCase().includes(m.toLowerCase())) || "Oil";
+    const style = validStyles.find(st => aiResult.artistic_style?.toLowerCase().includes(st.toLowerCase())) || "Modern";
+
+    return {
+        ...aiResult,
+        surface_type: surface,
+        color_medium: medium,
+        artistic_style: style
+    };
+}
 class ImageAnalyzer {
     constructor() {
         this.caption = "";
@@ -48,10 +64,11 @@ class ImageAnalyzer {
                 "stop": null
             })
             let result = response.choices[0].message.content.trim();
-            console.log(result);
+            // console.log(result);
             // rawContent = rawContent.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
             // result = result.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
-            const parsedData = JSON.parse(result);
+            let parsedData = JSON.parse(result);
+            parsedData = sanitizeAiResponse(parsedData);
             this.caption = parsedData.caption;
             this.tags = parsedData.tags;
             this.title = parsedData.title;
@@ -101,7 +118,7 @@ class Chatbot {
 
     async sendMessage(userMessage) {
         const messagesPrompt = [
-            { role: "system", content: "You are an AI Art Assistant for our digital gallery." },
+            { role: "system", content: "You are an AI Art Assistant for our digital gallery." + chatbot_config.prompt},
             ...this.history.map(m => ({
                 role: m.sender === 'user' ? 'user' : 'assistant',
                 content: m.text
@@ -110,8 +127,9 @@ class Chatbot {
         ];
 
         const completion = await groq.chat.completions.create({
-            model: "llama-3.3-70b-versatile",
-            messages: messagesPrompt
+            model: chatbot_config.model,
+            messages: messagesPrompt,
+            reasoning_effort: chatbot_config.reasoning_effort
         });
 
         return completion.choices[0].message.content;

@@ -11,6 +11,9 @@ export default function GalleryView({ user, token }) {
     const [paintings, setPaintings] = useState([]);
 
     const searchKeyword = searchParams.get('search') || '';
+    const surface = searchParams.get('surface') || '';
+    const medium = searchParams.get('medium') || '';
+    const style = searchParams.get('style') || '';
 
     function handleViewPainting(painting_id) {
         // console.log(`Navigating to ${painting_id}`)
@@ -24,18 +27,21 @@ export default function GalleryView({ user, token }) {
     // Search function
     useEffect(() => {
         async function loadGalleryData() {
-            console.log(searchKeyword)
             try {
-                const data = await paintingApi.getAllPaintings(searchKeyword)
-                setPaintings(data.paintings)
-                // console.log(data.paintings)
+                const data = await paintingApi.getAllPaintings(searchKeyword, {
+                    surface,
+                    medium,
+                    style
+                });
+                setPaintings(data.paintings);
+                // console.log("Fetched filtered paintings:", data.paintings);
             } catch (error) {
-                console.error(error.message)
+                console.error("Error loading gallery data:", error.message);
             }
         }
 
-        loadGalleryData()
-    }, [searchKeyword])
+        loadGalleryData();
+    }, [searchKeyword, surface, medium, style]);
 
     if (!Array.isArray(paintings)) {
         // console.log(paintings)
@@ -54,7 +60,7 @@ export default function GalleryView({ user, token }) {
                     {/* Image Frame Wrapper */}
                     <div className="gallery-image-frame">
                         <img
-                            src={`${BASE_URL}${painting.image_url}`}
+                            src={`${painting.image_url}`}
                             alt={painting.title}
                             className="gallery-display-img"
                         />

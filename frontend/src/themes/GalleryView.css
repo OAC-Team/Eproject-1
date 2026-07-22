@@ -97,24 +97,21 @@
   margin-bottom: auto;
 }
 
+.gallery-view-action:hover .open-url-icon {
+  filter: invert(100%);
+}
+
 .open-url-icon {
-  position: absolute;
-  top: 12px;
-  right: 12px;
 
   width: 28px;
   height: 28px;
   object-fit: contain;
 
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
   cursor: pointer;
   z-index: 10;
+  filter: invert(0%);
 
-  transition: transform 0.2s ease;
-}
-
-.open-url-icon:hover {
-  transform: scale(1.15);
+  /* transition: transform 0.2s ease; */
 }
 
 .gallery-card-details {

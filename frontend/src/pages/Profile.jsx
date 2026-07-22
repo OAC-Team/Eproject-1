@@ -101,36 +101,6 @@ export default function Profile() {
                 </div>
             )}
 
-            <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
-                <h2>Uploading</h2>
-                <form onSubmit={uploadFileHandle}>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                    />
-
-                    {preview && (
-                        <div style={{ marginTop: '15px' }}>
-                            <p>Demo pic:</p>
-                            <img
-                                src={preview}
-                                alt="Preview"
-                                style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '8px' }}
-                            />
-                        </div>
-                    )}
-
-                    <button
-                        type="submit"
-                        style={{ marginTop: '15px', display: 'block', width: '100%', padding: '10px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
-                    >
-                        Upload pic
-                    </button>
-                </form>
-
-                {message && <p style={{ marginTop: '10px', fontWeight: 'bold' }}>{message}</p>}
-            </div>
         </div>
     )
 }

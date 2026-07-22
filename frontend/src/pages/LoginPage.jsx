@@ -42,7 +42,7 @@ export default function LoginPage({ setUser }) {
                 setUser({ username: identifier, role });
                 Swal.fire({
                     title: 'Login Successfully!',
-                    text: `Logined in ${identifier} account!`,
+                    text: `Logged in ${identifier} account!`,
                     icon: 'success',
                     confirmButtonText: 'Done'
                 })

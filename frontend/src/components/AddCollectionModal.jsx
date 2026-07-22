@@ -10,7 +10,7 @@ export default function AddCollectionModal({ isOpen, onClose, collections, onSel
                 
                 <div className="modal-header">
                     <h3>Add to Collection</h3>
-                    <button className="modal-close-btn" onClick={onClose}>&times;</button>
+                    <button className="modal-close-btn" onClick={onClose}><i className='bi bi-x'/></button>
                 </div>
 
                 <div className="modal-body">

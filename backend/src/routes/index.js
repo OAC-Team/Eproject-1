@@ -4,6 +4,7 @@ const userRoutes = require('./userRoutes');
 const uploadRoutes = require('./uploadRoutes');
 const boardRoutes = require('./boardRoutes')
 const adminRoutes = require('./adminRoutes');
+const chatRoutes = require('./chatRoutes');
 const path = require('path')
 const routes = express.Router();
 
@@ -12,7 +13,7 @@ routes.use('/user', userRoutes);
 routes.use('/upload', uploadRoutes);
 routes.use('/upload', express.static(path.join(__dirname, '../uploads')));
 routes.use('/boards', boardRoutes);  
-routes.use('/admin', adminRoutes)
-
+routes.use('/admin', adminRoutes);
+routes.use('/assistant', chatRoutes);
 
 module.exports = routes;

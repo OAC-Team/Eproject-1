@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import userApi from "../api/userApi";
 import paintingApi from "../api/paintingApi";
 import Swal from 'sweetalert2';
+import '../themes/CollectionPage.css'
 
 export default function CollectionPage() {
     const BASE_URL = 'http://localhost:5000';
@@ -47,7 +48,6 @@ export default function CollectionPage() {
             setIsEditing(false);
         } catch (error) {
             console.error("Failed to update collection:", error);
-            alert("Failed to save changes. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
@@ -196,9 +196,9 @@ export default function CollectionPage() {
                     <div className="gallery-grid">
                         {displayedPaintings.map((painting) => (
                             <div key={painting._id} className="gallery-card">
-                                <div className="gallery-image-frame">
+                                <div className="gallery-image-frame">   
                                     <img
-                                        src={`${BASE_URL}${painting.image_url}`}
+                                        src={`${painting.image_url}`}
                                         alt={painting.title}
                                         className="gallery-display-img"
                                     />

@@ -108,25 +108,30 @@
   color: #495057;
 }
 
-/* 📦 The main wrapper box slammed to the bottom of your card */
 .painting-tags-container {
   margin-top: auto;
   width: 100%;
-  background-color: #f9f9f9;
-  border: 1px solid #e0e0e0;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid #e0e0e000;
   border-radius: 8px;
   padding: 10px 12px;
   display: flex;
   flex-direction: column;
+  color: white;
+  bottom: 0px;
 }
 
 .painting-tags-container p {
   margin: 0 0 6px 0;
   font-size: 0.8rem;
   font-weight: bold;
-  color: #767676;
+  color: #e0e0e0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.painting-tags-container span {
+  color: #e0e0e085;
 }
 
 .painting-tags-scrollbox {
@@ -246,6 +251,38 @@
   }
 }
 
+.painting-info-buttons {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.painting-info-buttons button {
+  cursor: pointer;
+  outline: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.painting-info-buttons button i {
+  scale: calc(0.8);
+  transition: all 0.1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+
+.painting-info-buttons button:hover i {
+  filter: saturate(2);
+}
+
+.painting-info-buttons button:hover {
+  background-color: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.1);
+}
+
+.painting-info-delete-btn button:hover i {
+  filter: invert(0.5) sepia(1) saturate(3) hue-rotate(320deg);
+}
+
 .painting-info-back-btn {
   margin-bottom: 24px;
 }
@@ -265,7 +302,8 @@
 .painting-info-back-btn img {
   width: 16px;
   height: 16px;
-  transform: translateX(-2px) translateY(-2px);
+  transform: translateX(-7px) translateY(3px);
+  filter: invert(80%);
   transition: transform 0.2s ease;
 }
 
@@ -279,22 +317,26 @@
 }
 
 .painting-info-favorite-btn button {
-  width: 45px;
-  height: 45px;
-  aspect-ratio: 1/1;
-  border-radius: 100%;
-  margin-top: 10px;
-  border: none;
-  box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.3);
-  background-color: #f8f9fa;
-  transition: all 0.4s ease;
+  width: fit-content;
+  height: 60px;
+  min-width: 45px;
+  border-radius: 12px;
+  align-items: center;
+  justify-content: center;
+  color: var(--admin-text-secondary);
+  font-size: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  transition: var(--transition-smooth);
 }
 
-.painting-info-favorite-btn img {
-  width: 45px;
-  height: 45px;
-  transform: scale(0.65);
-  transition: all 0.4s ease;
+.painting-info-favorite-btn p {
+  font-size: small;
+  margin-top: 4px;
 }
 
 .painting-info-favorite-btn button:hover {
@@ -302,36 +344,31 @@
   box-shadow: 0px 0px 6px 0px rgb(0, 0, 255);
 }
 
-.painting-info-favorite-btn button:hover img {
-  transform: scale(0.8);
+.painting-info-favorite-btn.liked {
+  filter: invert(0.5) sepia(1) saturate(3) hue-rotate(310deg);
 }
 
 .painting-info-collection-save-btn button {
   width: 45px;
   height: 45px;
-  aspect-ratio: 1/1;
-  border-radius: 100%;
-  margin-top: 10px;
-  border: none;
-  box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.3);
-  background-color: #f8f9fa;
-  transition: all 0.4s ease;
-}
-
-.painting-info-collection-save-btn img {
-  width: 45px;
-  height: 45px;
-  transform: scale(0.65);
-  transition: all 0.4s ease;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--admin-text-secondary);
+  font-size: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  transition: var(--transition-smooth);
 }
 
 .painting-info-collection-save-btn button:hover {
   outline: 1px solid rgb(124, 124, 255);
   box-shadow: 0px 0px 6px 0px rgb(0, 0, 255);
-}
-
-.painting-info-collection-save-btn button:hover img {
-  transform: scale(0.8);
 }
 
 .painting-info-delete-btn img {
@@ -344,13 +381,19 @@
 .painting-info-delete-btn button {
   width: 45px;
   height: 45px;
-  aspect-ratio: 1/1;
-  border-radius: 100%;
-  margin-top: 10px;
-  border: none;
-  box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.3);
-  background-color: #f8f9fa;
-  transition: all 0.4s ease;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--admin-text-secondary);
+  font-size: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  transition: var(--transition-smooth);
 }
 
 .painting-info-delete-btn button:hover {
@@ -358,15 +401,35 @@
   box-shadow: 0px 0px 6px 0px rgb(255, 30, 0);
 }
 
-.painting-info-delete-btn button:hover img {
-  transform: scale(0.65);
+.painting-info-share-btn button {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--admin-text-secondary);
+  font-size: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  transition: var(--transition-smooth);
 }
+
+.painting-info-share-btn button:hover {
+  outline: 1px solid rgb(124, 124, 255);
+  box-shadow: 0px 0px 6px 0px rgb(0, 0, 255);
+}
+
 
 @keyframes arrowLoop {
   from {
-    transform: translateX(-2px) translateY(-2px);
+    transform: translateX(-7px) translateY(3px);
   }
   to {
-    transform: translateX(-6px) translateY(-2px);
+    transform: translateX(-10px) translateY(3px);
   }
 }

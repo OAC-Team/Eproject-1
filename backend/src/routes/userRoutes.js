@@ -11,7 +11,7 @@ const {
     updateUserCollection,
     deleteUserCollection
 } = require('../controllers/userController');
-const { getAllPaintings, getPainting, deletePainting } = require('../controllers/paintingController')
+const { getAllPaintings, getPainting, savePainting, deletePainting } = require('../controllers/paintingController')
 const { auth } = require('../middlewares/auth')
 const uploadRoutes = require('../routes/uploadRoutes');
 
@@ -27,8 +27,9 @@ routes.get('/collections/:collection_id', auth, getUserCollection)
 // Post
 routes.post('/profile', auth, updateUser)
 routes.post('/collections', auth, addUserCollection)
-routes.post('/like/:painting_id', auth, likePicture)
 routes.post('/collections/add', auth, savePaintingToCollection)
+routes.post('/like/:painting_id', auth, likePicture)
+routes.post('/add', auth, savePainting)
 
 // Put
 routes.put('/collections/:collection_id', auth, updateUserCollection)

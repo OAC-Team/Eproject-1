@@ -1,15 +1,15 @@
-
 import { useState, useEffect } from "react";
 import authApi from "../api/authApi";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie'
-import '../themes/SignUpPage.css';
+import '../themes/AdminLogin.css';
 
 export default function AdminLoginPage({ setUser }) {
     const [username, setUsername] = useState('');
     const [password, setPassWord] = useState('');
     const navigate = useNavigate();
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     async function handleLogin() {
         try {
@@ -32,7 +32,7 @@ export default function AdminLoginPage({ setUser }) {
                     setUser({ username, role });
                     Swal.fire({
                         title: 'Login Successfully!',
-                        text: `Wellcome admin: ${username}!`,
+                        text: `Welcome admin: ${username}!`,
                         icon: 'success',
                         confirmButtonText: 'Done'
                     })
@@ -60,55 +60,55 @@ export default function AdminLoginPage({ setUser }) {
         }
     };
 
+    const togglePasswordVisible = () => {
+        setIsPasswordVisible((prev) => !prev)
+    }
+
     return (
-        <>
-            <section className="auth-page-main">
-                <div className="auth-page-form">
-                    <br />
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <p>Admin:</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input
-                                        type="text"
-                                        placeholder="Enter administrator name"
-                                        value={username}
-                                        onChange={(e) => {
-                                            setUsername(e.target.value)
-                                        }} />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Password:</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input
-                                        type="password"
-                                        placeholder="Enter Password"
-                                        value={password}
-                                        onChange={(e) => { setPassWord(e.target.value) }} />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <br />
-                    <button
-                        className="auth-page-sign-up-btn"
-                        onClick={handleLogin}>
-                        Login
-                    </button>
-                    <br />
+        <section className="admin-login-wrapper">
+            <div className="admin-login-card">
+                <img src="/Logo(black).png" alt="Admin Logo" className="admin-login-logo" />
+                <h2>Admin Login</h2>
+                <p className="subtitle">Sign in to manage Only Art Collection</p>
+
+                <div className="admin-form-group">
+                    <label>Administrator Username</label>
+                    <div className="admin-input-wrapper">
+                        <i className="bi bi-person"></i>
+                        <input
+                            type="text"
+                            placeholder="Enter username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
                 </div>
-            </section>
-        </>
+
+                <div className="admin-form-group">
+                    <label>Password</label>
+                    <div className="admin-input-wrapper">
+                        <i className="bi bi-shield-lock"></i>
+                        <input
+                            type={isPasswordVisible ? "text" : "password"}
+                            placeholder="Enter password"
+                            value={password}
+                            onChange={(e) => setPassWord(e.target.value)}
+                        />
+                        <button
+                            onClick={togglePasswordVisible}>
+                            {isPasswordVisible ? <i className="bi bi-eye-slash"></i> : <i className="bi bi-eye-fill"></i>}
+                            </button>
+                    </div>
+                </div>
+
+                <button
+                    className="admin-login-btn"
+                    onClick={handleLogin}
+                >
+                    <i className="bi bi-box-arrow-in-right"></i>
+                    Login to Dashboard
+                </button>
+            </div>
+        </section>
     )
 };
-

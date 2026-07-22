@@ -1,0 +1,211 @@
+.collection-wrapper {
+  padding: 24px;
+}
+
+.collection-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* HEADER */
+.collection-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: var(--admin-card);
+  border-radius: 16px;
+  border: 1px solid var(--admin-border);
+  box-shadow: var(--shadow-md);
+}
+
+.collection-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.collection-info-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--admin-text-primary);
+  margin: 0;
+}
+
+.collection-info-desc {
+  font-size: 0.9rem;
+  color: var(--admin-text-secondary);
+  margin: 0;
+  font-style: italic;
+}
+
+.collection-info-counts {
+  font-size: 0.8rem;
+  color: var(--admin-text-muted);
+  margin: 0;
+  font-weight: 500;
+  font-family: var(--admin-font);
+}
+
+/* HEADER ACTIONS */
+.collection-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-collection-btn {
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text-secondary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-family: var(--admin-font-sans);
+}
+
+.edit-collection-btn:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--admin-text-primary);
+}
+
+.delete-collection-btn {
+  background-color: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-family: var(--admin-font-sans);
+}
+
+.delete-collection-btn:hover {
+  background-color: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+/* EDIT FORM */
+.collection-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 24px;
+  background: var(--admin-card);
+  border-radius: 16px;
+  border: 1px solid var(--admin-border);
+  box-shadow: var(--shadow-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--admin-text-secondary);
+  font-family: var(--admin-font-sans);
+}
+
+.edit-collection-input,
+.edit-collection-textarea {
+  background: var(--admin-input-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  color: var(--admin-text-primary);
+  font-family: var(--admin-font-sans);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: var(--transition-smooth);
+}
+
+.edit-collection-input:focus,
+.edit-collection-textarea:focus {
+  border-color: var(--admin-border-focus);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.edit-collection-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.save-btn {
+  background-color: var(--admin-accent);
+  border: none;
+  color: #fff;
+  padding: 9px 20px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--admin-font-sans);
+  transition: var(--transition-smooth);
+}
+
+.save-btn:hover {
+  background-color: var(--admin-accent-hover);
+  box-shadow: 0 4px 12px var(--admin-accent-glow);
+}
+
+.save-btn:disabled {
+  background-color: var(--admin-input-bg);
+  color: var(--admin-text-muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.cancel-btn {
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text-secondary);
+  padding: 9px 20px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--admin-font-sans);
+  transition: var(--transition-smooth);
+}
+
+.cancel-btn:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--admin-text-primary);
+}
+
+.collection-info hr {
+  border: none;
+  border-top: 1px solid var(--admin-border);
+  margin: 0;
+}
+
+.collection-fail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+}
+
+.collection-fail-message {
+  color: var(--admin-text-muted);
+  font-size: 1rem;
+  font-family: var(--admin-font);
+  text-align: center;
+}
