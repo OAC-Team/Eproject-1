@@ -236,6 +236,64 @@ async function resetUserPassword(targetUserId, newPassword, reason, adminName, t
 }
 
 
+async function updateUserProfileByAdmin(targetUserId, profileData, token) {
+    try {
+        const response = await axios.patch(`http://localhost:5000/api/admin/users/${targetUserId}/profile`,
+            profileData,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error updating user profile by admin', error);
+        throw error;
+    }
+}
+
+async function getAllUserLogs(token) {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/admin/userLogs`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error getting all user logs:', error);
+        throw error;
+    }
+}
+
+async function deleteUserLog(logId, token) {
+    try {
+        const response = await axios.delete(`http://localhost:5000/api/admin/userLog/${logId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting user log:', error);
+        throw error;
+    }
+}
+
+async function getRejectedPaintingsByUser(userId, token) {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/admin/users/${userId}/rejected-paintings`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching rejected paintings:', error);
+        throw error;
+    }
+}
+
 export default {
     getAllPaintings,
     getPendingPaintings,
@@ -249,5 +307,9 @@ export default {
     verifyAdminPassword,
     getAdminLog,
     resetUserPassword,
-    getUserLog
+    getUserLog,
+    updateUserProfileByAdmin,
+    getAllUserLogs,
+    deleteUserLog,
+    getRejectedPaintingsByUser
 }

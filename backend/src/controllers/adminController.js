@@ -178,18 +178,20 @@ async function getRejectPaintings(req, res) {
 async function statusHandlePainting(req, res) {
     try {
         const { painting_id } = req.params
-        const { status } = req.body
+        const { status, reject_reason } = req.body
+
+        const updateFields = { status };
+        if (status === 'rejected' && reject_reason) {
+            updateFields.reject_reason = reject_reason;
+        }
+
         const updateStatePainting = await Painting.findByIdAndUpdate(
             painting_id,
-            {
-                status: status,
-            },
-            {
-                new: true
-            }
+            updateFields,
+            { new: true }
         )
         if (!updateStatePainting) {
-            res.status(404).json({ message: 'Picture not found' })
+            return res.status(404).json({ message: 'Picture not found' })
         }
 
         res.status(200).json({ paintings: updateStatePainting })
@@ -255,6 +257,88 @@ async function getAllPaintings(req, res) {
     }
 }
 
+async function getRejectedPaintingsByUser(req, res) {
+    try {
+        const { user_id } = req.params;
+        const paintings = await Painting.find({ user_id, status: 'rejected' }).sort({ created_at: -1 });
+        return res.status(200).json({ paintings });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+async function updateUserProfileByAdmin(req, res) {
+    try {
+        const { user_id } = req.params;
+        const { username, email, role, bio, adminName } = req.body;
+
+        if (!adminName) {
+            return res.status(400).json({ message: 'Admin name is required for verification.' });
+        }
+
+        const user = await User.findById(user_id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        // Check if username/email is already taken by another user
+        if (username && username !== user.username) {
+            const existingUser = await User.findOne({ username });
+            if (existingUser) {
+                return res.status(400).json({ message: 'Username is already taken.' });
+            }
+        }
+
+        if (email && email !== user.email) {
+            const existingUser = await User.findOne({ email });
+            if (existingUser) {
+                return res.status(400).json({ message: 'Email is already taken.' });
+            }
+        }
+
+        user.username = username || user.username;
+        user.email = email || user.email;
+        user.role = role || user.role;
+        user.bio = bio !== undefined ? bio : user.bio;
+
+        await user.save();
+
+        await AdminLog.create({
+            adminName: adminName,
+            targetUserId: user_id,
+            action: 'Edit Profile',
+            reason: `Admin updated profile (username, email, role, bio)`,
+            createdAt: new Date()
+        });
+
+        return res.status(200).json({ message: 'User profile updated successfully.', user });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+async function getAllUserLogs(req, res) {
+    try {
+        const logs = await UserLog.find()
+            .populate('userId', 'username profile_picture')
+            .sort({ createdAt: -1 })
+            .limit(30);
+        return res.status(200).json({ logs });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+async function deleteUserLog(req, res) {
+    try {
+        const { log_id } = req.params;
+        await UserLog.findByIdAndDelete(log_id);
+        return res.status(200).json({ message: 'Log deleted successfully.' });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
 module.exports = {
     getPendingPaintings,
     statusHandlePainting,
@@ -268,5 +352,9 @@ module.exports = {
     verifyAdminPassword,
     getAdminLog,
     resetUserPassword,
-    getUserLog
+    getUserLog,
+    updateUserProfileByAdmin,
+    getAllUserLogs,
+    deleteUserLog,
+    getRejectedPaintingsByUser
 };

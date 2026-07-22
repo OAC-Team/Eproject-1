@@ -22,6 +22,14 @@ export default function ViewUser() {
     const [adminVerifyPassword, setAdminVerifyPassword] = useState('');
     const [adminName, setAdminName] = useState('');
     const [resetReason, setResetReason] = useState('')
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [editUsername, setEditUsername] = useState('');
+    const [editEmail, setEditEmail] = useState('');
+    const [editRole, setEditRole] = useState('member');
+    const [editBio, setEditBio] = useState('');
+    const [editAdminName, setEditAdminName] = useState('');
+    const [editAdminPassword, setEditAdminPassword] = useState('');
+    const [violentPaintings, setViolentPaintings] = useState([]);
 
     async function fetchUserProfile(id) {
         try {
@@ -76,6 +84,18 @@ export default function ViewUser() {
             console.error('Failed to fetch user log:', error);
         }
     }, [user_id, navigate])
+
+    const fetchViolentPaintings = useCallback(async () => {
+        if (!user_id) return;
+        const token = Cookies.get('token');
+        if (!token) return;
+        try {
+            const res = await adminApi.getRejectedPaintingsByUser(user_id, token);
+            setViolentPaintings(res.paintings || []);
+        } catch (error) {
+            console.error('Failed to fetch rejected paintings:', error);
+        }
+    }, [user_id]);
 
     async function handleSubmitStatus() {
         if (!reason) {
@@ -138,9 +158,10 @@ export default function ViewUser() {
         if (user_id) {
             fetchUserProfile(user_id);
             fetchAdminLog();
-            fetchUserLog()
+            fetchUserLog();
+            fetchViolentPaintings();
         }
-    }, [user_id, fetchAdminLog, fetchUserLog]);
+    }, [user_id, fetchAdminLog, fetchUserLog, fetchViolentPaintings]);
 
     if (!userData) {
         return (
@@ -235,6 +256,91 @@ export default function ViewUser() {
         setNewPassword('');
     }
 
+    function handleOpenEdit() {
+        if (!userData) return;
+        setEditUsername(userData.username || '');
+        setEditEmail(userData.email || '');
+        setEditRole(userData.role || 'member');
+        setEditBio(userData.bio || '');
+        setEditAdminName('');
+        setEditAdminPassword('');
+        setIsEditOpen(true);
+    }
+
+    function handleCancelEdit() {
+        setIsEditOpen(false);
+        setEditAdminName('');
+        setEditAdminPassword('');
+    }
+
+    async function handleSubmitEdit() {
+        if (!editUsername.trim() || !editEmail.trim()) {
+            Swal.fire({
+                title: 'Required!',
+                text: 'Username and Email are required fields.',
+                icon: 'warning',
+                confirmButtonColor: '#38bdf8'
+            });
+            return;
+        }
+
+        if (!editAdminName.trim() || !editAdminPassword) {
+            Swal.fire({
+                title: 'Required!',
+                text: 'Please enter both admin name and password to verify.',
+                icon: 'warning',
+                confirmButtonColor: '#38bdf8'
+            });
+            return;
+        }
+
+        try {
+            const token = Cookies.get('token');
+            // Verify admin credentials
+            await adminApi.verifyAdminPassword(editAdminPassword, token);
+
+            const profileData = {
+                username: editUsername,
+                email: editEmail,
+                role: editRole,
+                bio: editBio,
+                adminName: editAdminName
+            };
+
+            const response = await adminApi.updateUserProfileByAdmin(user_id, profileData, token);
+            setUserData(prev => ({
+                ...prev,
+                username: editUsername,
+                email: editEmail,
+                role: editRole,
+                bio: editBio
+            }));
+
+            handleCancelEdit();
+            await fetchAdminLog();
+
+            Swal.fire({
+                title: 'Updated!',
+                text: response.message || 'User profile updated successfully.',
+                icon: 'success',
+                confirmButtonColor: '#38bdf8'
+            });
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                title: 'Update Failed!',
+                text: error.response?.data?.message || 'Authentication error or username/email already taken.',
+                icon: 'error',
+                confirmButtonColor: '#ef4444'
+            });
+        }
+    }
+
+    function handleOpenBan() {
+        setReason('Account banned by administrator');
+        setIsOpen(true);
+    }
+
     return (
         <div className="view-user-wrapper">
             {/* Breadcrumb */}
@@ -294,14 +400,14 @@ export default function ViewUser() {
                     <div className="admin-actions-card">
                         <h3>Admin Actions</h3>
                         <div className="actions-button-group">
-                            <button className="btn-action btn-outline-blue">Edit Profile</button>
+                            <button onClick={handleOpenEdit} className="btn-action btn-outline-blue">Edit Profile</button>
                             <button
                                 onClick={() => setIsResetOpen(true)}
                                 className="btn-action btn-outline-yellow">
                                 Reset Password
                             </button>
                             {/* <button className="btn-action btn-outline-orange">Comming soon</button> */}
-                            <button className="btn-action btn-outline-red">Ban Account</button>
+                            <button onClick={handleOpenBan} className="btn-action btn-outline-red">Ban Account</button>
                         </div>
                     </div>
                 </div>
@@ -395,7 +501,55 @@ export default function ViewUser() {
                             )}
 
                             {activeTab === 'violent' && (
-                                <div className="placeholder-text">No violent.</div>
+                                <div className="log-table-wrapper">
+                                    {violentPaintings.length > 0 ? (
+                                        <table className="log-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Thumbnail</th>
+                                                    <th>Title</th>
+                                                    <th>Style</th>
+                                                    <th>Reject Reason</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {violentPaintings.map((p) => (
+                                                    <tr key={p._id}>
+                                                        <td>
+                                                            <img
+                                                                src={p.image_url}
+                                                                alt={p.title}
+                                                                style={{
+                                                                    width: '56px',
+                                                                    height: '42px',
+                                                                    objectFit: 'cover',
+                                                                    borderRadius: '6px',
+                                                                    border: '1px solid #1e293b'
+                                                                }}
+                                                            />
+                                                        </td>
+                                                        <td style={{ fontWeight: 600, color: '#f1f5f9' }}>{p.title}</td>
+                                                        <td>
+                                                            <span className="log-category-badge painting">
+                                                                {p.artistic_style || '---'}
+                                                            </span>
+                                                        </td>
+                                                        <td style={{ color: '#ef4444', fontSize: '13px' }}>
+                                                            {p.reject_reason || 'No reason provided'}
+                                                        </td>
+                                                        <td className="log-time">{formatDate(p.created_at)}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    ) : (
+                                        <div className="placeholder-text">
+                                            <i className="bi bi-shield-check" style={{ fontSize: '2rem', color: '#22c55e', display: 'block', marginBottom: '8px' }}></i>
+                                            No violations found for this user.
+                                        </div>
+                                    )}
+                                </div>
                             )}
 
                             {activeTab === 'account' && (
@@ -438,6 +592,114 @@ export default function ViewUser() {
                     </div>
                 </div>
             </div>
+
+            {/* EDIT PROFILE MODAL */}
+            {isEditOpen && (
+                <div className="modal-overlay" onClick={handleCancelEdit}>
+                    <div className="status-upadate" onClick={(e) => e.stopPropagation()}>
+                        <h3>Edit User Profile</h3>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>Username</th>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            value={editUsername}
+                                            onChange={(e) => setEditUsername(e.target.value)}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>
+                                        <input
+                                            type="email"
+                                            value={editEmail}
+                                            onChange={(e) => setEditEmail(e.target.value)}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Role</th>
+                                    <td>
+                                        <select value={editRole} onChange={(e) => setEditRole(e.target.value)}>
+                                            <option value="member">Member</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Bio</th>
+                                    <td>
+                                        <textarea
+                                            style={{
+                                                width: '100%',
+                                                backgroundColor: '#0b0f19',
+                                                border: '1px solid #1e293b',
+                                                borderRadius: '6px',
+                                                color: '#ffffff',
+                                                padding: '10px 14px',
+                                                fontSize: '14px',
+                                                boxSizing: 'border-box',
+                                                minHeight: '80px',
+                                                resize: 'vertical'
+                                            }}
+                                            value={editBio}
+                                            onChange={(e) => setEditBio(e.target.value)}
+                                            placeholder="User bio description..."
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Admin Name</th>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter your admin name"
+                                            value={editAdminName}
+                                            onChange={(e) => setEditAdminName(e.target.value)}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Verify Admin Password</th>
+                                    <td>
+                                        <input
+                                            type="password"
+                                            placeholder="Enter admin password to confirm"
+                                            value={editAdminPassword}
+                                            onChange={(e) => setEditAdminPassword(e.target.value)}
+                                        />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div className="status-buttons">
+                            <button
+                                style={{
+                                    backgroundColor: '#38bdf8',
+                                    color: '#ffffff',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    padding: '9px 24px',
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    marginRight: '12px',
+                                    transition: 'background-color 0.2s ease'
+                                }}
+                                onClick={handleSubmitEdit}
+                            >
+                                Save Changes
+                            </button>
+                            <button className="btn-cancel-status" onClick={handleCancelEdit}>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* MODAL POPUP */}
             {isResetOpen && (

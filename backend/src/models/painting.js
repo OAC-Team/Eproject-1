@@ -22,6 +22,7 @@ const paintingSchema = new mongoose.Schema({
     tags: [{ type: String, trim: true }],
 
     status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
+    reject_reason: { type: String, default: '' },
 
     created_at: { type: Date, default: Date.now }
 });
