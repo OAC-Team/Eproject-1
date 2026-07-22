@@ -1,6 +1,6 @@
 const Groq = require('groq-sdk');
 const dotenv = require('dotenv');
-const { image_vision_config, chatbot_config } = require('./ai_config.js')
+const { image_vision_config, chatbot_config } = require('../config/ai_config.js')
 
 dotenv.config();
 
