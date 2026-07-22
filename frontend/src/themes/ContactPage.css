@@ -1,109 +1,231 @@
-/* ============================================================
-   ContactPage.css — Sleek Dark Navy Layout
-   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 .contact-page {
-  background-color: #08080c;
-  min-height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #f8f9fa;
+  padding: 40px 20px;
+  color: #333333;
+}
+
+/* --- Container tổng (Chia 2 cột bằng Flexbox) --- */
+.contact-container {
+  display: flex;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 20px;
+  /* Bo góc lớn giống card của ảnh 3 */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  /* Đổ bóng nhẹ hiện đại */
+  overflow: hidden;
+}
+
+/* --- Cột trái: Thông tin --- */
+.contact-info {
+  flex: 1;
   padding: 40px;
-  color: #ffffff;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  justify-content: center;
+  background-color: #ffffff;
 }
 
-.return-btn {
-  align-self: flex-start;
-  background-color: #111322;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #94a3b8;
-  padding: 10px 20px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.return-btn:hover {
-  color: #3b82f6;
-  border-color: #3b82f6;
-  background-color: rgba(59, 130, 246, 0.05);
-  transform: translateX(-4px);
-}
-
-.contact-page-main {
-  width: 100%;
-  border-radius: 20px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  background-color: #111322;
-}
-
-.contact-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px;
-  margin-top: 20px;
-}
-
-.contact-grid .card {
-  background-color: #111322;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  padding: 30px 20px;
-  text-align: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  color: #94a3b8;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  line-height: 1.6;
-}
-
-.contact-grid .card:hover {
-  transform: translateY(-5px);
-  border-color: #3b82f6;
-  box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
-}
-
-.contact-grid .card img {
-  width: 48px;
-  height: 48px;
+.contact-info h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-top: 0;
   margin-bottom: 16px;
-  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.2));
+  color: #1a1a1a;
 }
 
-.contact-grid .card p {
-  color: #ffffff;
-  font-weight: 600;
-  margin-top: 8px;
+/* Đồng bộ class .text */
+.contact-info .text {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 24px;
 }
 
-.contact-grid .card a {
-  color: #3b82f6;
-  text-decoration: none;
-  font-weight: 500;
-  word-break: break-all;
+/* Đồng bộ class .info-list & .info-item */
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
-.contact-grid .card a:hover {
-  text-decoration: underline;
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  color: #333;
 }
 
-.contact-grid > p {
-  grid-column: 1 / -1;
+.info-item i {
+  color: #38b6ff; /* Giữ màu xanh nguyên bản của nút gửi làm màu icon */
+  font-size: 18px;
+  width: 24px;
   text-align: center;
-  color: #475569;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  margin-top: 20px;
 }
 
-@media (max-width: 600px) {
-  .contact-page {
-    padding: 20px;
+.info-item span {
+  font-size: 15px;
+  color: #1a1a1a;
+}
+
+/* Đồng bộ class .social-media & .social-icons */
+.social-media {
+  margin-top: 24px;
+}
+
+.social-media p {
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #f1f5f9;
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+.social-icons a:hover {
+  background-color: #38b6ff;
+  color: #ffffff;
+}
+
+/* --- Cột phải: Form (Style đồng bộ Ảnh 3) --- */
+.contact-form-wrapper {
+  flex: 1;
+  padding: 40px;
+  background-color: #ffffff;
+  border-left: 1px solid #edf2f7;
+  /* Vạch ngăn cách nhẹ giữa 2 bên */
+}
+
+.contact-form-wrapper h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: #1a1a1a;
+}
+
+/* Thay thế .form-group thành .input-group và đảo thứ tự hiển thị bằng flex-direction */
+.input-group {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #2d3748;
+}
+
+/* Style chung cho Input, Select, Textarea giống ảnh 3 */
+.input-group input,
+.input-group select,
+.input-group textarea {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  /* Viền xám mảnh */
+  border-radius: 16px;
+  /* Bo góc bầu bĩnh giống ảnh 3 */
+  background-color: #ffffff;
+  color: #333;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.2s ease;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.input-group select {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Hiệu ứng khi click vào ô nhập liệu */
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+  border-color: #3b82f6;
+  /* Đổi sang xanh khi focus */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Placeholder chữ xám nhạt mờ */
+.input-group input::placeholder,
+.input-group textarea::placeholder,
+.input-group select::placeholder {
+  color: #a0aec0;
+}
+
+/* Khống chế kéo kéo của textarea */
+.input-group textarea {
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* --- Nút gửi đi (Màu xanh dương giống nút Sign Up ảnh 3) --- */
+.submit-btn {
+  width: 100%;
+  background-color: #38b6ff;
+  /* Màu xanh thiên thanh của nút Sign Up */
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 12px;
+  /* Bo góc nút */
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #1da1f2;
+  /* Đậm hơn một chút khi di chuột */
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+  /* Hiệu ứng lún nút nhẹ khi bấm */
+}
+
+/* --- Responsive cho màn hình điện thoại --- */
+@media (max-width: 768px) {
+  .contact-container {
+    flex-direction: column;
+    margin: 10px;
+  }
+
+  .contact-form-wrapper {
+    border-left: none;
+    border-top: 1px solid #edf2f7;
+    padding: 30px 20px;
+  }
+
+  .contact-info {
+    padding: 30px 20px;
   }
 }
