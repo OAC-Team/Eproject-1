@@ -10,5 +10,4 @@ async function errorHandler(err, req, res, next) {
     });
 }
 
->>>>>>> origin/main
 module.exports = { errorHandler };

@@ -1,138 +1,58 @@
-import '../themes/ContactPage.css';
-import React, { useState } from 'react';
+import '../themes/ContactPage.css'
+import { useNavigate } from 'react-router-dom';
 
-
-export default function ContactUs() {
-    // 1. Initialize state to store user input data
-    const [status, setStatus] = useState('idle');
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-    });
-
-    // 2. Handle change event when user inputs data
-    const handleChange = (e) => {
-        const { id, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [id]: value
-        }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setStatus('loading');
-
-        // Simulate API call (replace with real API if needed)
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        console.log('Contact form submitted:', formData);
-        setStatus('success');
-    };
-
-    const handleReset = () => {
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        setStatus('idle');
-    };
+export default function ContactPage() {
+    const navigate = useNavigate();
 
     return (
-        <div className="contact-page">
-            <div className="contact-container">
-                {/* LEFT COLUMN: CONTACT INFORMATION */}
-                <div className="contact-info">
-                    <h2>Contact Us</h2>
-                    <p className="text">
-                        Do you have any questions, suggestions, or want to cooperate in sharing beautiful moments?
-                        Send a message to OnlyArtCollection!
-                    </p>
-
-                    <div className="info-list">
-                        <div className="info-item">
-                            <i className="fas fa-map-marker-alt"></i>
-                            <span>120 Yên Lãng, TP. Hà Nội</span>
-                        </div>
-                        <div className="info-item">
-                            <i className="fas fa-envelope"></i>
-                            <span>KieuLuongTam@skibidi.com</span>
-                        </div>
-                        <div className="info-item">
-                            <i className="fas fa-phone-alt"></i>
-                            <span>+84 676 769 693 636</span>
-                        </div>
-                    </div>
-
-                    <div className="social-media">
-                        <p>Follow our photography community:</p>
-                        <div className="social-icons">
-                            <a href="#facebook"><i className="fab fa-facebook-f"></i></a>
-                            <a href="#instagram"><i className="fab fa-instagram"></i></a>
-                            <a href="#pinterest"><i className="fab fa-pinterest"></i></a>
-                            <a href="#flickr"><i className="fab fa-flickr"></i></a>
-                        </div>
-                    </div>
+        <>
+            <div className='contact-page'>
+                <a href="#" onClick={() => navigate(-1)} className='return-btn'>⬅ Return</a>
+                <div className='contact-page-main'>
+                    <iframe
+                        src="https://forms.gle/foW6K8GFceYfNVhK7"
+                        title='Contact Form'
+                        width="100%"
+                        height="1300"
+                        style={{ border: 'none' }} />
                 </div>
-                {/* RIGHT COLUMN: CONTACT FORM */}
-                <div className="contact-form-wrapper">
-                    <h3>Send Message</h3>
-                    <form onSubmit={handleSubmit} className="contact-form">
+                <div className="contact-grid">
+                    <div className="card phone">
+                        <img src="/PhoneIcon.png" /> <br />
+                        Phone Number
+                        <p>
+                            012-3456-7890 <br />
+                            880-1234-4677 (Toll free)
+                        </p>
+                    </div>
 
-                        <div className="input-group">
-                            <input
-                                type="text"
-                                id="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                required
-                            />
-                            <label htmlFor="name">Full Name</label>
-                        </div>
+                    <div className="card office">
+                        <img src="/OFIcon.png" /> <br />
+                        Main Office
+                        <p>
+                            Example 36 RauMa St <br />
+                            Hoa Thanh, HT 3636
+                        </p>
+                    </div>
 
-                        <div className="input-group">
-                            <input
-                                type="email"
-                                id="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                            />
-                            <label htmlFor="email">Your Email</label>
-                        </div>
-
-                        <div className="input-group">
-                            <select
-                                id="subject"
-                                value={formData.subject}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="" disabled hidden></option>
-                                <option value="support">Account Support / Photo Upload</option>
-                                <option value="copyright">Image Copyright Report</option>
-                                <option value="business">Business Cooperation</option>
-                                <option value="other">Other Feedback</option>
-                            </select>
-                            <label htmlFor="subject" className="select-label">Contact Subject</label>
-                        </div>
-
-                        <div className="input-group">
-                            <textarea
-                                id="message"
-                                rows="5"
-                                value={formData.message}
-                                onChange={handleChange}
-                                required
-                            ></textarea>
-                            <label htmlFor="message">Your Message...</label>
-                        </div>
-
-                        <button type="submit" className="submit-btn">
-                            Send
-                        </button>
-                    </form>
+                    <div className="card email">
+                        <img src="/EmailIcon.png" /> <br />
+                        Email
+                        <p>
+                            Hotmail@gmail.com
+                        </p>
+                    </div>
+                    <div className="card github">
+                        <img src="/GithubIcon.png" /> <br />
+                        Github
+                        <br />
+                        <a href="https://github.com/OAC-Team">
+                            https://github.com/OAC-Team
+                        </a>
+                    </div>
+                    <p>㋑ Develop by OAC Team</p>
                 </div>
             </div>
-        </div>
-    );
+        </>
+    )
 }
