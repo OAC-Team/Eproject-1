@@ -30,6 +30,7 @@ routes.post('/profile', auth, updateUser)
 routes.post('/collections', auth, addUserCollection)
 routes.post('/collections/add', auth, savePaintingToCollection)
 routes.post('/like/:painting_id', auth, likePicture)
+routes.post('/collections/add', auth, savePaintingToCollection)
 routes.post('/add', auth, savePainting)
 
 // Put

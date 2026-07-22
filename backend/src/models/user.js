@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema({
         name: { type: String, required: true },
         paintings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Painting' }]
     }],
-    created_at: { type: Date, default: Date.now }
+    created_at: {type: Date, default: Date.now},
+    active: {type: String, enum: ['active', 'deactive'], default: 'active'},
 })
 
 const User = mongoose.model("User", userSchema)

@@ -1,7 +1,7 @@
 const userService = require('../services/userService');
 const Painting = require('../models/painting');
 const User = require('../models/user');
-
+const UserLog = require('../models/userLog');
 async function getUserProfile(req, res) {
     try {
         // console.log(req)
@@ -41,6 +41,13 @@ async function addUserCollection(req, res) {
         if (!updatedUser) {
             return res.status(404).json({ message: "User not found." });
         }
+
+        await UserLog.create({
+            userId: userId,
+            category: 'COLLECTION',
+            action: 'create_collection',
+            description: `Created collection "${name}"`
+        });
 
         return res.status(200).json(
             {
@@ -120,6 +127,13 @@ async function likePicture(req, res) {
             { new: true }
         );
 
+        await UserLog.create({
+            userId: userId,
+            category: 'INTERACTION',
+            action: 'like_painting',
+            description: `Like painting "${updatePainting?.title || 'Painting'}"`
+        });
+
         return res.status(200).json({
             message: liked ? 'Liked successfully' : 'Unliked successfully',
             like: liked,
@@ -134,7 +148,6 @@ async function savePaintingToCollection(req, res, next) {
     try {
         const userId = req.user.user_id;
         const { painting_id, collectionName } = req.body;
-        const user = await userService.getUser({ _id: userId })
         const saveToCollection = await User.findOneAndUpdate(
             {
                 _id: userId,
