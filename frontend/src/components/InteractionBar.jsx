@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import {createPortal} from 'react-dom';
 import userApi from "../api/userApi";
 import Swal from 'sweetalert2';
-import { createPortal } from 'react-dom'
 
 export default function InteractionBar({ painting_id, initialLikeCount, initialIsLiked, token, userCollections }) {
     const [isLiked, setIsLiked] = useState(initialIsLiked);
