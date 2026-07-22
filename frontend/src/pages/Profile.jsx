@@ -4,8 +4,10 @@ import Swal from 'sweetalert2';
 import userApi from '../api/userApi';
 import uploadApi from '../api/uploadApi'
 import Collections from "../components/Collections";
+import Recommendations from "../components/Recommendations";
 import UserUploads from "../components/UserUploads";
 import paintingApi from '../api/paintingApi'
+import '../themes/Profile.css'
 
 export default function Profile() {
     const [userData, setUserData] = useState({});
@@ -14,6 +16,11 @@ export default function Profile() {
     const [preview, setPreview] = useState('');
     const [message, setMessage] = useState('');
     const [userPaintings, setUserPaintings] = useState([]);
+    const [recTrigger, setRecTrigger] = useState(0);
+
+    const refreshRecommendationsOnly = () => {
+        setRecTrigger(prev => prev + 1);
+    };
 
     const handleFileChange = (e) => {
 
@@ -23,7 +30,6 @@ export default function Profile() {
             setPreview(URL.createObjectURL(file));
         }
     };
-
 
     const uploadFileHandle = async (e) => {
         e.preventDefault();
@@ -62,8 +68,8 @@ export default function Profile() {
         }
     };
 
+    const token = Cookies.get('token');
     useEffect(() => {
-        const token = Cookies.get('token');
 
         (async () => {
             const responseData = await userApi.fetchUser(token);
@@ -77,54 +83,30 @@ export default function Profile() {
         })()
     }, [])
 
+    const handleRefreshData = async () => {
+        const updatedUser = await userApi.fetchUser(token);
+        setUserData(updatedUser);
+    };
+
     return (
         <div>
             <div className="profile-user">
                 <img src={userData.profile_picture} alt="" />
                 <div className="profile-user-info">
                     <h1>{userData.username}</h1>
-                    <p>{String(userData.role).charAt(0).toUpperCase() + String(userData.role).slice(1)}</p>
+                    <p className="profile-user-role">{String(userData.role).charAt(0).toUpperCase() + String(userData.role).slice(1)}</p>
+                    {userData?.bio?.length > 0 && <p className="profile-user-bio">"{String(userData.bio)}"</p>}
                 </div>
             </div>
-            <UserUploads paintings={userPaintings}></UserUploads>
+            <UserUploads paintings={userPaintings} user={userData}></UserUploads>
             {isGuest === false ? (
-                <Collections collectionData={userData.collections} />
+                <Collections collectionData={userData.collections} onCollectionAdded={handleRefreshData} />
             ) : (
                 <div>
                     <p>Cannot manage collections with current user.</p>
                 </div>
             )}
-
-            <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
-                <h2>Uploading</h2>
-                <form onSubmit={uploadFileHandle}>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                    />
-
-                    {preview && (
-                        <div style={{ marginTop: '15px' }}>
-                            <p>Demo pic:</p>
-                            <img
-                                src={preview}
-                                alt="Preview"
-                                style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '8px' }}
-                            />
-                        </div>
-                    )}
-
-                    <button
-                        type="submit"
-                        style={{ marginTop: '15px', display: 'block', width: '100%', padding: '10px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
-                    >
-                        Upload pic
-                    </button>
-                </form>
-
-                {message && <p style={{ marginTop: '10px', fontWeight: 'bold' }}>{message}</p>}
-            </div>
+            <Recommendations refreshTrigger={recTrigger}></Recommendations>
         </div>
     )
 }

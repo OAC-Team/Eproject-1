@@ -22,6 +22,7 @@ const userInteractionSchema = new mongoose.Schema({
 });
 
 const UserInteraction = mongoose.model("UserInteraction", userInteractionSchema);
+<<<<<<< HEAD
 module.exports = UserInteraction;
 const mongoose = require('mongoose');
 
@@ -35,4 +36,6 @@ const userInteractionSchema = new mongoose.Schema({
 
 const UserInteraction = mongoose.model("UserInteraction", userInteractionSchema);
 >>>>>>> origin/main
+=======
+>>>>>>> 236bb33492b85e5d441e3e21651538d594798904
 module.exports = UserInteraction;

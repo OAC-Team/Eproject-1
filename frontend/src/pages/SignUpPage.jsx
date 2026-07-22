@@ -117,7 +117,7 @@ export default function SignUpPage({ setUser }) {
 
             Swal.fire({
                 title: 'Sign Successfully!',
-                text: `register with the ${username} successfully .`,
+                text: `User ${username} has been registered successfully .`,
                 icon: 'success',
                 confirmButtonText: 'Done'
             });

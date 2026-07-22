@@ -125,7 +125,7 @@ export default function LoginPage({ setUser }) {
                 setUser({ username: identifier, role });
                 Swal.fire({
                     title: 'Login Successfully!',
-                    text: `Logined in ${identifier} account!`,
+                    text: `Logged in ${identifier} account!`,
                     icon: 'success',
                     confirmButtonText: 'Done'
                 })
@@ -136,7 +136,7 @@ export default function LoginPage({ setUser }) {
             console.error('Error to login!', error);
             Swal.fire({
                 title: 'Login Error!',
-                text: `Incorrect username or password.`,
+                text: error.response?.data?.message || `Incorrect username or password.`,
                 icon: 'error',
                 confirmButtonText: 'Done'
             })

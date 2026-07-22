@@ -41,5 +41,17 @@ async function auth(req, res, callback) {
     }
 }
 
->>>>>>> origin/main
-module.exports = { auth };
+async function isAdmin(req, res, next) {
+    try {
+        const role = req.user.role
+        if (role === 'admin') {
+            next()
+        } else {
+            return res.status(403).json({ message: 'Access denied. Admins only!' });
+        }
+    } catch (error) {
+        console.error('Access denied. Admins only!', error);
+        res.status(403).send('Access denied. Admins only!');
+    }
+}
+module.exports = { auth, isAdmin };

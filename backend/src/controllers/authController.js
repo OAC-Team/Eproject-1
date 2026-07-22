@@ -82,6 +82,7 @@ const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const { errorHandler } = require('../middlewares/errorHandler');
+const UserLog = require('../models/userLog');
 
 async function register(req, res, next) {
     try {
@@ -98,10 +99,18 @@ async function register(req, res, next) {
             username: username,
             password_hash: hashPw,
             email: email,
-            role: role || 'user'
+            role: role || 'member'
         });
 
         await newUser.save();
+
+        await UserLog.create({
+            userId: newUser._id,
+            category: 'AUTH',
+            action: 'register',
+            description: `User registered a new account`
+        });
+
         res.status(201).send('Sign up successfully!');
     } catch (error) {
         next(error);
@@ -125,10 +134,21 @@ async function login(req, res, next) {
             return;
         };
 
+        if (user.active === 'deactive') {
+            return res.status(403).json({ message: "Your account has been suspended due to violating Only Art Collection's terms" })
+        }
+
         const payload = {
             user_id: user._id,
             role: user.role
         }
+
+        await UserLog.create({
+            userId: user._id,
+            category: 'AUTH',
+            action: 'login',
+            description: `User logged in successfully`
+        });
 
         const secretKey = process.env.JWT_KEY;
         const expiresIn = rememberMe ? '30d' : '1h';
@@ -180,10 +200,21 @@ async function googleLogin(req, res, next) {
             await user.save();
         };
 
+        if (user.active === 'deactive') {
+            return res.status(403).json({ message: "Your account has been suspended due to violating Only Art Collection's terms" })
+        }
+
         const jwtPayload = {
             user_id: user._id,
             role: user.role
         }
+
+        await UserLog.create({
+            userId: user._id,
+            category: 'AUTH',
+            action: 'login',
+            description: `User logged in successfully`
+        });
 
         const secretKey = process.env.JWT_KEY;
         const expiresIn = '1h';

@@ -112,13 +112,13 @@ const BoardManager = () => {
   // RENDER UI
   // ================================================================
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="board-manager-container">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">My Boards</h1>
+      <div className="collections-header-row">
+        <h2>My Boards</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+          className="btn-add-collection-styled"
         >
           {showForm ? 'Cancel' : '+ Create Board'}
         </button>
@@ -126,45 +126,41 @@ const BoardManager = () => {
 
       {/* Hiển thị lỗi */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded mb-4">
+        <div style={{ color: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', padding: '12px', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.2)', marginBottom: '16px' }}>
           {error}
         </div>
       )}
 
       {/* Form tạo board */}
       {showForm && (
-        <div className="bg-gray-50 p-4 rounded-lg mb-6 border">
+        <div className="board-form-card">
           <form onSubmit={handleCreateBoard}>
-            <div className="mb-3">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Board Name *
-              </label>
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'block', marginBottom: '6px', color: 'var(--admin-text-secondary)' }}>Board Name *</label>
               <input
                 type="text"
                 value={newBoardName}
                 onChange={(e) => setNewBoardName(e.target.value)}
                 placeholder="Enter board name..."
-                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                 required
+                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--admin-border)', backgroundColor: 'var(--admin-bg)', color: 'var(--admin-text-primary)' }}
               />
             </div>
             
-            <div className="mb-3">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description (optional)
-              </label>
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'block', marginBottom: '6px', color: 'var(--admin-text-secondary)' }}>Description (optional)</label>
               <textarea
                 value={newBoardDesc}
                 onChange={(e) => setNewBoardDesc(e.target.value)}
                 placeholder="Add a description..."
-                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                 rows="2"
+                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--admin-border)', backgroundColor: 'var(--admin-bg)', color: 'var(--admin-text-primary)' }}
               />
             </div>
             
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+              className="btn-add-collection-styled"
             >
               Create Board
             </button>
@@ -174,12 +170,12 @@ const BoardManager = () => {
 
       {/* Danh sách boards */}
       {boards.length === 0 ? (
-        <div className="text-center py-12 text-gray-500">
-          <p className="text-lg">No boards created yet</p>
-          <p className="text-sm">Click "Create Board" to get started</p>
+        <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
+          <p style={{ fontSize: '1.1rem', marginBottom: '8px' }}>No boards created yet</p>
+          <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>Click "Create Board" to get started</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="board-grid">
           {boards.map(board => (
             <BoardCard 
               key={board._id} 
@@ -198,36 +194,38 @@ const BoardManager = () => {
 // ================================================================
 const BoardCard = ({ board, onDelete }) => {
   return (
-    <div className="bg-white border rounded-lg p-4 shadow hover:shadow-md transition">
-      <div className="flex justify-between items-start">
-        <div className="flex-1">
-          <h3 className="font-semibold text-lg">{board.name}</h3>
+    <div className="board-card-styled">
+      <div className="board-card-header">
+        <div style={{ flex: 1 }}>
+          <h3 className="board-card-title">{board.name}</h3>
           {board.description && (
-            <p className="text-gray-600 text-sm mt-1">{board.description}</p>
+            <p className="board-desc">{board.description}</p>
           )}
-          <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-            <span>📌 {board.pinCount || 0} pins</span>
-            <span>📅 {new Date(board.createdAt).toLocaleDateString()}</span>
-            <span className="text-xs">
-              {board.isPublic ? '🔓 Public' : '🔒 Private'}
-            </span>
-          </div>
         </div>
         
         <button
           onClick={() => onDelete(board._id, board.name)}
-          className="text-red-400 hover:text-red-600 transition p-1"
+          className="board-delete-btn"
           title="Delete board"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg style={{ width: '20px', height: '20px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
               d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" 
             />
           </svg>
         </button>
       </div>
+      
+      <div className="board-meta-row">
+        <span>📌 {board.pinCount || 0} pins</span>
+        <span>📅 {new Date(board.createdAt).toLocaleDateString()}</span>
+        <span>
+          {board.isPublic ? '🔓 Public' : '🔒 Private'}
+        </span>
+      </div>
     </div>
   );
 };
 
 export default BoardManager;
+

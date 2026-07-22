@@ -23,7 +23,7 @@ export default function GoogleAuth({setUser}) {
                 setUser({ username, role });
                 Swal.fire({
                     title: 'Login Successfully With Google!',
-                    text: `Wellcome ${username}!`,
+                    text: `Welcome ${username}!`,
                     icon: 'success',
                     confirmButtonText: 'Done'
                 })
@@ -34,7 +34,7 @@ export default function GoogleAuth({setUser}) {
             console.error('Error to login with Google!', error);
             Swal.fire({
                 title: 'Login Error!',
-                text: `Google Login failed.`,
+                text: error.response?.data?.message || `Google Login failed.`,
                 icon: 'error',
                 confirmButtonText: 'Done'
             })

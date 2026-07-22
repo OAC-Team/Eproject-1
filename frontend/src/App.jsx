@@ -1,57 +1,3 @@
-<<<<<<< HEAD
-import SignUpPage from './pages/SignUpPage';
-import LoginPage from './pages/LoginPage';
-import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import './App.css';
-import Swal from 'sweetalert2';
-import Cookies from 'js-cookie';
-
-function App() {
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
-
-
-  async function handleLogout() {
-  try {
-    const check = Swal.fire({
-      title: 'Are you sure?',
-      text: 'Are you sure to logout!',
-      icon: 'warning',
-      confirmButtonText: 'Log out',
-      showCancelButton: true,
-      cancelButtonText: 'Cancel'
-    })
-    if ((await check).isConfirmed) {
-      Cookies.remove('token');
-      Cookies.remove('username');
-      Cookies.remove('role');
-      setUser(null);
-      navigate('/');
-    }
-  } catch (error) {
-    console.error('Error system', error);
-  }
-};
-
-
-
-  return (
-    <>
-      <div>
-        <Link to="/login" >Login </Link>
-        <Link to="/register" >Sign Up</Link>
-      </div>
-      <Routes>
-        <Route path='/login' element={<LoginPage setUser={setUser} />} />
-        <Route path='/register' element={<SignUpPage setUser={setUser} />} />
-      </Routes>
-    </>
-  )
-}
-
-export default App;
-=======
 import SignUpPage from './pages/SignUpPage';
 import LoginPage from './pages/LoginPage';
 import Profile from './pages/Profile';
@@ -62,8 +8,19 @@ import Home from './pages/Home';
 import GalleryView from './pages/GalleryView';
 import NavBar from './components/NavBar';
 import ContactPage from './pages/ContactPage';
+import CollectionPage from './pages/CollectionPage';
 import { useState, useEffect } from 'react';
+import AdminLoginPage from './pages/AdminLoginPage'
+import PendingListPage from './pages/PendingListPage';
+import '@fontsource/cascadia-code';
 import './App.css';
+import AdminDashboardPage from './pages/AdminDashboardPage';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import CreatePaintingPage from './pages/CreatePaintingPage';
+import RejectedListPage from './pages/RejectedListPage';
+import SettingsPage from './pages/SettingsPage';
+import ChatWidget from './components/ChatWidget';
+import ViewUser from './components/ViewUser';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -71,17 +28,28 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path='/admin/login' element={<AdminLoginPage setUser={setUser} />} />
+        <Route path='/admin/dashboard' element={<AdminDashboardPage setUser={setUser} />}>
+          <Route path='/admin/dashboard/pendingList' element={<PendingListPage />} />
+          <Route path='/admin/dashboard/rejectList' element={<RejectedListPage />} />
+        </Route>
+
+        <Route path='/viewUserProfile/:user_id' element={<ViewUser />} />
         <Route path='/login' element={<LoginPage setUser={setUser} />} />
         <Route path='/register' element={<SignUpPage setUser={setUser} />} />
         <Route path='/contact' element={<ContactPage />} />
         <Route element={<GalleryLayout />}>
 
           <Route path='/' element={<Home />} />
+          <Route path='/createPainting' element={<CreatePaintingPage />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/boards' element={<BoardManager />} />
           <Route path='/gallery/:painting_id' element={<PaintingView />} />
+
         </Route>
+
       </Routes>
+      <ChatWidget></ChatWidget>
     </>
   )
 }
@@ -96,13 +64,13 @@ function GalleryLayout() {
           </a>
           <div className="sidebar-icon">
             <a href="/">
-              <img className="home-icon" src="/home.svg" alt="" />
+              <i className='bi bi-house'></i>
             </a>
             <a href="/">
               <img className="favorite-icon" src="/favorite.svg" alt="" />
             </a>
-            <a href="/">
-              <img className="add-icon" src="/add.svg" alt="" />
+            <a href="/createPainting">
+              <i className="bi bi-plus-square"></i>
             </a>
             <a href="/aboutonlyartcollection.html">Giới thiệu</a>
 
@@ -119,6 +87,34 @@ function GalleryLayout() {
   )
 }
 
+function SettingsLayout() {
+  return (
+    <div>
+      <div className="wrapper">
+        <aside>
+          <a href="/">
+            <img className="logo" src="https://i.postimg.cc/cLxRDMHf/image-1(1).png" alt="" />
+          </a>
+          <div className="sidebar-icon">
+            <a href="/">
+              <i className='bi bi-house'></i>
+            </a>
+            <a href="/">
+              <img className="favorite-icon" src="/favorite.svg" alt="" />
+            </a>
+            <a href="/createPainting">
+              <i className="bi bi-plus-square"></i>
+            </a>
+          </div>
+        </aside>
+        <main className="settings-main">
+          <div>
+            <Outlet />
+          </div>
+        </main>
+      </div>
+    </div>
+  )
+}
 
 export default App;
->>>>>>> origin/main

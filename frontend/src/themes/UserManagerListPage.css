@@ -1,0 +1,167 @@
+.user-manager-container {
+    padding: 24px;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+}
+
+.user-manager-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    background-color: #0b0f19; /* Nền tối bảng */
+    border: 1px solid #161b26;
+    border-radius: 12px;
+}
+
+.user-manager-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+/* Header bảng */
+.user-manager-table th {
+    background-color: #0d121f;
+    color: #4b5563; /* Màu chữ tiêu đề xám mờ */
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 16px 20px;
+    border-bottom: 1px solid #161b26;
+}
+
+/* Các hàng dữ liệu */
+.user-manager-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #161b26;
+    vertical-align: middle;
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+.user-info-flex {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #242b35;
+}
+
+.user-name-text {
+    color: #38bdf8; /* Màu xanh neon nhạt đặc trưng cho link/username */
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.user-name-text:hover {
+    text-decoration: underline;
+}
+
+.col-email {
+    color: #94a3b8;
+}
+
+/* Các nhãn phân quyền (Role Badges) khớp giao diện ảnh */
+.role-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.role-badge.admin {
+    background-color: #eab30826;
+    color: #eab308; /* Vàng cam */
+}
+
+.role-badge.member {
+    background-color: rgba(99, 137, 241, 0.15);
+    color: #81a1f8; /* Xanh tím nhạt */
+}
+
+.status.active {
+    background-color: #08ea1b26;
+    color: #35ea08;
+}
+
+.status.deactive {
+    background-color: #ea080826;
+    color: #ea0808;
+}
+
+.status.unknown {
+    background-color: #d8cbcb26;
+    color: #e2d4d4;
+}
+
+.col-date {
+    color: #64748b;
+}
+
+/* Khu vực nút bấm Action */
+.col-actions {
+    white-space: nowrap;
+}
+
+.action-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 6px;
+    margin: 0 6px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-view-icon {
+    color: #64748b;
+}
+
+.btn-view-icon:hover {
+    color: #38bdf8;
+    transform: scale(1.1);
+}
+
+.btn-delete-icon {
+    color: #ef4444; /* Đỏ rực */
+}
+
+.btn-delete-icon:hover {
+    color: #f87171;
+    transform: scale(1.1);
+}
+
+.empty-message {
+    padding: 40px;
+    text-align: center;
+    color: #64748b;
+    font-size: 16px;
+}
