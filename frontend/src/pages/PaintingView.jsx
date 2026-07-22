@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import paintingApi from '../api/paintingApi'
-import userApi from '../api/userApi'
 
 export default function PaintingView() {
     const BASE_URL = 'http://localhost:5000'
@@ -32,7 +31,7 @@ export default function PaintingView() {
             </div>
             <div className="painting-info-container">
                 <div className="painting-img-wrapper">
-                    <img className="painting-img" src={`${BASE_URL}${viewPainting?.image_url}`} alt={viewPainting?.title} />
+                    <img className="painting-img" src={`${viewPainting?.image_url}`} alt={viewPainting?.title} />
                 </div>
 
                 <div className="painting-details-sidebar">

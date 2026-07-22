@@ -11,22 +11,22 @@ export default function Home() {
     const [userData, setUserData] = useState({})
     const [isOpen, setIsOpen] = useState(false);
     const [paintings, setPaintings] = useState([]);
+    const token = Cookies.get('token');
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
 
     useEffect(() => {
-        const token = Cookies.get('token');
 
         (async () => {
-            // const responseData = await userApi.fetchUser(token);
-            // if (responseData.userData) {
-            //     setUserData(responseData.userData);
-            //     setUserPaintings(responseData.userPaintings);
-            // } else {
-            //     setUserData({ username: 'Guest User', role: 'guest' });
-            // }
+            const responseData = await userApi.fetchUser(token);
+            if (responseData.userData) {
+                setUserData(responseData.userData);
+                {/* setUserPaintings(responseData.userPaintings); */}
+            } else {
+                setUserData({ username: 'Guest User', role: 'guest' });
+            }
 
             const fetchedPaintings = await paintingApi.getAllPaintings()
             if (fetchedPaintings) {
@@ -42,7 +42,7 @@ export default function Home() {
                 {/* <NavBar /> */}
 
                 {/* Images Gallery */}
-                {userData && <GalleryView paintings={paintings} />}
+                {userData && <GalleryView paintings={paintings} user={userData} token={token} />}
             </main>
         </>
     )

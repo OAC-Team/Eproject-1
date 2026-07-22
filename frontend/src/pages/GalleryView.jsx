@@ -1,7 +1,8 @@
-import {useState} from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import InteractionBar from '../components/InteractionBar';
 
-export default function GalleryView({ paintings }) {
+export default function GalleryView({ paintings, user, token }) {
     const navigate = useNavigate()
     const BASE_URL = "http://localhost:5000"
 
@@ -27,7 +28,7 @@ export default function GalleryView({ paintings }) {
                     {/* Image Frame Wrapper */}
                     <div className="gallery-image-frame">
                         <img
-                            src={`${BASE_URL}${painting.image_url}`}
+                            src={`${painting.image_url}`}
                             alt={painting.title}
                             className="gallery-display-img"
                         />
@@ -47,6 +48,12 @@ export default function GalleryView({ paintings }) {
                         {painting.artistic_style && (
                             <span className="gallery-style-badge">{painting.artistic_style}</span>
                         )}
+                        <InteractionBar
+                            painting_id={painting._id}
+                            initialLikeCount={painting.favorites_count}
+                            initialIsLiked={user?.favorites?.includes(painting._id)}
+                            token={token}
+                            userCollections={user?.collections || []} />
                     </div>
                 </div>
             ))}

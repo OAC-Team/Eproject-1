@@ -9,7 +9,15 @@ import GalleryView from './pages/GalleryView';
 import NavBar from './components/NavBar';
 import ContactPage from './pages/ContactPage';
 import { useState, useEffect } from 'react';
+import AdminLoginPage from './pages/AdminLoginPage'
+import PendingListPage from './pages/PendingListPage';
+import '@fontsource/cascadia-code';
 import './App.css';
+import AdminDashboardPage from './pages/AdminDashboardPage';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import CreatePaintingPage from './pages/CreatePaintingPage';
+import RejectedListPage from './pages/RejectedListPage';
+import ViewUser from './components/ViewUser';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -17,12 +25,20 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path='/admin/login' element={<AdminLoginPage setUser={setUser} />} />
+        <Route path='/admin/dashboard' element={<AdminDashboardPage setUser={setUser}/>}>
+          <Route path='/admin/dashboard/pendingList' element={<PendingListPage/>}/>
+          <Route path='/admin/dashboard/rejectList' element={<RejectedListPage />}/>
+        </Route>
+
+        <Route path='/viewUserProfile/:user_id' element={<ViewUser />} />
         <Route path='/login' element={<LoginPage setUser={setUser} />} />
         <Route path='/register' element={<SignUpPage setUser={setUser} />} />
         <Route path='/contact' element={<ContactPage />} />
         <Route element={<GalleryLayout />}>
 
           <Route path='/' element={<Home />} />
+          <Route path='/createPainting' element={<CreatePaintingPage/>} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/boards' element={<BoardManager />} />
           <Route path='/gallery/:painting_id' element={<PaintingView />} />
@@ -43,13 +59,13 @@ function GalleryLayout() {
           </a>
           <div className="sidebar-icon">
             <a href="/">
-              <img className="home-icon" src="/home.svg" alt="" />
+              <i className='bi bi-house'></i>
             </a>
             <a href="/">
               <img className="favorite-icon" src="/favorite.svg" alt="" />
             </a>
-            <a href="/">
-              <img className="add-icon" src="/add.svg" alt="" />
+            <a href="/createPainting">
+              <i className="bi bi-plus-square"></i>
             </a>
           </div>
         </aside>

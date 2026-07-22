@@ -39,9 +39,10 @@ import Swal from "sweetalert2";
 import uploadApi from "../api/uploadApi";
 import { useState } from "react";
 
-export default function Upload({onUploadSuccess}) {
+export default function Upload({ onUploadSuccess }) {
     const [selectedFile, setSelectedFile] = useState('');
     const [previewUrl, setPreviewUrl] = useState('');
+    const [loading, setLoading] = useState(false)
 
     const fileSelectedHandler = (e) => {
         const file = e.target.files[0]
@@ -61,10 +62,12 @@ export default function Upload({onUploadSuccess}) {
             });
             return;
         }
+        
+        setLoading(true)
 
         try {
             const imagePath = await uploadApi.uploadImage(selectedFile);
-            const uploadUrl = `http://localhost:5000/${imagePath}`;
+            const uploadUrl = imagePath.url;
 
             Swal.fire({
                 title: 'Upload Successfully!',
@@ -93,9 +96,9 @@ export default function Upload({onUploadSuccess}) {
 
     return (
         <>
-            <input type="file" accept="image/*" onChange={fileSelectedHandler}/>
+            <input type="file" accept="image/*" onChange={fileSelectedHandler} />
             {previewUrl && <img src={previewUrl} />}
-            <button onClick={uploadHandlerSubmit}>Upload</button>
+            <button type="button" onClick={uploadHandlerSubmit}>Upload</button>
         </>
     )
 }

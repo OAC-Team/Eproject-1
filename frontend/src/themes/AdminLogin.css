@@ -1,0 +1,157 @@
+/* AdminLogin.css */
+.admin-login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #08080c;
+    font-family: 'Cascadia Code', monospace;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background subtle glow */
+.admin-login-wrapper::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(8, 8, 12, 0) 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+}
+
+.admin-login-card {
+    background-color: #111322;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 50px 40px;
+    width: 100%;
+    max-width: 420px;
+    z-index: 1;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.admin-login-logo {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+.admin-login-card h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.admin-login-card p.subtitle {
+    color: #718096;
+    font-size: 0.85rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.admin-form-group {
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.admin-form-group label {
+    display: block;
+    color: #a0aec0;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.admin-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.admin-input-wrapper i {
+    position: absolute;
+    left: 15px;
+    color: #4a5568;
+    font-size: 1.1rem;
+}
+
+.admin-form-group input {
+    width: 100%;
+    padding: 14px 45px 14px 45px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: 'Cascadia Code', monospace;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.admin-form-group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.05);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.admin-form-group input::placeholder {
+    color: #4a5568;
+}
+
+.admin-input-wrapper button {
+    position: absolute;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: #4a5568;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.admin-input-wrapper button:hover {
+    color: #3b82f6;
+}
+
+.admin-login-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Cascadia Code', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+}
+
+.admin-login-btn:active {
+    transform: translateY(0);
+}

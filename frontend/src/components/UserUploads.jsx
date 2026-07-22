@@ -21,7 +21,7 @@ export default function UserUploads({ paintings }) {
                         {paintings?.map(painting => (
                             <div key={painting._id}>
                                 <img onClick={(
-                                ) => navigate(`/gallery/${painting._id}`)} src={`http://localhost:5000${painting.image_url}`} alt="" />
+                                ) => navigate(`/gallery/${painting._id}`)} src={painting.image_url} alt="" />
                             </div>
                         ))}
                     </div>
