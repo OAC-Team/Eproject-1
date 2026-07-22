@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import GalleryView from './pages/GalleryView';
 import NavBar from './components/NavBar';
 import ContactPage from './pages/ContactPage';
+import CollectionPage from './pages/CollectionPage';
 import { useState, useEffect } from 'react';
 import AdminLoginPage from './pages/AdminLoginPage'
 import PendingListPage from './pages/PendingListPage';
@@ -17,6 +18,8 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import CreatePaintingPage from './pages/CreatePaintingPage';
 import RejectedListPage from './pages/RejectedListPage';
+import SettingsPage from './pages/SettingsPage';
+import ChatWidget from './components/ChatWidget';
 import ViewUser from './components/ViewUser';
 
 function App() {
@@ -26,9 +29,9 @@ function App() {
     <>
       <Routes>
         <Route path='/admin/login' element={<AdminLoginPage setUser={setUser} />} />
-        <Route path='/admin/dashboard' element={<AdminDashboardPage setUser={setUser}/>}>
-          <Route path='/admin/dashboard/pendingList' element={<PendingListPage/>}/>
-          <Route path='/admin/dashboard/rejectList' element={<RejectedListPage />}/>
+        <Route path='/admin/dashboard' element={<AdminDashboardPage setUser={setUser} />}>
+          <Route path='/admin/dashboard/pendingList' element={<PendingListPage />} />
+          <Route path='/admin/dashboard/rejectList' element={<RejectedListPage />} />
         </Route>
 
         <Route path='/viewUserProfile/:user_id' element={<ViewUser />} />
@@ -38,13 +41,22 @@ function App() {
         <Route element={<GalleryLayout />}>
 
           <Route path='/' element={<Home />} />
-          <Route path='/createPainting' element={<CreatePaintingPage/>} />
+          <Route path='/createPainting' element={<CreatePaintingPage />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/boards' element={<BoardManager />} />
           <Route path='/gallery/:painting_id' element={<PaintingView />} />
+          <Route path='/collections/:collection_id' element={<CollectionPage />} />
 
         </Route>
+
+        <Route element={<SettingsLayout />}>
+
+          <Route path='/profile/settings' element={<SettingsPage />} />
+
+        </Route>
+
       </Routes>
+      <ChatWidget></ChatWidget>
     </>
   )
 }
@@ -80,5 +92,34 @@ function GalleryLayout() {
   )
 }
 
+function SettingsLayout() {
+  return (
+    <div>
+      <div className="wrapper">
+        <aside>
+          <a href="/">
+            <img className="logo" src="https://i.postimg.cc/cLxRDMHf/image-1(1).png" alt="" />
+          </a>
+          <div className="sidebar-icon">
+            <a href="/">
+              <i className='bi bi-house'></i>
+            </a>
+            <a href="/">
+              <img className="favorite-icon" src="/favorite.svg" alt="" />
+            </a>
+            <a href="/createPainting">
+              <i className="bi bi-plus-square"></i>
+            </a>
+          </div>
+        </aside>
+        <main className="settings-main">
+          <div>
+            <Outlet />
+          </div>
+        </main>
+      </div>
+    </div>
+  )
+}
 
 export default App;

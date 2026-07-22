@@ -8,9 +8,9 @@ import LogOut from '../components/LogOut'
 import NavBar from '../components/NavBar'
 
 export default function Home() {
+
     const [userData, setUserData] = useState({})
     const [isOpen, setIsOpen] = useState(false);
-    const [paintings, setPaintings] = useState([]);
     const token = Cookies.get('token');
 
     const toggleDropdown = () => {
@@ -22,15 +22,10 @@ export default function Home() {
         (async () => {
             const responseData = await userApi.fetchUser(token);
             if (responseData.userData) {
+                // console.log(responseData)
                 setUserData(responseData.userData);
-                {/* setUserPaintings(responseData.userPaintings); */}
             } else {
                 setUserData({ username: 'Guest User', role: 'guest' });
-            }
-
-            const fetchedPaintings = await paintingApi.getAllPaintings()
-            if (fetchedPaintings) {
-                setPaintings(fetchedPaintings.paintings)
             }
         })()
     }, [])
@@ -38,11 +33,8 @@ export default function Home() {
     return (
         <>
             <main className="main">
-                {/* Utility bar */}
-                {/* <NavBar /> */}
-
                 {/* Images Gallery */}
-                {userData && <GalleryView paintings={paintings} user={userData} token={token} />}
+                {userData && <GalleryView user={userData} token={token} key={window.location.search} />}
             </main>
         </>
     )

@@ -1,10 +1,47 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import '../themes/GalleryView.css'
+import paintingApi from '../api/paintingApi';
 import InteractionBar from '../components/InteractionBar';
 
-export default function GalleryView({ paintings, user, token }) {
-    const navigate = useNavigate()
-    const BASE_URL = "http://localhost:5000"
+export default function GalleryView({ user, token }) {
+    const navigate = useNavigate();
+    const BASE_URL = "http://localhost:5000";
+    const [searchParams] = useSearchParams();
+    const [paintings, setPaintings] = useState([]);
+
+    const searchKeyword = searchParams.get('search') || '';
+    const surface = searchParams.get('surface') || '';
+    const medium = searchParams.get('medium') || '';
+    const style = searchParams.get('style') || '';
+
+    function handleViewPainting(painting_id) {
+        // console.log(`Navigating to ${painting_id}`)
+        navigate(`/gallery/${painting_id}`, {
+            state: {
+                userData: user
+            }
+        })
+    }
+
+    // Search function
+    useEffect(() => {
+        async function loadGalleryData() {
+            try {
+                const data = await paintingApi.getAllPaintings(searchKeyword, {
+                    surface,
+                    medium,
+                    style
+                });
+                setPaintings(data.paintings);
+                // console.log("Fetched filtered paintings:", data.paintings);
+            } catch (error) {
+                console.error("Error loading gallery data:", error.message);
+            }
+        }
+
+        loadGalleryData();
+    }, [searchKeyword, surface, medium, style]);
 
     if (!Array.isArray(paintings)) {
         // console.log(paintings)
@@ -14,11 +51,6 @@ export default function GalleryView({ paintings, user, token }) {
 
     if (paintings.length === 0) {
         return <p>No pictures found in the gallery yet.</p>;
-    }
-
-    function handleViewPainting(painting_id) {
-        console.log(`Navigating to ${painting_id}`)
-        navigate(`/gallery/${painting_id}`)
     }
 
     return (
@@ -37,7 +69,7 @@ export default function GalleryView({ paintings, user, token }) {
                             <span className="gallery-artist-tag">{painting.artist}</span>
                             <div className="gallery-view-action">
                                 <button onClick={() => handleViewPainting(painting._id)}>
-                                    <img className="open-url-icon" src="/open_url.png" alt="" disabled></img>
+                                    <img className="open-url-icon" src="/open_url.png" alt=""></img>
                                 </button>
                             </div>
                         </div>

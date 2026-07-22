@@ -23,7 +23,7 @@ export default function GoogleAuth({setUser}) {
                 setUser({ username, role });
                 Swal.fire({
                     title: 'Login Successfully With Google!',
-                    text: `Wellcome ${username}!`,
+                    text: `Welcome ${username}!`,
                     icon: 'success',
                     confirmButtonText: 'Done'
                 })

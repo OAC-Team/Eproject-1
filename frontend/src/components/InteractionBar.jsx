@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import {createPortal} from 'react-dom';
 import userApi from "../api/userApi";
 import Swal from 'sweetalert2';
 import { createPortal } from 'react-dom'
@@ -87,11 +88,11 @@ export default function InteractionBar({ painting_id, initialLikeCount, initialI
                 {isLiked ? <i className="bi bi-heart-fill"></i> : <i className="bi bi-heart"></i>}
                 <span>{likeCount}</span>
             </button>
-            
+
             <button className="share-btn" onClick={handleShare} title="Share Link">
                 <i className="bi bi-share"></i>
             </button>
-            
+
             <button className="save-btn" onClick={() => setShowSaveModal(true)} title="Save to Collection">
                 <i className="bi bi-folder-plus"></i> Save
             </button>
