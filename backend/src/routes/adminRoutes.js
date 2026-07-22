@@ -12,7 +12,11 @@ const {
     verifyAdminPassword,
     getAdminLog,
     resetUserPassword,
-    getUserLog } = require('../controllers/adminController');
+    getUserLog,
+    updateUserProfileByAdmin,
+    getAllUserLogs,
+    deleteUserLog,
+    getRejectedPaintingsByUser } = require('../controllers/adminController');
 const { auth, isAdmin } = require('../middlewares/auth')
 
 const routes = express.Router()
@@ -22,10 +26,14 @@ const routes = express.Router()
 routes.get('/users', auth, isAdmin, getAllUser)
 routes.get('/users/:user_id', auth, isAdmin, getUser)
 routes.get('/userLog/:user_id', auth, isAdmin, getUserLog)
+routes.get('/userLogs', auth, isAdmin, getAllUserLogs)
+routes.get('/users/:user_id/rejected-paintings', auth, isAdmin, getRejectedPaintingsByUser)
 
-//PATCH, PUT
+//PATCH, PUT, DELETE
 routes.patch('/users/:user_id/status', auth, isAdmin, updateStatusUser)
 routes.patch('/users/:user_id/reset-password', auth, isAdmin, resetUserPassword)
+routes.patch('/users/:user_id/profile', auth, isAdmin, updateUserProfileByAdmin)
+routes.delete('/userLog/:log_id', auth, isAdmin, deleteUserLog)
 
 //admin
 //GET
