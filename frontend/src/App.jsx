@@ -45,6 +45,13 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/boards' element={<BoardManager />} />
           <Route path='/gallery/:painting_id' element={<PaintingView />} />
+          <Route path='/collections/:collection_id' element={<CollectionPage />} />
+
+        </Route>
+
+        <Route element={<SettingsLayout />}>
+
+          <Route path='/profile/settings' element={<SettingsPage />} />
 
         </Route>
 
@@ -72,8 +79,6 @@ function GalleryLayout() {
             <a href="/createPainting">
               <i className="bi bi-plus-square"></i>
             </a>
-            <a href="/aboutonlyartcollection.html">Giới thiệu</a>
-
           </div>
         </aside>
         <main>

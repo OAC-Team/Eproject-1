@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-const express = require('express');
-const authRoutes = require('./authRoutes');
-const routes = express.Router();
-
-routes.use('/auth', authRoutes);
-
-module.exports = routes;
-=======
 const express = require('express');
 const authRoutes = require('./authRoutes');
 const userRoutes = require('./userRoutes');
@@ -26,4 +17,3 @@ routes.use('/admin', adminRoutes);
 routes.use('/assistant', chatRoutes);
 
 module.exports = routes;
->>>>>>> origin/main
