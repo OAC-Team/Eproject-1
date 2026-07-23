@@ -63,4 +63,4 @@ async function getUserFavoritePaintings(token) {
     }
 }
 
-export default { getRecommendedPaintings, getPainting, getAllPaintings, deletePainting };
+export default {getUserFavoritePaintings, getRecommendedPaintings, getPainting, getAllPaintings, deletePainting };
