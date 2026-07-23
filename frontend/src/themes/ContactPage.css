@@ -1,33 +1,39 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* ============================================================
+   ContactPage.css — Sleek Dark Navy Layout
+   ============================================================ */
 
 .contact-page {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: #f8f9fa;
-  padding: 40px 20px;
-  color: #333333;
+  background-color: #08080c;
+  padding: 80px 20px;
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* --- Container tổng (Chia 2 cột bằng Flexbox) --- */
 .contact-container {
   display: flex;
   max-width: 1100px;
+  width: 100%;
   margin: 0 auto;
-  background: #ffffff;
-  border-radius: 20px;
-  /* Bo góc lớn giống card của ảnh 3 */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  /* Đổ bóng nhẹ hiện đại */
+  background: #111322;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 }
 
 /* --- Cột trái: Thông tin --- */
 .contact-info {
   flex: 1;
-  padding: 40px;
+  padding: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #ffffff;
+  background-color: #111322;
 }
 
 .contact-info h2 {
@@ -35,42 +41,42 @@
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 16px;
-  color: #1a1a1a;
+  color: #ffffff;
 }
 
-/* Đồng bộ class .text */
 .contact-info .text {
-  color: #666;
+  color: #94a3b8;
   line-height: 1.6;
   margin-bottom: 24px;
+  font-size: 15px;
 }
 
 /* Đồng bộ class .info-list & .info-item */
 .info-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   margin-bottom: 24px;
 }
 
 .info-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   font-size: 15px;
-  color: #333;
+  color: #94a3b8;
 }
 
 .info-item i {
-  color: #38b6ff; /* Giữ màu xanh nguyên bản của nút gửi làm màu icon */
-  font-size: 18px;
+  color: #3b82f6; 
+  font-size: 20px;
   width: 24px;
   text-align: center;
 }
 
 .info-item span {
   font-size: 15px;
-  color: #1a1a1a;
+  color: #ffffff;
 }
 
 /* Đồng bộ class .social-media & .social-icons */
@@ -80,7 +86,7 @@
 
 .social-media p {
   font-weight: 600;
-  color: #555;
+  color: #94a3b8;
   margin-bottom: 12px;
   font-size: 14px;
 }
@@ -94,26 +100,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background-color: #f1f5f9;
-  color: #555;
+  background-color: rgba(255, 255, 255, 0.03);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   transition: all 0.2s ease;
 }
 
 .social-icons a:hover {
-  background-color: #38b6ff;
+  background-color: #3b82f6;
   color: #ffffff;
+  transform: translateY(-2px);
 }
 
-/* --- Cột phải: Form (Style đồng bộ Ảnh 3) --- */
+/* --- Cột phải: Form --- */
 .contact-form-wrapper {
   flex: 1;
-  padding: 40px;
-  background-color: #ffffff;
-  border-left: 1px solid #edf2f7;
-  /* Vạch ngăn cách nhẹ giữa 2 bên */
+  padding: 50px;
+  background-color: #111322;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .contact-form-wrapper h3 {
@@ -121,10 +128,9 @@
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 24px;
-  color: #1a1a1a;
+  color: #ffffff;
 }
 
-/* Thay thế .form-group thành .input-group và đảo thứ tự hiển thị bằng flex-direction */
 .input-group {
   display: flex;
   flex-direction: column-reverse;
@@ -134,23 +140,21 @@
 
 .input-group label {
   font-weight: 600;
-  font-size: 15px;
-  color: #2d3748;
+  font-size: 14px;
+  color: #94a3b8;
 }
 
-/* Style chung cho Input, Select, Textarea giống ảnh 3 */
+/* Style chung cho Input, Select, Textarea */
 .input-group input,
 .input-group select,
 .input-group textarea {
   width: 100%;
   padding: 14px 20px;
   font-size: 14px;
-  border: 1px solid #cbd5e1;
-  /* Viền xám mảnh */
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  /* Bo góc bầu bĩnh giống ảnh 3 */
-  background-color: #ffffff;
-  color: #333;
+  background-color: rgba(0, 0, 0, 0.25);
+  color: #ffffff;
   box-sizing: border-box;
   outline: none;
   transition: all 0.2s ease;
@@ -163,65 +167,79 @@
   -webkit-appearance: none;
 }
 
-/* Hiệu ứng khi click vào ô nhập liệu */
+/* Hiệu ứng khi focus */
 .input-group input:focus,
 .input-group select:focus,
 .input-group textarea:focus {
   border-color: #3b82f6;
-  /* Đổi sang xanh khi focus */
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
-/* Placeholder chữ xám nhạt mờ */
-.input-group input::placeholder,
-.input-group textarea::placeholder,
-.input-group select::placeholder {
-  color: #a0aec0;
+.input-group select option {
+  background-color: #111322;
+  color: #ffffff;
 }
 
-/* Khống chế kéo kéo của textarea */
-.input-group textarea {
-  resize: vertical;
-  font-family: inherit;
-}
-
-/* --- Nút gửi đi (Màu xanh dương giống nút Sign Up ảnh 3) --- */
+/* Nút gửi đi */
 .submit-btn {
   width: 100%;
-  background-color: #38b6ff;
-  /* Màu xanh thiên thanh của nút Sign Up */
+  background-color: #3b82f6;
   color: #ffffff;
   border: none;
   padding: 14px;
   font-size: 16px;
   font-weight: 700;
   border-radius: 12px;
-  /* Bo góc nút */
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition: all 0.2s ease;
   margin-top: 10px;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.2);
 }
 
 .submit-btn:hover {
-  background-color: #1da1f2;
-  /* Đậm hơn một chút khi di chuột */
+  background-color: #2563eb;
+  transform: translateY(-1px);
 }
 
 .submit-btn:active {
   transform: scale(0.98);
-  /* Hiệu ứng lún nút nhẹ khi bấm */
+}
+
+.status-message {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-message.success {
+  background-color: rgba(6, 95, 70, 0.2);
+  color: #a7f3d0;
+  border: 1px solid rgba(167, 243, 208, 0.2);
+}
+
+.status-message.error {
+  background-color: rgba(153, 27, 27, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(252, 165, 165, 0.2);
+}
+
+.status-message.loading {
+  background-color: rgba(55, 65, 81, 0.2);
+  color: #e5e7eb;
+  border: 1px solid rgba(229, 231, 235, 0.2);
 }
 
 /* --- Responsive cho màn hình điện thoại --- */
 @media (max-width: 768px) {
   .contact-container {
     flex-direction: column;
-    margin: 10px;
   }
 
   .contact-form-wrapper {
     border-left: none;
-    border-top: 1px solid #edf2f7;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding: 30px 20px;
   }
 

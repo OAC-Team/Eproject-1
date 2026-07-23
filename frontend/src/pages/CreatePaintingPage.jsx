@@ -503,7 +503,7 @@ export default function CreatePaintingPage() {
                             </button>
                         </div>
 
-                        <button type="submit" disabled={loading} className="btn-submit-pinterest" disabled={isAnalyzing || !file}>
+                        <button type="submit" className="btn-submit-pinterest" disabled={ loading || isAnalyzing || !file}>
                             {loading ? 'Uploading Masterpiece...' : 'Submit Painting'}
                         </button>
                     </div>
