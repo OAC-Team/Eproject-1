@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import paintingApi from '../api/paintingApi';
-export default function Recommendations({refreshTrigger}) {
+export default function Recommendations({ refreshTrigger }) {
     const [recommended, setRecommended] = useState([]);
     const [basis, setBasis] = useState('');
     const [loading, setLoading] = useState(false);
@@ -25,6 +25,10 @@ export default function Recommendations({refreshTrigger}) {
         }
     };
 
+    function handleViewPainting(painting_id) {
+        navigate(`/gallery/${painting_id}`)
+    }
+
     useEffect(() => {
         fetchRecommendations();
     }, []);
@@ -42,19 +46,30 @@ export default function Recommendations({refreshTrigger}) {
                         </button>
                     </div>
                     <div className="recommended-gallery-grid">
-                        {recommended.map(p => (
-                            <div key={p._id} className="gallery-card"
-                                onClick={() => navigate(`/gallery/${p._id}`)}>
+                        {recommended.map((painting) => (
+                            <div key={painting._id} className="gallery-card">
+                                {/* Image Frame Wrapper */}
                                 <div className="gallery-image-frame">
-                                    <img src={p.image_url} alt={p.title}
-                                        className="gallery-display-img" />
+                                    <img
+                                        src={`${painting.image_url}`}
+                                        alt={painting.title}
+                                        className="gallery-display-img"
+                                    />
+
+                                    <div className="gallery-card-overlay">
+                                        <span className="gallery-artist-tag">{painting.artist}</span>
+                                        <div className="gallery-view-action">
+                                            <button onClick={() => handleViewPainting(painting._id)}>
+                                                <img className="open-url-icon" src="/open_url.png" alt=""></img>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
+
                                 <div className="gallery-card-details">
-                                    <h4 className="gallery-card-title">{p.title}</h4>
-                                    {p.artistic_style && (
-                                        <span className="gallery-style-badge">
-                                            {p.artistic_style}
-                                        </span>
+                                    <h4 className="gallery-card-title">{painting.title}</h4>
+                                    {painting.artistic_style && (
+                                        <span className="gallery-style-badge">{painting.artistic_style}</span>
                                     )}
                                 </div>
                             </div>
