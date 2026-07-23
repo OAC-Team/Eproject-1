@@ -1,4 +1,5 @@
 import SignUpPage from './pages/SignUpPage';
+import AboutOnlyArtCollectionPage from './pages/AboutOnlyArtCollectionPage';
 import LoginPage from './pages/LoginPage';
 import Profile from './pages/Profile';
 import BoardManager from './components/BoardManager';
@@ -22,6 +23,7 @@ import SettingsPage from './pages/SettingsPage';
 import ChatWidget from './components/ChatWidget';
 import ViewUser from './components/ViewUser';
 
+
 function App() {
   const [user, setUser] = useState(null);
 
@@ -38,9 +40,11 @@ function App() {
         <Route path='/login' element={<LoginPage setUser={setUser} />} />
         <Route path='/register' element={<SignUpPage setUser={setUser} />} />
         <Route path='/contact' element={<ContactPage />} />
+        <Route path='/' element={<AboutOnlyArtCollectionPage />} />
         <Route element={<GalleryLayout />}>
 
-          <Route path='/' element={<Home />} />
+
+          <Route path='/gallery' element={<Home />} />
           <Route path='/createPainting' element={<CreatePaintingPage />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/boards' element={<BoardManager />} />
@@ -66,19 +70,19 @@ function GalleryLayout() {
     <div className="root">
       <div className="wrapper">
         <aside>
-          <a href="/">
+          <Link to="/">
             <img className="logo" src="https://i.postimg.cc/cLxRDMHf/image-1(1).png" alt="" />
-          </a>
+          </Link>
           <div className="sidebar-icon">
-            <a href="/">
+            <Link to="/gallery">
               <i className='bi bi-house'></i>
-            </a>
-            <a href="/">
+            </Link>
+            <Link to="/gallery">
               <img className="favorite-icon" src="/favorite.svg" alt="" />
-            </a>
-            <a href="/createPainting">
+            </Link>
+            <Link to="/createPainting">
               <i className="bi bi-plus-square"></i>
-            </a>
+            </Link>
           </div>
         </aside>
         <main>
@@ -97,19 +101,19 @@ function SettingsLayout() {
     <div>
       <div className="wrapper">
         <aside>
-          <a href="/">
+          <Link to="/">
             <img className="logo" src="https://i.postimg.cc/cLxRDMHf/image-1(1).png" alt="" />
-          </a>
+          </Link>
           <div className="sidebar-icon">
-            <a href="/">
+            <Link to="/gallery">
               <i className='bi bi-house'></i>
-            </a>
-            <a href="/">
+            </Link>
+            <Link to="/gallery">
               <img className="favorite-icon" src="/favorite.svg" alt="" />
-            </a>
-            <a href="/createPainting">
+            </Link>
+            <Link to="/createPainting">
               <i className="bi bi-plus-square"></i>
-            </a>
+            </Link>
           </div>
         </aside>
         <main className="settings-main">
@@ -121,5 +125,7 @@ function SettingsLayout() {
     </div>
   )
 }
+
+
 
 export default App;

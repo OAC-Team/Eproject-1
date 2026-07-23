@@ -1,0 +1,505 @@
+/* ============================================================
+   AboutOnlyArtCollectionPage.css
+   Dark Navy Theme — Matching OAC Web Identity
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-main:        #08080c;
+    --bg-card:        #111322;
+    --bg-card-hover:  #161a2e;
+    --border:         rgba(255, 255, 255, 0.07);
+    --accent:         #3b82f6;
+    --accent-glow:    rgba(59, 130, 246, 0.22);
+    --accent-dim:     rgba(59, 130, 246, 0.08);
+    --text-primary:   #f0f4ff;
+    --text-secondary: #8b95b0;
+    --text-muted:     #475569;
+    --radius-card:    20px;
+    --transition:     all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+/* ── Utilities ── */
+.section-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 28px;
+}
+
+/* ============================================================
+   HEADER — Glassmorphism Sticky Nav
+   ============================================================ */
+.about-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(8, 8, 12, 0.82);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+}
+
+.header-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 18px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.about-logo {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(1.05);
+}
+
+.about-nav {
+    display: flex;
+    gap: 4px;
+}
+
+.about-nav a {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    padding: 8px 18px;
+    border-radius: 10px;
+    letter-spacing: 0.02em;
+}
+
+.about-nav a:hover {
+    color: var(--text-primary);
+    background: var(--accent-dim);
+}
+
+/* ============================================================
+   HERO — Atmospheric Banner
+   ============================================================ */
+.hero-section {
+    position: relative;
+    min-height: 58vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(59, 130, 246, 0.12) 0%, transparent 70%),
+        linear-gradient(180deg, #0d1020 0%, var(--bg-main) 100%);
+    overflow: hidden;
+    padding: 80px 24px 60px;
+}
+
+/* Subtle particle-like radial shimmer */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 760px;
+}
+
+.brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 20px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    color: var(--accent);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 28px;
+}
+
+.hero-content h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.8rem, 6vw, 4.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    background: linear-gradient(160deg, #ffffff 40%, #7aa7f5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+}
+
+.hero-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 2.2vw, 1.25rem);
+    font-style: italic;
+    color: var(--text-secondary);
+    max-width: 580px;
+    margin: 0 auto;
+    line-height: 1.65;
+}
+
+.accent-line {
+    width: 56px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent) 50%, transparent);
+    margin: 32px auto 0;
+    border-radius: 2px;
+    box-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* ============================================================
+   STORY SECTION — Two-column layout
+   ============================================================ */
+.about-story-section {
+    padding: 96px 0 80px;
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+}
+
+/* ── Image Frame ── */
+.about-image-wrapper {
+    position: relative;
+}
+
+.about-image-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, transparent 60%);
+    border-radius: calc(var(--radius-card) + 1px);
+    z-index: 0;
+}
+
+.image-frame {
+    position: relative;
+    z-index: 1;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--bg-card);
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.6),
+        0 0 0 1px var(--border);
+}
+
+.image-frame img {
+    width: 100%;
+    height: 460px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.image-frame:hover img {
+    transform: scale(1.04);
+}
+
+/* ── Text Details ── */
+.about-text-details h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.9rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 22px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+}
+
+.highlight-text {
+    color: var(--accent);
+}
+
+.about-text-details p {
+    font-size: 1.02rem;
+    color: var(--text-secondary);
+    margin-bottom: 18px;
+    line-height: 1.75;
+}
+
+.about-text-details strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* ── Stats Grid ── */
+.about-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 36px;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 22px 20px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    border-color: rgba(59, 130, 246, 0.35);
+    background: var(--bg-card-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+/* ============================================================
+   CORE VALUES SECTION
+   ============================================================ */
+.about-values-section {
+    padding: 96px 0;
+    background: linear-gradient(180deg, #0b0d18 0%, #0d1020 100%);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.section-title-center {
+    text-align: center;
+    max-width: 560px;
+    margin: 0 auto 60px;
+}
+
+.section-title-center h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+}
+
+.section-title-center p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.small-accent-line {
+    width: 44px;
+    height: 2px;
+    background: var(--accent);
+    margin: 18px auto 0;
+    box-shadow: 0 0 10px var(--accent-glow);
+    border-radius: 2px;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.value-card-premium {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 44px 32px 36px;
+    border-radius: var(--radius-card);
+    text-align: center;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.value-card-premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.value-card-premium:hover {
+    border-color: rgba(59, 130, 246, 0.3);
+    background: var(--bg-card-hover);
+    transform: translateY(-8px);
+    box-shadow:
+        0 24px 48px rgba(0, 0, 0, 0.5),
+        0 0 30px var(--accent-glow);
+}
+
+.value-card-premium:hover::before {
+    opacity: 1;
+}
+
+.value-icon-circle {
+    width: 64px;
+    height: 64px;
+    background: var(--accent-dim);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.85rem;
+    margin: 0 auto 24px;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.08);
+}
+
+.value-card-premium h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+}
+
+.value-card-premium p {
+    font-size: 0.93rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* ============================================================
+   CTA SECTION
+   ============================================================ */
+.about-cta-section {
+    padding: 96px 0;
+    text-align: center;
+    background:
+        radial-gradient(ellipse 70% 50% at 50% 50%, rgba(59, 130, 246, 0.06) 0%, transparent 70%),
+        var(--bg-main);
+}
+
+.about-cta-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+}
+
+.about-cta-section p {
+    color: var(--text-secondary);
+    font-size: 1.08rem;
+    max-width: 560px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cta-btn {
+    display: inline-block;
+    padding: 14px 36px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.cta-primary {
+    background: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+.cta-primary:hover {
+    background: #2563eb;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.45);
+}
+
+.cta-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+}
+
+.cta-secondary:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateY(-3px);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+    .about-content { grid-template-columns: 1fr; gap: 44px; }
+    .values-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .header-container { padding: 14px 20px; }
+    .about-nav { gap: 2px; }
+    .about-nav a { padding: 7px 12px; font-size: 0.82rem; }
+
+    .about-story-section { padding: 64px 0 56px; }
+    .about-values-section, .about-cta-section { padding: 64px 0; }
+
+    .values-grid { grid-template-columns: 1fr; }
+    .about-stats-grid { grid-template-columns: 1fr; }
+
+    .cta-buttons { flex-direction: column; align-items: center; }
+    .cta-btn { width: 100%; max-width: 320px; text-align: center; }
+}

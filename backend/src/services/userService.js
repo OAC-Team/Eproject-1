@@ -62,7 +62,7 @@ async function updateCollection(userId, collectionId, updateData) {
 };
 
 const deleteUserCollection = async (userId, collectionId) => {
-    const User = require('../models/User'); // Adjust path to your User model if needed
+    const User = require('../models/user'); // Adjust path to your User model if needed
 
     const result = await User.updateOne(
         { _id: userId },
