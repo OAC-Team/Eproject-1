@@ -22,7 +22,7 @@ import RejectedListPage from './pages/RejectedListPage';
 import SettingsPage from './pages/SettingsPage';
 import ChatWidget from './components/ChatWidget';
 import ViewUser from './components/ViewUser';
-
+import UserFavorites from './pages/UserFavorites';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -48,6 +48,7 @@ function App() {
           <Route path='/createPainting' element={<CreatePaintingPage />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/boards' element={<BoardManager />} />
+          <Route path='/gallery/favorites' element={<UserFavorites/>}/>
           <Route path='/gallery/:painting_id' element={<PaintingView />} />
           <Route path='/collections/:collection_id' element={<CollectionPage />} />
 
@@ -77,7 +78,7 @@ function GalleryLayout() {
             <Link to="/gallery">
               <i className='bi bi-house'></i>
             </Link>
-            <Link to="/gallery">
+            <Link to="/gallery/favorites">
               <img className="favorite-icon" src="/favorite.svg" alt="" />
             </Link>
             <Link to="/createPainting">
@@ -108,7 +109,7 @@ function SettingsLayout() {
             <Link to="/gallery">
               <i className='bi bi-house'></i>
             </Link>
-            <Link to="/gallery">
+            <Link to="/gallery/favorites">
               <img className="favorite-icon" src="/favorite.svg" alt="" />
             </Link>
             <Link to="/createPainting">
@@ -125,7 +126,5 @@ function SettingsLayout() {
     </div>
   )
 }
-
-
 
 export default App;
