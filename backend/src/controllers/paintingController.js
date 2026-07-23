@@ -187,7 +187,7 @@ async function getRecommendedPaintings(req, res) {
         const getRecentPaintings = async () => {
             return await Painting.find({ status: 'approved' })
                 .sort({ created_at: -1 })
-                .limit(6)
+                .limit(10)
                 .lean();
         };
 
