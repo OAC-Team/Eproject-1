@@ -224,7 +224,7 @@ async function deleteUserCollection(req, res) {
         const { collection_id } = req.params;
         const userId = req.user?.user_id || req.user?._id || req.user?.id;
 
-        await userService.deleteCollection(userId, collection_id);
+        await userService.deleteUserCollection(userId, collection_id);
 
         res.json({ message: "Collection deleted successfully." });
     } catch (err) {
