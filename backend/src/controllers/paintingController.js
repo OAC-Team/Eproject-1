@@ -187,7 +187,7 @@ async function getRecommendedPaintings(req, res) {
         const getRecentPaintings = async () => {
             return await Painting.find({ status: 'approved' })
                 .sort({ created_at: -1 })
-                .limit(6)
+                .limit(10)
                 .lean();
         };
 
@@ -380,4 +380,23 @@ async function savePainting(req, res) {
     }
 }
 
-module.exports = {getRecommendedPaintings, uploadProfilePicture, createPainting, getAllPaintings, getPainting, savePainting, deletePainting, analyzeImage }
+async function getUserFavoritePaintings(req, res) {
+    try {
+        const user = await User.findById(req.user.user_id).populate('favorites');
+        
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        return res.status(200).json({ 
+            success: true, 
+            favorites: user.favorites 
+        });
+
+    } catch (error) {
+        console.error("Error occurred in fetching users favorites:", error);
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+module.exports = {getUserFavoritePaintings, getRecommendedPaintings, uploadProfilePicture, createPainting, getAllPaintings, getPainting, savePainting, deletePainting, analyzeImage }

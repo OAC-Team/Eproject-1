@@ -73,10 +73,10 @@ export default function CollectionPage() {
             Swal.fire({
                 title: 'Success',
                 text: "Collection deleted",
-                icon: 'warning',
-                showCancelButton: true,
+                icon: 'info',
+                showCancelButton: false,
                 confirmButtonColor: 'rgb(51, 221, 150)',
-                confirmButtonText: 'Delete'
+                confirmButtonText: 'OK'
             })
             
             navigate('/profile');

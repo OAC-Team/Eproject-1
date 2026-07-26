@@ -47,10 +47,10 @@ export default function NavBar() {
         if (medium) params.append('medium', medium)
         if (style) params.append('style', style)
 
-        const basePath = location.pathname.includes('/collections/') ? location.pathname : '/'
+        const basePath = location.pathname.includes('/collections/') || location.pathname.includes('/favorites') ? location.pathname : '/gallery'
         const queryString = params.toString() ? `?${params.toString()}` : ''
 
-        navigate(`${basePath}${queryString}`)
+        navigate(`${basePath + queryString}`)
         setIsFilterOpen(false)
     }
 

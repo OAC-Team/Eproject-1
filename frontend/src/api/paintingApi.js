@@ -48,7 +48,19 @@ async function getRecommendedPaintings(token) {
         console.error("Get painting recommendation error:", error);
         throw error;
     }
-
 }
 
-export default {getRecommendedPaintings, getPainting, getAllPaintings, deletePainting };
+async function getUserFavoritePaintings(token) {
+    try {
+        const response = await axios.get(`${BASE_URL}/gallery/favorites`, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
+
+        return response.data
+    } catch (error) {
+        console.error("Get painting recommendation error:", error);
+        throw error;
+    }
+}
+
+export default {getUserFavoritePaintings, getRecommendedPaintings, getPainting, getAllPaintings, deletePainting };
