@@ -1,24 +1,13 @@
 import { Link } from 'react-router-dom';
 import '../themes/AboutOnlyArtCollectionPage.css';
+import '../themes/SignUpPage.css';
+import PublicNavBar from '../components/PublicNavBar';
 
 export default function AboutOnlyArtCollectionPage() {
   return (
     <>
       {/* Header & Navigation */}
-      <header className="about-header">
-        <div className="header-container">
-          <Link to="/gallery">
-            <img className="about-logo" src="/Logo.png" alt="OnlyArt Logo" />
-          </Link>
-          <nav className="about-nav">
-            <Link to="/gallery">Gallery</Link>
-            <Link to="/">About Us</Link>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Sign Up</Link>
-            <Link to="/contact">Contact</Link>
-          </nav>
-        </div>
-      </header>
+      <PublicNavBar />
 
       {/* Hero Section */}
       <section className="hero-section">

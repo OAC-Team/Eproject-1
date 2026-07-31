@@ -28,7 +28,7 @@ export default function GoogleAuth({setUser}) {
                     confirmButtonText: 'Done'
                 })
 
-                navigate('/');
+                navigate('/gallery');
             }
         } catch (error) {
             console.error('Error to login with Google!', error);
